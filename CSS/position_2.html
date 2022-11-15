@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            
+            #parent, #other, #grand{
+                border:5px solid tomato;
+                
+            }
+            #me{
+                background-color:black;
+                color:white;
+                position:absolute; /*부모 엘리먼트를 기준으로 원래 위치 해야 될 곳이 기본 값이 됨, 부모와의 링크가 끊겨서 크기는 자신의 컨텐츠만해짐, 부모 역시 자식을 없는셈침*/
+                left:0px;          /* left:0 top:0을 하면 html을 기준으로 됨* 부모 태그가 relative면 그 부모가 기준으로 됨*/
+                top:0px;
+                
+            }
+            #grand{
+                position: relative;
+                
+            }
+            
+            
+        </style>
+    </head>
+    <body>
+        <div id="other">other</div>
+        <div id="grand">
+            grand
+        <div id="parent">
+            parent
+            <div id="me">me</div>
+        </div>
+        </div>
+    </body>
+</html>

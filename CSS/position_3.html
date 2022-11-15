@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                padding-top:30px;
+            }
+
+            #parent, #other{
+                border:5px solid tomato;
+                
+            }
+            #large{
+                height:10000px;
+                background-color: tomato;
+            }
+
+            #me{
+                background-color:black;
+                color:white;
+                position:fixed; /*스크롤을 무시하고 무조건 고정됨, 앱솔루트와 마찬가지로 부모가 없어지고 크기는 자신의 컨텐츠만큼 됨, 부모도 자식을 없는셈침 */
+                left:0px;          
+                top:0px;
+                width:100%;
+                text-align: center;
+                height: 30px;
+                
+            }
+                
+        </style>
+    </head>
+    <body>
+        <div id="other">other</div>
+        
+        <div id="parent">
+            parent
+            <div id="me">me</div>
+        </div>
+        <div id="large">large</div>
+    </body>
+</html>

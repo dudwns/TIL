@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html{
+                border:1px solid gray;
+            }
+            div{
+                border:5px solid tomato;
+                margin: 10px;
+            }
+            #me{
+                position:relative; /* 부모 엘리먼트를 기준으로 left와 top이 먹히게 함, 기본은 static*/
+                left:100px;
+                top:100px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="other">other</div>
+        <div id="parent">
+            parent
+            <div id="me">me</div>
+        </div>
+    </body>
+</html>

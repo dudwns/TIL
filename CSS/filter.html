@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            img:hover{
+                -webkit-filter:grayscale(100%) blur(3px); /*흑백효과*/
+                -o-filter: grayscale(100%) blur(3px);
+                filter: grayscale(100%) blur(3px);
+            }
+            img{
+                transition: all 1s; /*1초동안 변함*/
+                width:500px;
+            }
+            h1{
+                -webkit-filter: blur(3px); /*블러셔(흐릿하게)*/
+                -o-filter: blur(3px);
+                filter: blur(3px);
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Mountain</h1>
+        <img src="images/background.jpg" alt="">
+    </body>
+</html>

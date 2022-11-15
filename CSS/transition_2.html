@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background-color: black;
+                transition: all 1s;
+            }
+            div{
+                background-color:black;
+                color:white;
+                padding:10px;
+                width:100px;
+                height:50px;
+                transition:all 0.5s;
+                transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+            div:hover{
+                height:400px;
+            }
+        </style>
+    </head>
+    <body onload="document.querySelector('body').style.backgroundColor='white';"> <!--js 로딩이 다 되었을 때 바디의 배경을 흰 색으로 바꿈-->
+        <div>
+            TRANSITION
+        </div>
+        
+    </body>
+</html>

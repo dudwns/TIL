@@ -1,0 +1,82 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>
+            body{
+                display: flex;
+                align-items: center; /*direction이 row면 행 맞춤, 줄어들면 위에서부터 시작*/
+                justify-content: center; /*열 맞춤*/
+            }
+            .container{
+                display: flex;
+                flex-direction: column; /*수직으로 정렬*/
+                width: 800px;
+                border: 1px solid gray;
+            }
+            header{
+                border-bottom: 1px solid gray;
+                padding-left:20px;
+            }
+            footer{
+                border-top:1px solid gray;
+                padding:20px;
+                text-align: center;
+            }
+            .content{
+                display: flex; /*수평으로 정렬, flex-direction의 기본값이 row*/
+            }
+            .content nav{
+                border-right: 1px solid gray;
+            }
+            .content aside{
+                border-left: 1px solid gray;
+            }
+            nav, aside{
+                flex-basis: 150px;
+                flex-shrink: 0; /*양쪽 사이드는 화면이 작아져도 안 줄어듬*/
+            }
+            main{
+                padding: 10px;
+            }
+            nav{
+                order: -1; /*메인과 자리를 바꾸고 싶을 때*/
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>생활코딩</h1>
+            </header>
+            <section class="content">
+                <main>
+                    생활코딩을 위한 코딩 수업입니다.
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur quis aliquid nesciunt qui harum ad doloribus fuga magni, autem facilis? Vero odit illo optio pariatur voluptatibus debitis eligendi obcaecati eius?
+                    
+                </main>
+                <nav>
+                    <ul>
+                        <li>html</li>
+                        <li>css</li>
+                        <li>javascript</li>
+                    </ul>
+                </nav>
+                <aside>
+                    AD
+                </aside>
+            </section>
+            <footer>
+                <a href="https://opentutorials.org/course/1">홈페이지</a>
+            </footer>
+        </div>
+    </body>
+</html>
+
+<!---->
