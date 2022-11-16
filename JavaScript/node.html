@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+
+        </style>
+    </head>
+    <body>
+        <ul id="target">
+            <li>HTML</li>
+            <li id="replacetarget">CSS</li>
+            <li id="removetarget">JavaScript</li>
+        </ul>
+        <input type="button" onclick="callAppendChild();" value="appendChild()">
+        <input type="button" onclick="callInsertBefore();" value="insertBefore()">
+        <input type="button" onclick="callRemoveChild()" value="removeChild()">
+        <input type="button" onclick="callReplaceChild()" value="replaceChild()">
+        <script>
+            function callAppendChild(){ //삽입
+                var target = document.getElementById('target');
+                var li = document.createElement('li');
+                var text = document.createTextNode('JavaScript');
+                li.appendChild(text);
+                target.appendChild(li);
+            }
+
+            function callInsertBefore(){ //처음, 중간 삽입 
+                var target = document.getElementById('target');
+                var li = document.createElement('li');
+                var text = document.createTextNode('jQuery');
+                li.appendChild(text);
+                target.insertBefore(li, target.firstChild);
+            }
+            function callRemoveChild(){ //삭제
+                var removetarget = document.getElementById('removetarget');
+                removetarget.parentNode.removeChild(removetarget);
+            }
+
+            function callReplaceChild(){ // 수정
+                var a = document.createElement('a');
+                a.setAttribute('href', 'http://opentutorials.org/module/904/6701')
+                a.appendChild(document.createTextNode('web browser JavaScript'));
+
+                var replacetarget = document.getElementById('replacetarget');
+                replacetarget.replaceChild(a, replacetarget.firstChild);
+            }
+        </script>
+    </body>
+</html>
+
+<!-- 
+Node.childNodes
+자식노드들을 유사배열에 담아서 리턴한다.
+
+Node.firstChild
+첫번째 자식노드
+
+Node.lastChild
+마지막 자식노드
+
+Node.nextSibling
+다음 형제 노드
+
+Node.previousSibling
+이전 형제 노드
+-->

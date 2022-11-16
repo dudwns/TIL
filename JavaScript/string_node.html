@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <ul id="target">
+            <li>HTML</li>
+            <li>CSS</li>
+        </ul>
+        <input type="button" onclick="get();" value="get" />
+        <input type="button" onclick="set();" value="set" />
+
+        <input type="button" onclick="beforebegin();" value="beforebegin" />
+        <input type="button" onclick="afterbegin();" value="afterbegin" />
+        <input type="button" onclick="beforeend();" value="beforeend" />
+        <input type="button" onclick="afterend();" value="afterend" />
+
+        <script>
+            function get(){
+                var target = document.getElementById('target');
+                alert(target.innerHTML); //<li>HTML</li><li>CSS</li> 출력
+            }
+            function set(){
+                var target = document.getElementById('target');
+                target.innerHTML = "<li>JavaScript Core</li><li>BOM</li><li>DOM</li>"; //target안에 자식들의 내용이 바뀜
+            }
+
+            function get(){
+                var target = document.getElementById('target');
+                alert(target.outerHTML); //본인 포함 출력
+            }
+            function set(){
+                 var target = document.getElementById('target');
+                target.outerHTML = "<ol><li>JavaScript Core</li><li>BOM</li><li>DOM</li></ol>"; //본인까지 바뀜
+            }
+
+            function get(){
+                var target = document.getElementById('target');
+                alert(target.innerText); //태그 없이 HTML CSS만 출력
+            }
+            function set(){
+                var target = document.getElementById('target');
+                target.innerText = "<li>JavaScript Core</li><li>BOM</li><li>DOM</li>"; //글씨 그대로 들어감
+            }
+
+            function get(){
+                var target = document.getElementById('target');
+                alert(target.outterText);//본인 포함 태그 없이 출력
+            }
+            function set(){
+                var target = document.getElementById('target');
+                target.outterText = "<li>JavaScript Core</li><li>BOM</li><li>DOM</li>"; // 글씨 그대로 들어감
+            }
+
+
+
+            function beforebegin(){
+                var target = document.getElementById('target');
+                target.insertAdjacentHTML('beforebegin','<h1>Client Side</h1>'); //본인 앞에 생성
+            }
+            function afterbegin(){
+                var target = document.getElementById('target');
+                target.insertAdjacentHTML('afterbegin','<li>HTML</li>'); //본인 자식의 앞에 생성
+            }
+            function beforeend(){
+                var target = document.getElementById('target');
+                target.insertAdjacentHTML('beforeend','<li>JavaScript</li>'); //본인 자식 끝에 생성
+            }
+            function afterend(){
+                var target = document.getElementById('target');
+                target.insertAdjacentHTML('afterend','<h1>Server Side</h1>'); //본인 뒤에 생성
+            }
+        </script>
+    </body>
+</html>

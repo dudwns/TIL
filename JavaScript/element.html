@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style></style>
+</head>
+<body>
+    <a id="target" href="http://opentutorials.org">opentutorials</a>
+
+    <a id="t1" href="./demo.html">opentutorials</a>
+    <input id="t2" type="checkbox" checked="checked" />
+
+
+    <ul>
+        <li class="marked">html</li>
+        <li>css</li>
+        <li id="active">JavaScript
+            <ul>
+                <li>JavaScript Core</li>
+                <li class="marked">DOM</li>
+                <li class="marked">BOM</li>
+            </ul>
+        </li>
+    </ul>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+        var t = $('#target');
+        console.log(t.attr('href')); //http://opentutorials.org, title 속성 값을 조회한다.
+        t.attr('title', 'opentutorials.org'); // title 속성의 값을 설정한다.
+        t.removeAttr('title'); // title 속성을 제거한다.
+
+        // 현재 문서의 URL이 아래와 같다고 했을 때
+        // http://localhost/jQuery_attribute_api/demo2.html
+        var t1 = $('#t1');
+        console.log(t1.attr('href')); // ./demo.html 
+        console.log(t1.prop('href')); // http://localhost/jQuery_attribute_api/demo.html 
+ 
+        var t2 = $('#t2');
+        console.log(t2.attr('checked')); // checked
+        console.log(t2.prop('checked')); // true
+
+        $( "#active .marked").css( "background-color", "red" ); //id가 active인 엘리먼트의 자식 중 class가 marked인 엘리먼트
+        $( "#active").find('.marked').css( "background-color", "red" ); //find()를 통해도 조회 가능
+        $('#active').css('color','blue').find('.marked').css( "background-color", "red" ); //find를 쓰는 이유는 체인을 끊지 않고 작업의 대상을 변경하고 싶을 때 사용한다.
+    </script>
+</body>
+</html>
+
+<!-- jQuery가 아닌 javaScript 속성제어 문법
+Element.getAttribute(name) 속성의 값을 가져옴
+Element.setAttribute(name, value) 속성의 값을 설정
+Element.hasAttribute(name); 속성의 존재여부 확인
+Element.removeAttribute(name); 속성을 제거
+
+식별자 문법
+Element.tagName
+console.log(document.getElementById('active').tagName)
+
+Element.id
+var active = document.getElementById('active');
+console.log(active.id);
+active.id = 'deactive';
+console.log(active.id);
+
+Element.className
+var active = document.getElementById('active');
+// class 값을 변경할 때는 프로퍼티의 이름으로 className을 사용한다.
+active.className = "important current";
+console.log(active.className);
+// 클래스를 추가할 때는 아래와 같이 문자열의 더한다.
+active.className += " readed"
+
+Element.classList
+function loop(){
+    for(var i=0; i<active.classList.length; i++){
+        console.log(i, active.classList[i]); 이런식으로 조회 가능(유사배열)
+    }
+}
+
+<input type="button" value="DOMTokenList" onclick="console.log(active.classList);" />
+<input type="button" value="조회" onclick="loop();" />
+<input type="button" value="추가" onclick="active.classList.add('marked');" />
+<input type="button" value="제거" onclick="active.classList.remove('important');" />
+<input type="button" value="토글" onclick="active.classList.toggle('current');" />
+-->

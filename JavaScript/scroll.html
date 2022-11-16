@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <style>
+        body{
+            padding:0;
+            margin:0;
+        }
+        div{
+            border:50px solid #1065e6;
+            padding:50px;
+            margin:50px;
+        }
+        #target{
+            width:100px;
+            height:2000px;
+        }
+    </style>
+    <input type="button" id="scrollBtn" value="scroll(0, 1000)" />
+    <script>
+        document.getElementById('scrollBtn').addEventListener('click', function(){
+            window.scrollTo(0, 1000); //스크롤을 1000만큼 내림
+        })
+
+        console.log('window.innerWidth:', window.innerWidth, 'window.innerHeight:', window.innerHeight); //viewport의 크기
+        console.log('screen.width:', screen.width, 'screen.height:', screen.height); //모니터의 해상도 크기
+        
+    </script>
+    <div>
+        <div id="target">
+            Coding
+        </div>
+    </div>
+</html>

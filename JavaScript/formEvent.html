@@ -1,0 +1,40 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <form id="target" action="result.html">
+            <label for="name">name</label> <input id="name" type="name" />
+            <input type="submit" />
+        </form>
+
+        <p id="result"></p>
+        <input id="target" type="name" />
+        
+        
+        <script>
+        var t = document.getElementById('target');
+        t.addEventListener('submit', function(event){ //submit 이벤트, form 태그에 적용된다.
+            if(document.getElementById('name').value.length === 0){
+                alert('Name 필드의 값이 누락 되었습니다');
+                event.preventDefault(); //전송되지 않음
+            }
+        });
+
+
+        var t = document.getElementById('target');
+        t.addEventListener('change', function(event){ //change 이벤트, input(text,radio,checkbox), textarea, select 태그에 적용된다.
+        document.getElementById('result').innerHTML=event.target.value; //p 태그 안에 text가 작성됨
+        });
+
+        
+        var t = document.getElementById('target');
+        t.addEventListener('blur', function(event){
+            alert('blur');   //blur 이벤트, 포커스가 사라졌을 때, 다음 태그를 제외한 모든 태그에서 발생한다. <base>, <bdo>, <br>, <head>, <html>, <iframe>, <meta>, <param>, <script>, <style>, <title>
+        });
+        t.addEventListener('focus', function(event){
+            alert('focus');  //focus 이벤트, 포커스가 생겼을 때, 다음 태그를 제외한 모든 태그에서 발생한다. <base>, <bdo>, <br>, <head>, <html>, <iframe>, <meta>, <param>, <script>, <style>, <title>
+        });
+        </script>
+    </body>
+</html>

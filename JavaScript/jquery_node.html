@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <div class="target">
+            content1
+        </div>
+         
+        <div class="target">
+            content2
+        </div>
+
+        <div class="target" id="target1">
+            target 1
+        </div>
+         
+        <div class="target" id="target2">
+            target 2
+        </div>
+        
+        <div id="source">source</div>
+
+        <input type="button" value="remove target 1" id="btn1" />
+        <input type="button" value="empty target 2" id="btn2" />
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script>
+            $('.target').before('<div>before</div>'); //컨텐츠 전에 추가
+            $('.target').after('<div>after</div>'); //컨텐츠 후에 추가
+            $('.target').prepend('<div>prepend</div>'); //컨텐츠 안 첫번째 자식에 추가
+            $('.target').append('<div>append</div>'); //컨텐츠 안 마지막 자식에 추가
+
+            $('#btn1').click(function(){
+                $('#target1').remove(); //전체 삭제
+            })
+            $('#btn2').click(function(){ //div 안에 텍스트만 삭제
+                $('#target2').empty();
+            })
+
+
+            $('#btn1').click(function(){
+                $('<div>replaceAll</div>').replaceAll('#target1'); //바꾸는 대상을 뒤에 씀 #target1을 repalceAll로 바꿈
+            })
+            $('#btn2').click(function(){
+                $('#target2').replaceWith('<div>replaceWith</div>'); // 바꾸는 대상을 앞에 씀 #target2를 replacewith으로 바꿈
+            })
+
+            $('#btn1').click(function(){
+                $('#source').clone().replaceAll('#target1'); //복사하는 대상을 뒤에 씀 #target1을 #source로 복사
+            })
+            $('#btn2').click(function(){
+                $('#target2').replaceWith($('#source').clone()); //복사하는 대상을 앞에 씀 #target2를 #source로 복사
+            })
+
+            $('#btn1').click(function(){
+                $('#target1').append($('#source')); //이동 #source를 target1의 마지막 자식으로 이동, before after prepend append 다 됨 
+            })
+
+        </script>
+    </body>
+</html>

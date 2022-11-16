@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <ul>
+            <li id="target">html</li>
+            <li>css</li>
+            <li>JavaScript</li>
+        </ul>
+        <script>
+            var t = document.getElementById('target').firstChild;
+            console.log(t.nodeValue); //읽기 
+            console.log(t.data); //읽기 위에랑 똑같음
+            t.nodeValue = "안녕"; //쓰기
+            console.log(t.nodeValue);
+        </script>
+    </body>
+</html>
+
+<!--
+function callAppendData(){
+    target.appendData(data.value); 텍스트 뒤에 확장
+}
+function callDeleteData(){
+    target.deleteData(start.value, end.value); 텍스트를 어디서부터 시작해서 어디까지 삭제
+}
+function callInsertData(){
+    target.insertData(start.value, data.value); 텍스트를 어디서부터 어떤 데이터를 삽입할 것인지
+}
+function callReplaceData(){
+    target.replaceData(start.value, end.value, data.value); 텍스트를 어디서부터 어디까지를 어떤 데이터로 대체할 것인지
+}
+function callSubstringData(){
+    alert(target.substringData(start.value, end.value));  텍스트를 어디서부터 어디까지 가져올 것인지
+}
+-->

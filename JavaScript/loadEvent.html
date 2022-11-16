@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <script>
+            window.addEventListener('load', function(){
+                console.log('load'); // 문서내의 모든 리소스(이미지, 스크립트)의 다운로드가 끝난 후에 실행된다. 
+            })
+            window.addEventListener('DOMContentLoaded', function(){
+                console.log('DOMContentLoaded'); //문서에서 스크립트 작업을 할 수 있을 때 실행되기 때문에 이미지 다운로드를 기다릴 필요가 없다.
+            })
+        </script>
+    </head>
+    <body>
+        <p id="target">Hello</p>
+    </body>
+</html>

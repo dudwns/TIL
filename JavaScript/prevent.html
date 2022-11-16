@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <p>
+            <label>prevent event on</label><input id="prevent" type="checkbox" name="eventprevent" value="on" />
+        </p>
+        <p>
+            <a href="http://opentutorials.org">opentutorials</a>
+        </p>
+        <p>
+            <form action="http://opentutorials.org">
+                    <input type="submit" />
+            </form>
+        </p>
+        <script>
+            document.querySelector('a').addEventListener('click', function(event){
+                if(document.getElementById('prevent').checked)
+                    event.preventDefault(); // 기본동작을 취소함
+            });
+             
+            document.querySelector('form').addEventListener('submit', function(event){
+                if(document.getElementById('prevent').checked)
+                    event.preventDefault(); //ie9 이하 버전에서는 event.returnValue를 false로 해야 한다. 
+            });
+ 
+        </script>
+    </body>
+</html>
