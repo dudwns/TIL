@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html >
+<head>
+   
+</head>
+<body>
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js"></script>    <!--react 불러오는 코드-->
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.development.js"></script> <!--react-dom 불러오는 코드-->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <!--jsx 불러오는 코드-->
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script> <!--prop types 불러오는 코드-->
+    <script type="text/babel">
+
+        function Btn({text, onClick, fontSize = 16}){ //정의되지 않은 변수에 기본값을 줄 수 있음
+            console.log(text, "was rendered")
+            return (
+                <button
+                onClick={onClick}
+                style={{
+                backgroundColor:"tomato",
+                color:"white",
+                padding: "10px 20px",
+                border: 0,
+                borderRadius: 10,
+                fontSize, //이름과 속성 이름이 같다면 이렇게 작성 가능
+            }}>{text}</button>
+            )
+        }
+        Btn.propTypes = {
+            text: PropTypes.string.isRequired,
+            fontSize: PropTypes.number,
+        } //설정한 타입과 실제 타입이 다르면 경고를 띄움, isRequired는 무조건 가지고 있어야하는 prop에 설정, 없으면 경고를 띄움
+
+        function App(){
+           
+            return(
+                <div>
+                   <Btn text="Save Changes" fontSize={18}/>
+                   <Btn text="Continue"/>
+                </div>
+            );
+        }
+
+        const root = document.getElementById("root");
+        ReactDOM.render(<App/>, root);
+    </script>
+</body>
+</html>
