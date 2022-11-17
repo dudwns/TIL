@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html >
+<head>
+   
+    
+</head>
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>    <!--react 불러오는 코드-->
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script> <!--react-dom 불러오는 코드-->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> <!--jsx 불러오는 코드-->
+    <script type="text/babel">  
+        const root = document.getElementById("root");
+        function App(){
+            const [counter, setCounter] = React.useState(0); //counter라는 변수를 0으로 리턴, 두번째 인자는 그 변수를 변환 할 함수
+            const onClick = () => {
+                // setCounter(counter + 1); 컴포넌트가 바뀌면 컴포넌트의 리렌더링이 자동으로 일어난다.
+                setCounter((current) => current + 1); //현재 state를 바탕으로 다음 state를 계산하고 싶다면 이 방법이 더 좋음(다른 곳에서 값이 변경될 수 있음)
+            }
+            return(
+                <div>
+                    <h3>Total clicks:{counter}</h3>
+                    <button onClick={onClick}>Click me</button>                                    
+                </div>
+            );
+        }
+        ReactDOM.render(<App/>, root);
+    </script>
+</body>
+</html>
