@@ -34,5 +34,5 @@ function App() {
 
 export default App;
 
-//map은 item들을 순환하면서 값을 리턴해주는 함수
-//같은 li를 렌더링 할 때에는 key값이 필요
+//map(): 배열을 가지고 있을 때 각각의 element들을 바꿀 수 있게 해줌, ()에는 함수를 넣을 수 있는데 배열의 모든 item에 대해
+//리액트는 기본적으로 list에 있는 모든 item을 인식하기 때문에 key를 넣어 고유하게 만들어줘야 함
