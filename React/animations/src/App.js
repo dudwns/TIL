@@ -62,7 +62,6 @@ function App() {
     <Emoji>😄</Emoji>
     </Box>
    </Wrapper>
-   
   );
 }
 
