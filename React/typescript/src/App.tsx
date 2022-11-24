@@ -1,12 +1,10 @@
-import styled from "styled-components"; //styled-components import
 import Circle from "./Circle";
-
 
 function App() {
   return (
     <div>
-      <Circle bgColor="teal"/>
-      <Circle bgColor="tomato"/>
+      <Circle bgColor="teal" borderColor="yellow" />
+      <Circle bgColor="tomato" text="Im here" />
     </div>
   );
 }
