@@ -16,6 +16,8 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 80px;
+  margin-bottom: 15px;
 `;
 
 const CoinList = styled.ul``;
@@ -53,6 +55,21 @@ const Img = styled.img`
   margin-right: 10px;
 `;
 
+const ThemeBtn = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: white;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  &:hover {
+    background-color: black;
+  }
+  transition: background-color 0.5s linear;
+`;
+
 interface Icoin {
   id: string;
   name: string;
@@ -87,6 +104,7 @@ function Coins() {
       <Header>
         <Title>코인</Title>
       </Header>
+      <ThemeBtn>🌙</ThemeBtn>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (

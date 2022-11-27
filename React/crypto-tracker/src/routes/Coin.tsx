@@ -20,6 +20,8 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 80px;
+  margin-bottom: 15px;
 `;
 
 const Title = styled.h1`
@@ -77,6 +79,36 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
+const HomeBtn = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: white;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  &:hover {
+    background-color: black;
+  }
+  transition: background-color 0.5s linear;
+`;
+
+const ThemeBtn = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  background-color: white;
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  &:hover {
+    background-color: black;
+  }
+  transition: background-color 0.5s linear;
+`;
+
 interface RouteParams {
   coinId: string;
 }
@@ -120,7 +152,7 @@ interface PriceData {
   last_updated: string;
   quotes: {
     USD: {
-      ath_date: "2021-11-10T16:51:15Z";
+      ath_date: string;
       ath_price: number;
       market_cap: number;
       market_cap_change_24h: number;
@@ -147,7 +179,7 @@ function Coin() {
   const priceMatch = useRouteMatch("/:coinId/price"); //내가 위치한 url이 어디인지 확인, 맞으면 object를 받고 틀리면 null을 리턴
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(["info", coinId], () => fetchCoinInfo(coinId));
-  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId), { refetchInterval: 5000 });
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId));
 
   /* const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<InfoData>();
@@ -172,6 +204,10 @@ function Coin() {
       <Header>
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
+      <Link to={`/`}>
+        <HomeBtn>🏠</HomeBtn>
+      </Link>
+      <ThemeBtn>🌙</ThemeBtn>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
@@ -213,7 +249,16 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price
+                ath_date={tickersData?.quotes.USD.ath_date}
+                ath_price={tickersData?.quotes.USD.ath_price}
+                percent_change_1h={tickersData?.quotes.USD.percent_change_1h}
+                percent_change_6h={tickersData?.quotes.USD.percent_change_6h}
+                percent_change_12h={tickersData?.quotes.USD.percent_change_12h}
+                percent_change_24h={tickersData?.quotes.USD.percent_change_24h}
+                percent_change_7d={tickersData?.quotes.USD.percent_change_7d}
+                percent_change_30d={tickersData?.quotes.USD.percent_change_30d}
+              />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
