@@ -3,11 +3,19 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+
+const queryClient = new QueryClient();
+
 root.render(
   //ThemeProvider 안에 있는 component들은 theme object에 접근 가능
-  <ThemeProvider theme={theme}>
-    <App />
-  </ThemeProvider>
+  //QueryClientProvider도 마찬가지로 안에 있는 component들은 queryClient에 접근 가능
+
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </QueryClientProvider>
 );
