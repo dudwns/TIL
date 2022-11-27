@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -64,7 +65,7 @@ interface Icoin {
 
 function Coins() {
   //useQuery는 fetcher 함수를 부르고 피니쉬 여부를 boolean값으로 리턴, json data도 리턴
-  const { isLoading, data } = useQuery<Icoin[]>("allCoins", fetchCoins); //첫번째는 queryKey, 두번째는 fetcher 함수
+  const { isLoading, data } = useQuery<Icoin[]>("allCoins", fetchCoins); //첫번째는 queryKey, 두번째는 fetcher 함수, 세번째는 refetch 간격
 
   /*const [coins, setCoins] = useState<Icoin[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,6 +80,10 @@ function Coins() {
 
   return (
     <Container>
+      <Helmet>
+        {/*여기에 작성하면 문서의 head로 감 */}
+        <title>코인</title>
+      </Helmet>
       <Header>
         <Title>코인</Title>
       </Header>
