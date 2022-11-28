@@ -38,6 +38,10 @@ const PriceViewItem = styled.div<IValue>`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  span:last-child {
+    color: ${(props) => (props.value && props.value > 0 ? "red" : "blue")};
+    font-size: 2rem;
+  }
 `;
 
 interface PriceProps {
