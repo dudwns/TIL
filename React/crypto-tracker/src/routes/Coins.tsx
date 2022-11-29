@@ -3,7 +3,9 @@ import { Helmet } from "react-helmet";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { isDarkAtom } from "../atoms";
 import { fetchCoins } from "./api";
+import { useSetRecoilState } from "recoil";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -23,8 +25,9 @@ const Header = styled.header`
 const CoinList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: white;
-  color: ${(props) => props.theme.bgColor};
+  background-color: ${(props) => props.theme.cardBgColor};
+  color: ${(props) => props.theme.textColor};
+  border: 1px solid white;
   border-radius: 15px;
   margin-bottom: 10px;
   a {
@@ -81,6 +84,8 @@ interface Icoin {
 }
 
 function Coins() {
+  const setDarkAtom = useSetRecoilState(isDarkAtom); //setter function(value를 설정하는 function)을 리턴
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   //useQuery는 fetcher 함수를 부르고 피니쉬 여부를 boolean값으로 리턴, json data도 리턴
   const { isLoading, data } = useQuery<Icoin[]>("allCoins", fetchCoins); //첫번째는 queryKey, 두번째는 fetcher 함수, 세번째는 refetch 간격
 
@@ -103,8 +108,8 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>코인</Title>
+        <ThemeBtn onClick={toggleDarkAtom}>🌙</ThemeBtn>
       </Header>
-      <ThemeBtn>🌙</ThemeBtn>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (

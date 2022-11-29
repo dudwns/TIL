@@ -179,7 +179,7 @@ function Coin() {
   const priceMatch = useRouteMatch("/:coinId/price"); //내가 위치한 url이 어디인지 확인, 맞으면 object를 받고 틀리면 null을 리턴
   const chartMatch = useRouteMatch("/:coinId/chart");
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(["info", coinId], () => fetchCoinInfo(coinId));
-  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId));
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(["tickers", coinId], () => fetchCoinTickers(coinId), { refetchInterval: 5000 });
 
   /* const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<InfoData>();

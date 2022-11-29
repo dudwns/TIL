@@ -1,6 +1,10 @@
 import Router from "./routes/Router";
-import { createGlobalStyle } from "styled-components"; //CSS 리셋 시킬 때 사용하는 컴포넌트
+import { createGlobalStyle, ThemeProvider } from "styled-components"; //CSS 리셋 시킬 때 사용하는 컴포넌트
 import { ReactQueryDevtools } from "react-query/devtools"; //캐시 안에 있는 것을 볼 수 있음
+import { darkTheme, lightTheme } from "./theme";
+import { useState } from "react";
+import { isDarkAtom } from "./atoms";
+import { useRecoilValue } from "recoil";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -66,11 +70,14 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom); //atoms 연결하고 값을 받아옴
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <Router />
+        <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   );
 }
