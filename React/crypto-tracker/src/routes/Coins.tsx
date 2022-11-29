@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { isDarkAtom } from "../atoms";
 import { fetchCoins } from "./api";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -18,7 +18,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 20px;
   margin-bottom: 15px;
 `;
 
@@ -30,6 +30,7 @@ const Coin = styled.li`
   border: 1px solid white;
   border-radius: 15px;
   margin-bottom: 10px;
+  box-shadow: 1px 1px 2px 0px gray;
   a {
     display: flex;
     align-items: center;
@@ -62,15 +63,15 @@ const ThemeBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 20px;
-  border: none;
+  border: 1px solid black;
   background-color: white;
   position: absolute;
   right: 30px;
-  top: 30px;
+  top: 40px;
   &:hover {
     background-color: black;
   }
-  transition: background-color 0.5s linear;
+  transition: background-color 0.3s linear;
 `;
 
 interface Icoin {
@@ -84,6 +85,7 @@ interface Icoin {
 }
 
 function Coins() {
+  const isDark = useRecoilValue(isDarkAtom);
   const setDarkAtom = useSetRecoilState(isDarkAtom); //setter function(value를 설정하는 function)을 리턴
   const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   //useQuery는 fetcher 함수를 부르고 피니쉬 여부를 boolean값으로 리턴, json data도 리턴
@@ -104,11 +106,11 @@ function Coins() {
     <Container>
       <Helmet>
         {/*여기에 작성하면 문서의 head로 감 */}
-        <title>코인</title>
+        <title>cryptocurrency</title>
       </Helmet>
       <Header>
-        <Title>코인</Title>
-        <ThemeBtn onClick={toggleDarkAtom}>🌙</ThemeBtn>
+        <Title>cryptocurrency</Title>
+        <ThemeBtn onClick={toggleDarkAtom}>{isDark ? "☀️" : "🌙"}</ThemeBtn>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
@@ -118,7 +120,7 @@ function Coins() {
             <Coin key={coin.id}>
               <Link
                 to={{
-                  pathname: `/${coin.id}`,
+                  pathname: `/${coin.id}/price`,
                   state: { name: coin.name },
                 }}
               >

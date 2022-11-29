@@ -8,6 +8,8 @@ import { Helmet } from "react-helmet";
 
 import Chart from "./Chart";
 import Price from "./Price";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -20,7 +22,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 80px;
+  margin-top: 20px;
   margin-bottom: 15px;
 `;
 
@@ -35,10 +37,13 @@ const Loader = styled.div`
 
 const Overview = styled.div`
   display: flex;
-  justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: space-around;
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
+  border: 1px solid white;
+  margin: 20px 0;
+  box-shadow: 1px 1px 2px 0px gray;
 `;
 
 const OverviewItem = styled.div`
@@ -56,6 +61,12 @@ const OverviewItem = styled.div`
 
 const Description = styled.p`
   margin: 20px 0px;
+  border: 1px solid white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  line-height: 25px;
+  background-color: ${(props) => props.theme.cardBgColor};
+  box-shadow: 1px 1px 2px 0px gray;
 `;
 
 const Tabs = styled.div`
@@ -67,46 +78,44 @@ const Tabs = styled.div`
 
 const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
-  text-transform: uppercase;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: inherit;
   padding: 7px 0px;
   border-radius: 10px;
+
   color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
   a {
-    display: block;
+    border-bottom: 1px solid ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
+    padding-bottom: 10px;
   }
 `;
 
 const HomeBtn = styled.button`
   width: 40px;
   height: 40px;
-  border-radius: 20px;
+  font-size: 40px;
+  background-color: inherit;
   border: none;
-  background-color: white;
+  color: #3867d6;
   position: absolute;
   left: 30px;
   top: 30px;
-  &:hover {
-    background-color: black;
-  }
-  transition: background-color 0.5s linear;
 `;
 
 const ThemeBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 20px;
-  border: none;
+  border: 1px solid black;
   background-color: white;
   position: absolute;
   right: 30px;
-  top: 30px;
+  top: 40px;
   &:hover {
     background-color: black;
   }
-  transition: background-color 0.5s linear;
+  transition: background-color 0.3s linear;
 `;
 
 interface RouteParams {
@@ -174,6 +183,9 @@ interface PriceData {
 }
 
 function Coin() {
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom); //setter function(value를 설정하는 function)을 리턴
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   const { coinId } = useParams<RouteParams>(); //URL의 변수값의 정보를 저장
   const { state } = useLocation<RouteState>(); //Link의 state값을 받아옴
   const priceMatch = useRouteMatch("/:coinId/price"); //내가 위치한 url이 어디인지 확인, 맞으면 object를 받고 틀리면 null을 리턴
@@ -205,45 +217,45 @@ function Coin() {
         <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
       <Link to={`/`}>
-        <HomeBtn>🏠</HomeBtn>
+        <HomeBtn>←</HomeBtn>
       </Link>
-      <ThemeBtn>🌙</ThemeBtn>
+      <ThemeBtn onClick={toggleDarkAtom}>{isDark ? "☀️" : "🌙"}</ThemeBtn>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Overview>
             <OverviewItem>
-              <span>Rank:</span>
+              <span>순위</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Symbol:</span>
+              <span>티커</span>
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Price:</span>
+              <span>현재가</span>
               <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
-          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>Total Supply:</span>
+              <span>총량</span>
               <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Max Supply:</span>
+              <span>최대 발행량</span>
               <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
+          <Description>{infoData?.description}</Description>
 
           <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Chart</Link>
-            </Tab>
             <Tab isActive={priceMatch !== null}>
               <Link to={`/${coinId}/price`}>Price</Link>
+            </Tab>
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`}>Chart</Link>
             </Tab>
           </Tabs>
 

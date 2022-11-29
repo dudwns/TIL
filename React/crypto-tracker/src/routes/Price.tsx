@@ -5,10 +5,12 @@ import { fetchCoinHistory } from "./api";
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
-  margin-bottom: 30px;
+  background-color: ${(props) => props.theme.cardBgColor};
+  margin-bottom: 20px;
   padding: 25px;
   border-radius: 15px;
+  border: 1px solid white;
+  box-shadow: 1px 1px 2px 0px gray;
 `;
 
 const OverviewItem = styled.div`
@@ -26,10 +28,11 @@ const PriceView = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  margin-bottom: 50px;
 `;
 
 const PriceViewItem = styled.div<IValue>`
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.cardBgColor};
   width: 200px;
   height: 100px;
   border-radius: 20px;
@@ -38,8 +41,10 @@ const PriceViewItem = styled.div<IValue>`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
+  border: 1px solid white;
+  box-shadow: 1px 1px 2px 0px gray;
   span:last-child {
-    color: ${(props) => (props.value && props.value > 0 ? "red" : "blue")};
+    color: ${(props) => (props.value && props.value > 0 ? "#20bf6b" : "#e84118")};
     font-size: 2rem;
   }
 `;

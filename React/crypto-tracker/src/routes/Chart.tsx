@@ -73,7 +73,7 @@ function Chart({ coinId }: ChartProps) {
                 type: "gradient",
                 gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
               },
-              colors: ["#0fbcf9"],
+              colors: ["red"],
               tooltip: {
                 y: {
                   formatter: (value) => `$ ${value.toFixed(2)}`,
@@ -116,15 +116,15 @@ function Chart({ coinId }: ChartProps) {
                 categories: data?.map((price) => price.time_close),
                 labels: {
                   style: {
-                    colors: "#9c88ff",
+                    colors: "#3867d6",
                   },
                 },
               },
               plotOptions: {
                 candlestick: {
                   colors: {
-                    upward: "#0f7cf0",
-                    downward: "#e63a06",
+                    upward: "#e84118",
+                    downward: "#20bf6b",
                   },
                 },
               },
