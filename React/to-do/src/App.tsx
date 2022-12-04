@@ -1,8 +1,9 @@
 import { createGlobalStyle, ThemeProvider } from "styled-components"; //CSS 리셋 시킬 때 사용하는 컴포넌트
-import { darkTheme } from "./theme";
+import { darkTheme, lightTheme } from "./theme";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import ToDoList from "./components/ToDoList";
+import { isDarkAtom } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -56,14 +57,21 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+  body{
+    background-color: ${(props) => props.theme.bgColor};
+    transition: background-color 0.2s linear;
+  }
   
 `;
 
 function App() {
+  const isDark = useRecoilValue(isDarkAtom);
   return (
     <>
-      <GlobalStyle />
-      <ToDoList />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <GlobalStyle />
+        <ToDoList />
+      </ThemeProvider>
     </>
   );
 }
