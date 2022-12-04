@@ -6,11 +6,12 @@ const Overview = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: ${(props) => props.theme.cardBgColor};
+  transition: background-color 0.2s linear;
   margin-bottom: 20px;
   padding: 25px;
   border-radius: 15px;
   border: 1px solid white;
-  box-shadow: 1px 1px 2px 0px gray;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
 
 const OverviewItem = styled.div`
@@ -33,6 +34,7 @@ const PriceView = styled.div`
 
 const PriceViewItem = styled.div<IValue>`
   background-color: ${(props) => props.theme.cardBgColor};
+  transition: background-color 0.2s linear;
   width: 200px;
   height: 100px;
   border-radius: 20px;
@@ -42,7 +44,7 @@ const PriceViewItem = styled.div<IValue>`
   justify-content: space-evenly;
   align-items: center;
   border: 1px solid white;
-  box-shadow: 1px 1px 2px 0px gray;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
   span:last-child {
     color: ${(props) => (props.value && props.value > 0 ? "#20bf6b" : "#e84118")};
     font-size: 2rem;
@@ -64,7 +66,16 @@ interface IValue {
   value?: number;
 }
 
-function Price({ ath_date, ath_price, percent_change_1h, percent_change_6h, percent_change_12h, percent_change_24h, percent_change_7d, percent_change_30d }: PriceProps) {
+function Price({
+  ath_date,
+  ath_price,
+  percent_change_1h,
+  percent_change_6h,
+  percent_change_12h,
+  percent_change_24h,
+  percent_change_7d,
+  percent_change_30d,
+}: PriceProps) {
   return (
     <>
       <Overview>

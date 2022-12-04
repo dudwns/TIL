@@ -18,7 +18,7 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 15px;
 `;
 
@@ -29,13 +29,14 @@ const Coin = styled.li`
   color: ${(props) => props.theme.textColor};
   border: 1px solid white;
   border-radius: 15px;
-  margin-bottom: 10px;
-  box-shadow: 1px 1px 2px 0px gray;
+  margin-bottom: 15px;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+  transition: background-color 0.2s linear;
   a {
     display: flex;
     align-items: center;
-    padding: 20px;
-    transition: color 0.2s ease-in;
+    padding: 15px;
+    transition: color 0.2s linear;
   }
   &:hover {
     a {
@@ -47,6 +48,7 @@ const Coin = styled.li`
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  transition: color 0.2s linear;
 `;
 
 const Loader = styled.div`
@@ -63,15 +65,14 @@ const ThemeBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 20px;
-  border: 1px solid black;
-  background-color: white;
+  border: none;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+  background-color: ${(props) => props.theme.bgColor};
   position: absolute;
   right: 30px;
-  top: 40px;
-  &:hover {
-    background-color: black;
-  }
-  transition: background-color 0.3s linear;
+  top: 50px;
+
+  transition: background-color 0.2s linear;
 `;
 
 interface Icoin {
@@ -106,11 +107,17 @@ function Coins() {
     <Container>
       <Helmet>
         {/*여기에 작성하면 문서의 head로 감 */}
-        <title>cryptocurrency</title>
+        <title>암호화폐</title>
       </Helmet>
       <Header>
-        <Title>cryptocurrency</Title>
-        <ThemeBtn onClick={toggleDarkAtom}>{isDark ? "☀️" : "🌙"}</ThemeBtn>
+        <Title>암호화폐</Title>
+        <ThemeBtn onClick={toggleDarkAtom}>
+          {isDark ? (
+            <img src={process.env.PUBLIC_URL + "/images/sun.svg"} alt="Light mode" />
+          ) : (
+            <img src={process.env.PUBLIC_URL + "/images/moon.svg"} alt="Dark mode" />
+          )}
+        </ThemeBtn>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>

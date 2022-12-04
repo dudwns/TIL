@@ -22,13 +22,14 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
   margin-bottom: 15px;
 `;
 
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
+  transition: color 0.2s linear;
 `;
 
 const Loader = styled.div`
@@ -39,11 +40,12 @@ const Overview = styled.div`
   display: flex;
   justify-content: space-around;
   background-color: ${(props) => props.theme.cardBgColor};
+  transition: background-color 0.2s linear;
   padding: 10px 20px;
   border-radius: 10px;
   border: 1px solid white;
   margin: 20px 0;
-  box-shadow: 1px 1px 2px 0px gray;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
 
 const OverviewItem = styled.div`
@@ -66,7 +68,8 @@ const Description = styled.p`
   padding: 10px 20px;
   line-height: 25px;
   background-color: ${(props) => props.theme.cardBgColor};
-  box-shadow: 1px 1px 2px 0px gray;
+  transition: background-color 0.2s linear;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 `;
 
 const Tabs = styled.div`
@@ -83,11 +86,11 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: inherit;
   padding: 7px 0px;
   border-radius: 10px;
-
   color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
   a {
     border-bottom: 1px solid ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
     padding-bottom: 10px;
+    transition: color 0.2s linear;
   }
 `;
 
@@ -100,21 +103,20 @@ const HomeBtn = styled.button`
   color: #3867d6;
   position: absolute;
   left: 30px;
-  top: 30px;
+  top: 40px;
 `;
 
 const ThemeBtn = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 20px;
-  border: 1px solid black;
-  background-color: white;
+  border: none;
+  box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+  background-color: ${(props) => props.theme.bgColor};
   position: absolute;
   right: 30px;
-  top: 40px;
-  &:hover {
-    background-color: black;
-  }
+  top: 50px;
+
   transition: background-color 0.3s linear;
 `;
 
@@ -219,7 +221,13 @@ function Coin() {
       <Link to={`/`}>
         <HomeBtn>←</HomeBtn>
       </Link>
-      <ThemeBtn onClick={toggleDarkAtom}>{isDark ? "☀️" : "🌙"}</ThemeBtn>
+      <ThemeBtn onClick={toggleDarkAtom}>
+        {isDark ? (
+          <img src={process.env.PUBLIC_URL + "/images/sun.svg"} alt="Light mode" />
+        ) : (
+          <img src={process.env.PUBLIC_URL + "/images/moon.svg"} alt="Dark mode" />
+        )}
+      </ThemeBtn>
       {loading ? (
         <Loader>Loading...</Loader>
       ) : (

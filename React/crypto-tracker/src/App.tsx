@@ -62,6 +62,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Source Sans Pro', sans-serif;
     background-color:${(props) => props.theme.bgColor};
     color:${(props) => props.theme.textColor};
+    transition: color, background-color, 0.2s linear;
   }
   a {
     text-decoration:none;

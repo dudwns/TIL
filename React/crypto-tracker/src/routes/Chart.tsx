@@ -89,7 +89,12 @@ function Chart({ coinId }: ChartProps) {
                   data: data?.map((price) => {
                     return {
                       x: price.time_close,
-                      y: [parseFloat(price.open).toFixed(1), parseFloat(price.high).toFixed(1), parseFloat(price.low).toFixed(1), parseFloat(price.close).toFixed(1)],
+                      y: [
+                        parseFloat(price.open).toFixed(1),
+                        parseFloat(price.high).toFixed(1),
+                        parseFloat(price.low).toFixed(1),
+                        parseFloat(price.close).toFixed(1),
+                      ],
                     };
                   }),
                 },
