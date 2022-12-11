@@ -29,7 +29,7 @@ function App() {
       "linear-gradient(135deg, rgb(0, 238, 147), rgb(194, 238, 0))",
     ]
   );
-  const { scrollYProgress } = useScroll(); //스크롤 motion value를 받음, scroll은 픽셀 단위, scrollProgress는 0~1까지의 단위
+  const { scrollYProgress } = useScroll(); //스크롤 Motion Value를 받음, scroll은 픽셀 단위, scrollProgress는 0~1까지의 단위
   const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
   return (
     <Wrapper style={{ background: gradient }}>
