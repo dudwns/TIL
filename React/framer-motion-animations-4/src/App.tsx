@@ -55,5 +55,5 @@ function App() {
 }
 
 export default App;
-// AnimatePresence: 컴포넌트가 제거될 때 제거되는 컴포넌트에 애니메이션 효과를 줄 수 있다. 내부에는 꼭 조건문이 있어야 함
+// AnimatePresence: 컴포넌트가 제거될 때 제거되는 컴포넌트에 애니메이션 효과를 줄 수 있다. 내부에는 조건문이 있어야 함
 // exit는 컴포넌트가 사라질 때의 애니메이션
