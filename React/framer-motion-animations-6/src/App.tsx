@@ -46,4 +46,4 @@ function App() {
 export default App;
 
 //layout: 레이아웃이 변경 될 때 자동으로 애니메이션을 적용
-//layoutId: 서로 다른 컴포넌트를 같은 컴포넌트로 연결시켜 애니메이션을 적용
+//layoutId: 서로 다른 컴포넌트를 같은 컴포넌트로 연결시켜 애니메이션을 적용, string 값이어야 함
