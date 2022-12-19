@@ -70,6 +70,9 @@ a {
   text-decoration:none;
   color:inherit;
 }
+::-webkit-scrollbar {
+display: none; //x축 scrollbar를 없앰
+}
 `;
 
 const client = new QueryClient();
