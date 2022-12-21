@@ -9,7 +9,9 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />}></Route> {/*라우터 버전 5에서는 맨 밑으로 내려야 함 */}
+        <Route path={"/"} element={<Home />}>
+          <Route path={"/movies/:movieId"} element={<Home />} />
+        </Route>
         <Route path="/tv" element={<Tv />}></Route>
         <Route path="/search" element={<Search />}></Route>
       </Routes>
@@ -18,3 +20,5 @@ function App() {
 }
 
 export default App;
+
+// 라우터 버전 5에서는 Home을 맨 밑으로 내려야 함
