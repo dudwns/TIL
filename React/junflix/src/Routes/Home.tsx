@@ -13,7 +13,6 @@ const Wrapper = styled.div`
 
 const Loader = styled.div`
   height: 20vh;
-  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
