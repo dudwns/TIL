@@ -11,7 +11,7 @@ const Nav = styled(motion.nav)`
   position: fixed;
   width: 100%;
   top: 0;
-  height: 80px;
+  height: 70px;
   font-size: 14px;
   padding: 20px 60px;
   color: white;
@@ -66,7 +66,7 @@ const Circle = styled(motion.span)`
   width: 5px;
   height: 5px;
   border-radius: 5px;
-  bottom: -5px;
+  bottom: -10px;
   left: 0;
   right: 0;
   margin: 0 auto; //무언가를 중앙에 오고싶게 하려면 left:0, right:0 margin:0 auto 하면 됨
@@ -98,7 +98,8 @@ const logoVariants = {
 
 const navVariants = {
   top: {
-    backgroundColor: "rgba(0 ,0 ,0, 0)",
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0))",
   },
   scroll: {
     backgroundColor: "rgba(0 ,0 ,0, 1)",
