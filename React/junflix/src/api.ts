@@ -17,6 +17,14 @@ interface ITv {
   overview: string;
 }
 
+interface ISearch {
+  id: number;
+  backdrop_path: string;
+  poster_path: string;
+  name: string;
+  overview: string;
+}
+
 export interface IGetMoviesResult {
   dates: {
     maximum: string;
@@ -31,6 +39,13 @@ export interface IGetMoviesResult {
 export interface IGetTvsResult {
   page: number;
   results: ITv[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface IGetSearch {
+  page: number;
+  results: ISearch[];
   total_pages: number;
   total_results: number;
 }
@@ -57,4 +72,10 @@ export function getTvs() {
   return fetch(`${BASE_PATH}/tv/popular?api_key=${API_KEY}&language=ko`).then((response) =>
     response.json()
   );
+}
+
+export function getSearch(keyword: string) {
+  return fetch(
+    `${BASE_PATH}/search/multi?api_key=${API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
+  ).then((response) => response.json());
 }
