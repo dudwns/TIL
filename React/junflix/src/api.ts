@@ -7,22 +7,25 @@ interface IMovie {
   poster_path: string;
   title: string;
   overview: string;
+  name: string;
 }
 
 interface ITv {
   id: number;
   backdrop_path: string;
   poster_path: string;
-  name: string;
+  title: string;
   overview: string;
+  name: string;
 }
 
 interface ISearch {
   id: number;
   backdrop_path: string;
   poster_path: string;
-  name: string;
+  title: string;
   overview: string;
+  name: string;
 }
 
 export interface IGetMoviesResult {

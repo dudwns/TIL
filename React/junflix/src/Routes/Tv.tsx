@@ -8,6 +8,7 @@ import { useMatch, useNavigate } from "react-router-dom"; //라우터 버전 5�
 
 const Wrapper = styled.div`
   background-color: black;
+  padding-bottom: 150px;
 `;
 
 const Loader = styled.div`
@@ -94,7 +95,7 @@ const MoreInfo = styled.button`
 
 const PrevBtn = styled.button`
   position: absolute;
-  top: 130px;
+  top: 105px;
   left: 10px;
   width: 60px;
   height: 60px;
@@ -110,7 +111,7 @@ const PrevBtn = styled.button`
 
 const NextBtn = styled.button`
   position: absolute;
-  top: 130px;
+  top: 105px;
   right: 10px;
   width: 60px;
   height: 60px;
@@ -134,8 +135,9 @@ const Slider = styled.div`
   }
 `;
 
-const NowText = styled.h3`
-  font-size: 33px;
+const PopularText = styled.h3`
+  font-size: 25px;
+  font-weight: 600;
   margin-bottom: 15px;
   margin-left: 20px;
   color: ${(props) => props.theme.white.lighter};
@@ -150,11 +152,11 @@ const Row = styled(motion.div)`
 `;
 
 const Box = styled(motion.div)<{ boxphoto: string }>`
-  background-color: white;
+  background-color: ${(props) => props.theme.black.darker};
   background-image: url(${(props) => props.boxphoto});
   background-size: cover;
   background-position: center center;
-  height: 200px;
+  height: 180px;
   font-size: 66px;
   cursor: pointer;
   &:first-child {
@@ -163,6 +165,15 @@ const Box = styled(motion.div)<{ boxphoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
+`;
+
+const ErrorImg = styled.div`
+  font-size: 18px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding-left: 20px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const Info = styled(motion.div)`
@@ -322,7 +333,7 @@ function Tv() {
             </BtnList>
           </Banner>
           <Slider>
-            <NowText>Now Playing</NowText>
+            <PopularText>POPULAR TV SHOWS</PopularText>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               {/*onExitComplete: Exit가 끝났을 때 실행되는 함수
               initial={false}: 컴포넌트가 처음 시작될 때 hidden을 시작하지 않음 */}
@@ -348,8 +359,15 @@ function Tv() {
                       boxphoto={makeImagePath(tv.backdrop_path, "w500")}
                       onClick={() => onBoxClicked(tv.id)}
                     >
+                      {tv.backdrop_path ? null : (
+                        <ErrorImg>
+                          Sorry,
+                          <br /> No images are currently
+                          <br /> available.
+                        </ErrorImg>
+                      )}
                       <Info variants={infoVariants}>
-                        <h4>{tv.name}</h4>
+                        <h4>{tv.name ? tv.name : tv.title}</h4>
                       </Info>
                     </Box>
                   ))}
@@ -382,7 +400,7 @@ function Tv() {
                           )})`,
                         }}
                       />
-                      <BigTitle>{clickedTv.name}</BigTitle>
+                      <BigTitle>{clickedTv.name ? clickedTv.name : clickedTv.title}</BigTitle>
                       <BigOverview>{clickedTv.overview}</BigOverview>
                     </>
                   )}

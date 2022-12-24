@@ -3,11 +3,13 @@ import styled from "styled-components";
 import { getMovieDetail, getMovies, getUpcomingMovies, IGetMoviesResult } from "../api";
 import { makeImagePath } from "../utils";
 import { motion, AnimatePresence } from "framer-motion"; //AnimatePresence: render 되거나 destroy 될 때 효과를 줄 수 있음
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom"; //라우터 버전 5에서는 useNavigate -> useHistory
+import { url } from "inspector";
 
 const Wrapper = styled.div`
   background-color: black;
+  padding-bottom: 100px;
 `;
 
 const Loader = styled.div`
@@ -94,7 +96,7 @@ const MoreInfo = styled.button`
 
 const PrevBtn = styled.button`
   position: absolute;
-  top: 130px;
+  top: 105px;
   left: 10px;
   width: 60px;
   height: 60px;
@@ -110,7 +112,7 @@ const PrevBtn = styled.button`
 
 const NextBtn = styled.button`
   position: absolute;
-  top: 130px;
+  top: 105px;
   right: 10px;
   width: 60px;
   height: 60px;
@@ -124,6 +126,14 @@ const NextBtn = styled.button`
   transition: opacity 0.5s linear;
 `;
 
+const NowText = styled.h3`
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  margin-left: 20px;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
 const Slider = styled.div`
   position: relative;
   top: -100px;
@@ -134,40 +144,36 @@ const Slider = styled.div`
   }
 `;
 
-const UpComingSlider = styled.div`
-  &:hover {
-    ${PrevBtn}, ${NextBtn} {
-      opacity: 1;
-    }
-  }
-`;
-
-const UpComingMovie = styled.div`
-  position: relative;
-  top: 200px;
-`;
-
-const NowText = styled.h3`
-  font-size: 33px;
-  margin-bottom: 15px;
-  margin-left: 20px;
-  color: ${(props) => props.theme.white.lighter};
-`;
-
 const Row = styled(motion.div)`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
+
+  @media only screen and (max-width: 1500px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media only screen and (max-width: 1300px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media only screen and (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media only screen and (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const Box = styled(motion.div)<{ boxphoto: string }>`
-  background-color: white;
+  background-color: ${(props) => props.theme.black.darker};
   background-image: url(${(props) => props.boxphoto});
   background-size: cover;
   background-position: center center;
-  height: 200px;
+  height: 180px;
   font-size: 66px;
   cursor: pointer;
   &:first-child {
@@ -176,6 +182,15 @@ const Box = styled(motion.div)<{ boxphoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
+`;
+
+const ErrorImg = styled.div`
+  font-size: 18px;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding-left: 20px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const Info = styled(motion.div)`
@@ -202,8 +217,8 @@ const Overlay = styled(motion.div)`
 
 const BigMovie = styled(motion.div)`
   position: fixed;
-  width: 40vw;
-  height: 80vh;
+  width: 950px;
+  height: 700px;
   top: 0;
   left: 0;
   right: 0;
@@ -212,6 +227,12 @@ const BigMovie = styled(motion.div)`
   border-radius: 15px;
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
+  display: flex;
+  overflow: scroll;
+
+  @media only screen and (max-width: 1000px) {
+    width: 600px;
+  }
 `;
 
 const BigCover = styled.div`
@@ -221,19 +242,76 @@ const BigCover = styled.div`
   height: 400px;
 `;
 
+const BigPoster = styled.div`
+  width: 260px;
+  height: 370px;
+  background-size: cover;
+  position: absolute;
+  top: 280px;
+  left: 50px;
+
+  @media only screen and (max-width: 1000px) {
+    width: 160px;
+    height: 270px;
+    left: 20px;
+    top: 60px;
+  }
+`;
+
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
-  position: relative;
-  top: -80px;
+  height: 100%;
+  position: absolute;
+  top: 300px;
+  left: 330px;
+  font-size: 38px;
+  font-weight: 600;
+
+  @media only screen and (max-width: 1000px) {
+    top: 300px;
+    left: 200px;
+    font-size: 26px;
+  }
+`;
+
+const BigInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  position: absolute;
+  top: 420px;
+  left: 310px;
+
+  @media only screen and (max-width: 1000px) {
+    left: 5px;
+    top: 420px;
+  }
+`;
+
+const BigList = styled.ul`
+  display: flex;
+`;
+
+const BigItem = styled.li`
+  padding: 0 20px;
+  margin-bottom: 20px;
+  border-right: 1px solid gray;
+  color: ${(props) => props.theme.white.lighter};
+`;
+
+const BigIntro = styled.div`
+  margin: 0 20px;
+  margin-bottom: 10px;
+  border-left: 3px solid white;
+  font-size: 14px;
+  padding-left: 10px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const BigOverview = styled.p`
-  padding: 20px;
+  padding: 0 20px;
   color: ${(props) => props.theme.white.lighter};
-  position: relative;
-  top: -80px;
+  font-size: 14px;
 `;
 
 const rowVariants = {
@@ -268,8 +346,20 @@ interface ICustomProps {
   back: boolean;
 }
 
-const API_KEY = "276d77cca2d9b10d8c1db2f9c8ca6f26";
-const BASE_PATH = "https://api.themoviedb.org/3";
+interface IDetailProps {
+  id: number;
+  name: string;
+}
+
+interface IDetail {
+  tagline: string;
+  runtime: number;
+  vote_average: number;
+  genres: IDetailProps[];
+  poster_path: string;
+  release_date: string;
+}
+
 const offset = 6;
 
 function Home() {
@@ -277,10 +367,11 @@ function Home() {
   const bigMovieMatch = useMatch("/movies/:movieId");
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
 
-  const { data: upcomingData, isLoading: upComingLoading } = useQuery<IGetMoviesResult>(
+  /* const { data: upcomingData, isLoading: upComingLoading } = useQuery<IGetMoviesResult>(
     ["movies", "upcoming"],
     getUpcomingMovies
-  );
+  ); */
+
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [back, setBack] = useState(false);
@@ -307,10 +398,6 @@ function Home() {
   const toggleLeaving = () => setLeaving((prev) => !prev);
   const onBoxClicked = (movieId: number | undefined) => {
     navigate(`/movies/${movieId}`); //url을 바꿔줌
-    const detail = fetch(`${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}&language=ko`).then(
-      (response) => response.json()
-    );
-    console.log(detail);
   };
   const onOverlayClick = () => {
     navigate(-1);
@@ -318,6 +405,17 @@ function Home() {
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find((movie) => movie.id + "" === bigMovieMatch.params.movieId); //선택된 영화의 API를 URL의 movieId로 찾음
+
+  // fetch(
+  //   `${BASE_PATH}/movie/${bigMovieMatch?.params.movieId}?api_key=${API_KEY}&language=ko`
+  // ).then((response) => response.json());
+
+  const { data: detail, isLoading: detailLoading } = useQuery<IDetail>(
+    ["detail", bigMovieMatch?.params.movieId],
+    () => getMovieDetail(bigMovieMatch?.params.movieId)
+  );
+
+  console.log(detail);
 
   return (
     <Wrapper>
@@ -347,7 +445,7 @@ function Home() {
             </BtnList>
           </Banner>
           <Slider>
-            <NowText>Now Playing</NowText>
+            <NowText>NOW PLATING</NowText>
             <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               {/*onExitComplete: Exit가 끝났을 때 실행되는 함수
               initial={false}: 컴포넌트가 처음 시작될 때 hidden을 시작하지 않음 */}
@@ -373,8 +471,15 @@ function Home() {
                       boxphoto={makeImagePath(movie.backdrop_path, "w500")}
                       onClick={() => onBoxClicked(movie.id)}
                     >
+                      {movie.backdrop_path ? null : (
+                        <ErrorImg>
+                          Sorry,
+                          <br /> No images are currently
+                          <br /> available.
+                        </ErrorImg>
+                      )}
                       <Info variants={infoVariants}>
-                        <h4>{movie.title}</h4>
+                        <h4>{movie.title ? movie.title : movie.name}</h4>
                       </Info>
                     </Box>
                   ))}
@@ -406,9 +511,29 @@ function Home() {
                             "w500"
                           )})`,
                         }}
-                      />
-                      <BigTitle>{clickedMovie.title}</BigTitle>
-                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                      >
+                        <BigTitle>
+                          {clickedMovie.title ? clickedMovie.title : clickedMovie.name}
+                        </BigTitle>
+                      </BigCover>
+                      <BigPoster
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            detail?.poster_path,
+                            "w500"
+                          )})`,
+                        }}
+                      ></BigPoster>
+                      <BigInfo>
+                        <BigList>
+                          <BigItem>{detail?.release_date}</BigItem>
+                          <BigItem>{detail?.runtime}분</BigItem>
+                          <BigItem>{detail?.genres.map((data) => `${data.name}, `)}</BigItem>
+                          <BigItem>평점: {detail?.vote_average}</BigItem>
+                        </BigList>
+                        <BigIntro>{detail?.tagline}</BigIntro>
+                        <BigOverview>{clickedMovie.overview}</BigOverview>
+                      </BigInfo>
                     </>
                   )}
                 </BigMovie>
