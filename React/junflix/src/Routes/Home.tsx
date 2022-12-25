@@ -144,7 +144,7 @@ const Slider = styled.div`
   }
 `;
 
-const Row = styled(motion.div)`
+const Row = styled(motion.div)<{ offset: number }>`
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
@@ -297,6 +297,9 @@ const BigItem = styled.li`
   margin-bottom: 20px;
   border-right: 1px solid gray;
   color: ${(props) => props.theme.white.lighter};
+  &:last-child {
+    border: none;
+  }
 `;
 
 const BigIntro = styled.div`
@@ -415,8 +418,6 @@ function Home() {
     () => getMovieDetail(bigMovieMatch?.params.movieId)
   );
 
-  console.log(detail);
-
   return (
     <Wrapper>
       {isLoading ? (
@@ -450,6 +451,7 @@ function Home() {
               {/*onExitComplete: Exit가 끝났을 때 실행되는 함수
               initial={false}: 컴포넌트가 처음 시작될 때 hidden을 시작하지 않음 */}
               <Row
+                offset={offset}
                 custom={{ back }}
                 variants={rowVariants}
                 initial="hidden"
@@ -526,13 +528,19 @@ function Home() {
                       ></BigPoster>
                       <BigInfo>
                         <BigList>
-                          <BigItem>{detail?.release_date}</BigItem>
-                          <BigItem>{detail?.runtime}분</BigItem>
+                          <BigItem>
+                            {detail?.release_date ? detail.release_date : "정보 없음"}
+                          </BigItem>
+                          <BigItem>{detail?.runtime ? detail.runtime : "정보 없음"}분</BigItem>
                           <BigItem>{detail?.genres.map((data) => `${data.name}, `)}</BigItem>
-                          <BigItem>평점: {detail?.vote_average}</BigItem>
+                          <BigItem>
+                            평점: {detail?.vote_average ? detail.vote_average : "정보 없음"}
+                          </BigItem>
                         </BigList>
-                        <BigIntro>{detail?.tagline}</BigIntro>
-                        <BigOverview>{clickedMovie.overview}</BigOverview>
+                        <BigIntro>{detail?.tagline ? detail.tagline : "정보 없음"}</BigIntro>
+                        <BigOverview>
+                          {clickedMovie.overview ? clickedMovie.overview : "정보 없음"}
+                        </BigOverview>
                       </BigInfo>
                     </>
                   )}
