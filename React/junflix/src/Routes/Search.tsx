@@ -69,8 +69,8 @@ const Overlay = styled(motion.div)`
 
 const BigMovie = styled(motion.div)`
   position: fixed;
-  width: 40vw;
-  height: 80vh;
+  width: 950px;
+  height: 700px;
   top: 0;
   left: 0;
   right: 0;
@@ -79,6 +79,12 @@ const BigMovie = styled(motion.div)`
   border-radius: 15px;
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
+  display: flex;
+  overflow: scroll;
+
+  @media only screen and (max-width: 1000px) {
+    width: 600px;
+  }
 `;
 
 const BigCover = styled.div`
@@ -88,19 +94,79 @@ const BigCover = styled.div`
   height: 400px;
 `;
 
+const BigPoster = styled.div`
+  width: 260px;
+  height: 370px;
+  background-size: cover;
+  position: absolute;
+  top: 280px;
+  left: 50px;
+
+  @media only screen and (max-width: 1000px) {
+    width: 160px;
+    height: 270px;
+    left: 20px;
+    top: 60px;
+  }
+`;
+
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
-  position: relative;
-  top: -80px;
+  height: 100%;
+  position: absolute;
+  top: 300px;
+  left: 330px;
+  font-size: 38px;
+  font-weight: 600;
+
+  @media only screen and (max-width: 1000px) {
+    top: 300px;
+    left: 200px;
+    font-size: 26px;
+  }
+`;
+
+const BigInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  position: absolute;
+  top: 420px;
+  left: 310px;
+
+  @media only screen and (max-width: 1000px) {
+    left: 5px;
+    top: 420px;
+  }
+`;
+
+const BigList = styled.ul`
+  display: flex;
+`;
+
+const BigItem = styled.li`
+  padding: 0 20px;
+  margin-bottom: 20px;
+  border-right: 1px solid gray;
+  color: ${(props) => props.theme.white.lighter};
+  &:last-child {
+    border: none;
+  }
+`;
+
+const BigIntro = styled.div`
+  margin: 0 20px;
+  margin-bottom: 10px;
+  border-left: 3px solid white;
+  font-size: 14px;
+  padding-left: 10px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const BigOverview = styled.p`
-  padding: 20px;
+  padding: 0 20px;
   color: ${(props) => props.theme.white.lighter};
-  position: relative;
-  top: -80px;
+  font-size: 14px;
 `;
 
 const boxVariants = {
@@ -128,6 +194,7 @@ function Search() {
   const { data, isLoading, refetch } = useQuery<IGetSearch>(["search", "resultSearch"], () =>
     getSearch(keyword)
   );
+  console.log(data);
 
   const clickedMovie =
     bigMovieMatch?.params.dataId &&
@@ -189,9 +256,39 @@ function Search() {
                         "w500"
                       )})`,
                     }}
-                  />
-                  <BigTitle>{clickedMovie.title ? clickedMovie.title : clickedMovie.name}</BigTitle>
-                  <BigOverview>{clickedMovie.overview}</BigOverview>
+                  >
+                    <BigTitle>
+                      {clickedMovie.title ? clickedMovie.title : clickedMovie.name}
+                    </BigTitle>
+                  </BigCover>
+                  <BigPoster
+                    style={{
+                      backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                        clickedMovie.poster_path,
+                        "w500"
+                      )})`,
+                    }}
+                  ></BigPoster>
+                  <BigInfo>
+                    <BigList>
+                      <BigItem>
+                        유형:
+                        {clickedMovie?.media_type
+                          ? clickedMovie?.media_type.toUpperCase()
+                          : "정보 없음"}
+                      </BigItem>
+                      <BigItem>
+                        {clickedMovie.release_date ? clickedMovie.release_date : "정보 없음"}
+                      </BigItem>
+                      <BigItem>
+                        평점: {clickedMovie.vote_average ? clickedMovie.vote_average : "정보 없음"}
+                      </BigItem>
+                    </BigList>
+
+                    <BigOverview>
+                      {clickedMovie.overview ? clickedMovie.overview : "정보 없음"}
+                    </BigOverview>
+                  </BigInfo>
                 </>
               )}
             </BigMovie>

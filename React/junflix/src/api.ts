@@ -26,6 +26,9 @@ interface ISearch {
   title: string;
   overview: string;
   name: string;
+  vote_average: number;
+  media_type: string;
+  release_date: string;
 }
 
 export interface IGetMoviesResult {
@@ -77,8 +80,14 @@ export function getTvs() {
   );
 }
 
+export function getTvDetail(tvId: string | undefined) {
+  return fetch(`${BASE_PATH}/tv/${tvId}?api_key=${API_KEY}&language=ko`).then((response) =>
+    response.json()
+  );
+}
+
 export function getSearch(keyword: string) {
   return fetch(
-    `${BASE_PATH}/search/multi?api_key=${API_KEY}&language=en-US&query=${keyword}&page=1&include_adult=false`
+    `${BASE_PATH}/search/multi?api_key=${API_KEY}&language=ko&query=${keyword}&page=1&include_adult=false`
   ).then((response) => response.json());
 }
