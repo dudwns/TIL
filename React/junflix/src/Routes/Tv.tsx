@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getTvs, IGetTvsResult } from "../api";
+import { getTvDetail, getTvs, IGetTvsResult } from "../api";
 import { makeImagePath } from "../utils";
 import { motion, AnimatePresence } from "framer-motion"; //AnimatePresence: render 되거나 destroy 될 때 효과를 줄 수 있음
 import { useState } from "react";
@@ -149,6 +149,22 @@ const Row = styled(motion.div)`
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
+
+  @media only screen and (max-width: 1500px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media only screen and (max-width: 1300px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media only screen and (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media only screen and (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const Box = styled(motion.div)<{ boxphoto: string }>`
@@ -200,8 +216,8 @@ const Overlay = styled(motion.div)`
 
 const BigMovie = styled(motion.div)`
   position: fixed;
-  width: 40vw;
-  height: 80vh;
+  width: 950px;
+  height: 700px;
   top: 0;
   left: 0;
   right: 0;
@@ -210,6 +226,12 @@ const BigMovie = styled(motion.div)`
   border-radius: 15px;
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
+  display: flex;
+  overflow: scroll;
+
+  @media only screen and (max-width: 1000px) {
+    width: 600px;
+  }
 `;
 
 const BigCover = styled.div`
@@ -219,19 +241,80 @@ const BigCover = styled.div`
   height: 400px;
 `;
 
+const BigPoster = styled.div`
+  width: 260px;
+  height: 370px;
+  background-size: cover;
+  position: absolute;
+  top: 280px;
+  left: 50px;
+
+  @media only screen and (max-width: 1000px) {
+    width: 160px;
+    height: 270px;
+    left: 20px;
+    top: 60px;
+  }
+`;
+
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
-  position: relative;
-  top: -80px;
+  height: 100%;
+  position: absolute;
+  top: 300px;
+  left: 330px;
+  font-size: 38px;
+  font-weight: 600;
+
+  @media only screen and (max-width: 1000px) {
+    top: 300px;
+    left: 200px;
+    font-size: 26px;
+  }
+`;
+
+const BigInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  position: absolute;
+  top: 420px;
+  left: 310px;
+
+  @media only screen and (max-width: 1000px) {
+    left: 5px;
+    top: 420px;
+  }
+`;
+
+const BigList = styled.ul`
+  display: flex;
+`;
+
+const BigItem = styled.li`
+  padding: 0 20px;
+  margin-bottom: 20px;
+  border-right: 1px solid gray;
+  color: ${(props) => props.theme.white.lighter};
+
+  &:last-child {
+    border: none;
+  }
+`;
+
+const BigIntro = styled.div`
+  margin: 0 20px;
+  margin-bottom: 10px;
+  border-left: 3px solid white;
+  font-size: 14px;
+  padding-left: 10px;
+  color: ${(props) => props.theme.white.lighter};
 `;
 
 const BigOverview = styled.p`
-  padding: 20px;
+  padding: 0 20px;
   color: ${(props) => props.theme.white.lighter};
-  position: relative;
-  top: -80px;
+  font-size: 14px;
 `;
 
 const rowVariants = {
@@ -264,6 +347,19 @@ const infoVariants = {
 
 interface ICustomProps {
   back: boolean;
+}
+
+interface IDetailProps {
+  id: number;
+  name: string;
+}
+
+interface IDetail {
+  vote_average: number;
+  genres: IDetailProps[];
+  poster_path: string;
+  first_air_date: string;
+  languages: string;
 }
 
 const offset = 6;
@@ -304,6 +400,11 @@ function Tv() {
   };
   const clickedTv =
     bigTvMatch?.params.tvId && data?.results.find((tv) => tv.id + "" === bigTvMatch.params.tvId); //선택된 영화의 API를 URL의 movieId로 찾음
+
+  const { data: detail, isLoading: detailLoading } = useQuery<IDetail>(
+    ["detail", bigTvMatch?.params.tvId],
+    () => getTvDetail(bigTvMatch?.params.tvId)
+  );
 
   return (
     <Wrapper>
@@ -399,9 +500,34 @@ function Tv() {
                             "w500"
                           )})`,
                         }}
-                      />
-                      <BigTitle>{clickedTv.name ? clickedTv.name : clickedTv.title}</BigTitle>
-                      <BigOverview>{clickedTv.overview}</BigOverview>
+                      >
+                        <BigTitle>{clickedTv.title ? clickedTv.title : clickedTv.name}</BigTitle>
+                      </BigCover>
+                      <BigPoster
+                        style={{
+                          backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                            detail?.poster_path,
+                            "w500"
+                          )})`,
+                        }}
+                      ></BigPoster>
+                      <BigInfo>
+                        <BigList>
+                          <BigItem>
+                            {detail?.first_air_date ? detail?.first_air_date : "정보 없음"}
+                          </BigItem>
+                          <BigItem>{detail?.genres.map((data) => `${data.name}, `)}</BigItem>
+                          <BigItem>
+                            평점: {detail?.vote_average ? detail.vote_average : "정보 없음"}
+                          </BigItem>
+                          <BigItem>
+                            언어: {detail?.languages ? detail.languages : "정보 없음"}
+                          </BigItem>
+                        </BigList>
+                        <BigOverview>
+                          {clickedTv.overview ? clickedTv.overview : "정보 없음"}
+                        </BigOverview>
+                      </BigInfo>
                     </>
                   )}
                 </BigMovie>
