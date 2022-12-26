@@ -363,18 +363,11 @@ interface IDetail {
   release_date: string;
 }
 
-const offset = 6;
-
 function Home() {
+  const [offset, setOffset] = useState(6);
   const navigate = useNavigate(); //url을 이동할 수 있음
   const bigMovieMatch = useMatch("/movies/:movieId");
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
-
-  /* const { data: upcomingData, isLoading: upComingLoading } = useQuery<IGetMoviesResult>(
-    ["movies", "upcoming"],
-    getUpcomingMovies
-  ); */
-
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [back, setBack] = useState(false);
@@ -408,15 +401,50 @@ function Home() {
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find((movie) => movie.id + "" === bigMovieMatch.params.movieId); //선택된 영화의 API를 URL의 movieId로 찾음
-
-  // fetch(
-  //   `${BASE_PATH}/movie/${bigMovieMatch?.params.movieId}?api_key=${API_KEY}&language=ko`
-  // ).then((response) => response.json());
-
   const { data: detail, isLoading: detailLoading } = useQuery<IDetail>(
     ["detail", bigMovieMatch?.params.movieId],
     () => getMovieDetail(bigMovieMatch?.params.movieId)
   );
+
+  useEffect(() => {
+    if (window.innerWidth >= 1500) {
+      setOffset(6);
+    }
+    if (window.innerWidth < 1500) {
+      setOffset(5);
+    }
+    if (window.innerWidth < 1300) {
+      setOffset(4);
+    }
+    if (window.innerWidth < 1100) {
+      setOffset(3);
+    }
+    if (window.innerWidth < 700) {
+      setOffset(2);
+    }
+    const windowResize = () => {
+      console.log(window.innerWidth);
+      if (window.innerWidth >= 1500) {
+        setOffset(6);
+      }
+      if (window.innerWidth < 1500) {
+        setOffset(5);
+      }
+      if (window.innerWidth < 1300) {
+        setOffset(4);
+      }
+      if (window.innerWidth < 1100) {
+        setOffset(3);
+      }
+      if (window.innerWidth < 700) {
+        setOffset(2);
+      }
+    };
+    window.addEventListener(`resize`, windowResize);
+    return () => {
+      window.removeEventListener(`resize`, windowResize);
+    };
+  }, []);
 
   return (
     <Wrapper>

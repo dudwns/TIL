@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { getTvDetail, getTvs, IGetTvsResult } from "../api";
 import { makeImagePath } from "../utils";
 import { motion, AnimatePresence } from "framer-motion"; //AnimatePresence: render 되거나 destroy 될 때 효과를 줄 수 있음
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom"; //라우터 버전 5에서는 useNavigate -> useHistory
 
 const Wrapper = styled.div`
@@ -362,9 +362,8 @@ interface IDetail {
   languages: string;
 }
 
-const offset = 6;
-
 function Tv() {
+  const [offset, setOffset] = useState(6);
   const navigate = useNavigate(); //url을 이동할 수 있음
   const bigTvMatch = useMatch("/tv/:tvId");
   const { data, isLoading } = useQuery<IGetTvsResult>(["tv", "popularTv"], getTvs);
@@ -405,6 +404,46 @@ function Tv() {
     ["detail", bigTvMatch?.params.tvId],
     () => getTvDetail(bigTvMatch?.params.tvId)
   );
+
+  useEffect(() => {
+    if (window.innerWidth >= 1500) {
+      setOffset(6);
+    }
+    if (window.innerWidth < 1500) {
+      setOffset(5);
+    }
+    if (window.innerWidth < 1300) {
+      setOffset(4);
+    }
+    if (window.innerWidth < 1100) {
+      setOffset(3);
+    }
+    if (window.innerWidth < 700) {
+      setOffset(2);
+    }
+    const windowResize = () => {
+      console.log(window.innerWidth);
+      if (window.innerWidth >= 1500) {
+        setOffset(6);
+      }
+      if (window.innerWidth < 1500) {
+        setOffset(5);
+      }
+      if (window.innerWidth < 1300) {
+        setOffset(4);
+      }
+      if (window.innerWidth < 1100) {
+        setOffset(3);
+      }
+      if (window.innerWidth < 700) {
+        setOffset(2);
+      }
+    };
+    window.addEventListener(`resize`, windowResize);
+    return () => {
+      window.removeEventListener(`resize`, windowResize);
+    };
+  }, []);
 
   return (
     <Wrapper>
