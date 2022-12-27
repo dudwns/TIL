@@ -15,6 +15,10 @@ const Nav = styled(motion.nav)`
   font-size: 14px;
   padding: 20px 60px;
   color: white;
+  @media only screen and (max-width: 700px) {
+    font-size: 12px;
+    padding: 20px 20px;
+  }
 `;
 
 const Col = styled.div`
@@ -30,6 +34,11 @@ const Logo = styled(motion.svg)`
   path {
     stroke-width: 6px;
     stroke: white;
+  }
+
+  @media only screen and (max-width: 700px) {
+    margin-right: 20px;
+    width: 80px;
   }
 `;
 
