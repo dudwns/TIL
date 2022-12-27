@@ -614,7 +614,8 @@ function Home() {
                           <BigItem>{detail?.runtime ? detail.runtime : "정보 없음"}분</BigItem>
                           <BigItem>{detail?.genres.map((data) => `${data.name}, `)}</BigItem>
                           <BigItem>
-                            평점: {detail?.vote_average ? detail.vote_average : "정보 없음"}
+                            평점:{" "}
+                            {detail?.vote_average ? detail.vote_average.toFixed(1) : "정보 없음"}
                           </BigItem>
                         </BigList>
                         <BigIntro>{detail?.tagline ? detail.tagline : "정보 없음"}</BigIntro>

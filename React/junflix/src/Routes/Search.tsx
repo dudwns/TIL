@@ -16,8 +16,24 @@ const Content = styled.div`
   grid-template-columns: repeat(6, 1fr);
   width: 100%;
   gap: 7px;
-  margin-top: 5%;
+  margin-top: 100px;
   padding: 60px;
+
+  @media only screen and (max-width: 1500px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media only screen and (max-width: 1300px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media only screen and (max-width: 1100px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media only screen and (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
 `;
 
 const ResultText = styled.div`
@@ -85,6 +101,12 @@ const BigMovie = styled(motion.div)`
   @media only screen and (max-width: 1000px) {
     width: 600px;
   }
+
+  @media only screen and (max-width: 700px) {
+    font-size: 15px;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const BigCover = styled.div`
@@ -108,11 +130,19 @@ const BigPoster = styled.div`
     left: 20px;
     top: 60px;
   }
+
+  @media only screen and (max-width: 700px) {
+    left: 0;
+    right: 0;
+    top: 160px;
+    margin: 0 auto;
+    width: 220px;
+    height: 320px;
+  }
 `;
 
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  height: 100%;
   position: absolute;
   top: 300px;
   left: 330px;
@@ -124,24 +154,38 @@ const BigTitle = styled.h3`
     left: 200px;
     font-size: 26px;
   }
+
+  @media only screen and (max-width: 700px) {
+    left: 0;
+    top: 495px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: 400;
+  }
 `;
 
 const BigInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 600px;
   position: absolute;
   top: 420px;
   left: 310px;
 
   @media only screen and (max-width: 1000px) {
-    left: 5px;
+    left: 0;
     top: 420px;
+  }
+  @media only screen and (max-width: 700px) {
+    left: 0;
+    top: 550px;
+    width: 100%;
   }
 `;
 
 const BigList = styled.ul`
   display: flex;
+  justify-content: center;
 `;
 
 const BigItem = styled.li`
@@ -149,24 +193,28 @@ const BigItem = styled.li`
   margin-bottom: 20px;
   border-right: 1px solid gray;
   color: ${(props) => props.theme.white.lighter};
+
+  @media only screen and (max-width: 700px) {
+    font-size: 13px;
+  }
+
   &:last-child {
     border: none;
   }
-`;
-
-const BigIntro = styled.div`
-  margin: 0 20px;
-  margin-bottom: 10px;
-  border-left: 3px solid white;
-  font-size: 14px;
-  padding-left: 10px;
-  color: ${(props) => props.theme.white.lighter};
 `;
 
 const BigOverview = styled.p`
   padding: 0 20px;
   color: ${(props) => props.theme.white.lighter};
   font-size: 14px;
+
+  @media only screen and (max-width: 700px) {
+    font-size: 12px;
+    width: 100%;
+    padding: 0 50px;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const boxVariants = {
@@ -272,7 +320,7 @@ function Search() {
                   <BigInfo>
                     <BigList>
                       <BigItem>
-                        유형:
+                        유형:{" "}
                         {clickedMovie?.media_type
                           ? clickedMovie?.media_type.toUpperCase()
                           : "정보 없음"}
@@ -281,7 +329,10 @@ function Search() {
                         {clickedMovie.release_date ? clickedMovie.release_date : "정보 없음"}
                       </BigItem>
                       <BigItem>
-                        평점: {clickedMovie.vote_average ? clickedMovie.vote_average : "정보 없음"}
+                        평점:{" "}
+                        {clickedMovie.vote_average
+                          ? clickedMovie.vote_average.toFixed(1)
+                          : "정보 없음"}
                       </BigItem>
                     </BigList>
 

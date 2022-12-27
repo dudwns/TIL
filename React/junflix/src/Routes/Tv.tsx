@@ -593,7 +593,8 @@ function Tv() {
                           </BigItem>
                           <BigItem>{detail?.genres.map((data) => `${data.name}, `)}</BigItem>
                           <BigItem>
-                            평점: {detail?.vote_average ? detail.vote_average : "정보 없음"}
+                            평점:{" "}
+                            {detail?.vote_average ? detail.vote_average.toFixed(1) : "정보 없음"}
                           </BigItem>
                           <BigItem>
                             언어: {detail?.languages ? detail.languages : "정보 없음"}
