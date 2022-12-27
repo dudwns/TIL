@@ -232,7 +232,6 @@ const BigMovie = styled(motion.div)`
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
   display: flex;
-  overflow: scroll;
 
   @media only screen and (max-width: 1000px) {
     width: 600px;
@@ -242,6 +241,8 @@ const BigMovie = styled(motion.div)`
     font-size: 15px;
     width: 100%;
     height: 100%;
+    margin-top: 70px;
+    border-radius: 0;
   }
 `;
 
@@ -280,8 +281,8 @@ const BigPoster = styled.div`
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
   position: absolute;
-  top: 300px;
-  left: 330px;
+  top: 330px;
+  left: 325px;
   font-size: 38px;
   font-weight: 600;
 
@@ -321,7 +322,10 @@ const BigInfo = styled.div`
 
 const BigList = styled.ul`
   display: flex;
-  justify-content: center;
+
+  @media only screen and (max-width: 700px) {
+    justify-content: center;
+  }
 `;
 
 const BigItem = styled.li`
@@ -350,6 +354,30 @@ const BigOverview = styled.p`
     padding: 0 50px;
     display: flex;
     justify-content: center;
+  }
+`;
+
+const CloseBtn = styled.svg`
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  top: 20px;
+  left: 445px;
+  fill: ${(props) => props.theme.white.lighter};
+  cursor: pointer;
+  transition: fill 0.3s linear;
+  &:hover {
+    fill: ${(props) => props.theme.black.veryDark};
+  }
+
+  @media only screen and (max-width: 1000px) {
+    top: 20px;
+    left: 270px;
+  }
+
+  @media only screen and (max-width: 700px) {
+    top: 20px;
+    left: 45%;
   }
 `;
 
@@ -568,6 +596,13 @@ function Tv() {
                 <BigMovie layoutId={bigTvMatch.params.tvId}>
                   {clickedTv && (
                     <>
+                      <CloseBtn
+                        onClick={onOverlayClick}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 384 512"
+                      >
+                        <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+                      </CloseBtn>
                       <BigCover
                         style={{
                           backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
