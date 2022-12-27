@@ -38,8 +38,13 @@ const Title = styled.h2`
 
 const Overview = styled.p`
   font-size: 20px;
-  width: 30%;
+  width: 500px;
   font-weight: 800;
+
+  @media only screen and (max-width: 700px) {
+    font-size: 15px;
+    width: 400px;
+  }
 `;
 
 const BtnList = styled.div`
@@ -232,6 +237,12 @@ const BigMovie = styled(motion.div)`
   @media only screen and (max-width: 1000px) {
     width: 600px;
   }
+
+  @media only screen and (max-width: 700px) {
+    font-size: 15px;
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const BigCover = styled.div`
@@ -255,11 +266,19 @@ const BigPoster = styled.div`
     left: 20px;
     top: 60px;
   }
+
+  @media only screen and (max-width: 700px) {
+    left: 0;
+    right: 0;
+    top: 160px;
+    margin: 0 auto;
+    width: 220px;
+    height: 320px;
+  }
 `;
 
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
-  height: 100%;
   position: absolute;
   top: 300px;
   left: 330px;
@@ -271,24 +290,38 @@ const BigTitle = styled.h3`
     left: 200px;
     font-size: 26px;
   }
+
+  @media only screen and (max-width: 700px) {
+    left: 0;
+    top: 495px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: 400;
+  }
 `;
 
 const BigInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 600px;
   position: absolute;
   top: 420px;
   left: 310px;
 
   @media only screen and (max-width: 1000px) {
-    left: 5px;
+    left: 0;
     top: 420px;
+  }
+  @media only screen and (max-width: 700px) {
+    left: 0;
+    top: 550px;
+    width: 100%;
   }
 `;
 
 const BigList = styled.ul`
   display: flex;
+  justify-content: center;
 `;
 
 const BigItem = styled.li`
@@ -297,24 +330,27 @@ const BigItem = styled.li`
   border-right: 1px solid gray;
   color: ${(props) => props.theme.white.lighter};
 
+  @media only screen and (max-width: 700px) {
+    font-size: 13px;
+  }
+
   &:last-child {
     border: none;
   }
-`;
-
-const BigIntro = styled.div`
-  margin: 0 20px;
-  margin-bottom: 10px;
-  border-left: 3px solid white;
-  font-size: 14px;
-  padding-left: 10px;
-  color: ${(props) => props.theme.white.lighter};
 `;
 
 const BigOverview = styled.p`
   padding: 0 20px;
   color: ${(props) => props.theme.white.lighter};
   font-size: 14px;
+
+  @media only screen and (max-width: 700px) {
+    font-size: 12px;
+    width: 100%;
+    padding: 0 50px;
+    display: flex;
+    justify-content: center;
+  }
 `;
 
 const rowVariants = {
