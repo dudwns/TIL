@@ -5,8 +5,6 @@ import { makeImagePath } from "../utils";
 import { motion, AnimatePresence } from "framer-motion"; //AnimatePresence: render 되거나 destroy 될 때 효과를 줄 수 있음
 import { useEffect, useState } from "react";
 import { useMatch, useNavigate } from "react-router-dom"; //라우터 버전 5에서는 useNavigate -> useHistory
-import { url } from "inspector";
-
 const Wrapper = styled.div`
   background-color: black;
   padding-bottom: 100px;
@@ -137,7 +135,18 @@ const NowText = styled.h3`
   margin-bottom: 15px;
   margin-left: 20px;
   color: ${(props) => props.theme.white.lighter};
+  position: absolute;
 `;
+
+// const UpcomingText = styled.h3`
+//   font-size: 25px;
+//   font-weight: 600;
+//   margin-bottom: 15px;
+//   margin-left: 20px;
+//   color: ${(props) => props.theme.white.lighter};
+//   position: absolute;
+//   top: 280px;
+// `;
 
 const Slider = styled.div`
   position: relative;
@@ -155,7 +164,7 @@ const Row = styled(motion.div)<{ offset: number }>`
   grid-template-columns: repeat(6, 1fr);
   position: absolute;
   width: 100%;
-
+  top: 50px;
   @media only screen and (max-width: 1500px) {
     grid-template-columns: repeat(5, 1fr);
   }
@@ -172,6 +181,30 @@ const Row = styled(motion.div)<{ offset: number }>`
     grid-template-columns: repeat(2, 1fr);
   }
 `;
+
+// const UpcomingRow = styled(motion.div)<{ offset: number }>`
+//   display: grid;
+//   gap: 5px;
+//   grid-template-columns: repeat(6, 1fr);
+//   position: absolute;
+//   width: 100%;
+//   top: 350px;
+//   @media only screen and (max-width: 1500px) {
+//     grid-template-columns: repeat(5, 1fr);
+//   }
+
+//   @media only screen and (max-width: 1300px) {
+//     grid-template-columns: repeat(4, 1fr);
+//   }
+
+//   @media only screen and (max-width: 1100px) {
+//     grid-template-columns: repeat(3, 1fr);
+//   }
+
+//   @media only screen and (max-width: 700px) {
+//     grid-template-columns: repeat(2, 1fr);
+//   }
+// `;
 
 const Box = styled(motion.div)<{ boxphoto: string }>`
   background-color: ${(props) => props.theme.black.darker};
@@ -447,8 +480,15 @@ function Home() {
   const [offset, setOffset] = useState(6);
   const navigate = useNavigate(); //url을 이동할 수 있음
   const bigMovieMatch = useMatch("/movies/:movieId");
+  const upcomingMatch = useMatch("movies/:movieId");
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"], getMovies);
+  const { data: upcomingData, isLoading: upcomingLoading } = useQuery<IGetMoviesResult>(
+    ["movies", "upcoming"],
+    getUpcomingMovies
+  );
+  console.log(upcomingData);
   const [index, setIndex] = useState(0);
+  const [upIndex, setUpIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [back, setBack] = useState(false);
   const decreaseIndex = () => {
@@ -475,12 +515,20 @@ function Home() {
   const onBoxClicked = (movieId: number | undefined) => {
     navigate(`/movies/${movieId}`); //url을 바꿔줌
   };
+  const onBoxUpcomingClicked = (movieId: number | undefined) => {
+    navigate(`/movies/upcoming/${movieId}`); //url을 바꿔줌
+  };
   const onOverlayClick = () => {
     navigate(-1);
   };
   const clickedMovie =
     bigMovieMatch?.params.movieId &&
     data?.results.find((movie) => movie.id + "" === bigMovieMatch.params.movieId); //선택된 영화의 API를 URL의 movieId로 찾음
+
+  // const clickedUpcoming =
+  //   upcomingMatch?.params.movieId &&
+  //   upcomingData?.results.find((movie) => movie.id + "" === upcomingMatch.params.movieId);
+
   const { data: detail, isLoading: detailLoading } = useQuery<IDetail>(
     ["detail", bigMovieMatch?.params.movieId],
     () => getMovieDetail(bigMovieMatch?.params.movieId)
@@ -503,7 +551,6 @@ function Home() {
       setOffset(2);
     }
     const windowResize = () => {
-      console.log(window.innerWidth);
       if (window.innerWidth >= 1500) {
         setOffset(6);
       }
@@ -580,6 +627,7 @@ function Home() {
                       whileHover="hover"
                       boxphoto={makeImagePath(movie.backdrop_path, "w500")}
                       onClick={() => onBoxClicked(movie.id)}
+                      transition={{ type: "tween" }}
                     >
                       {movie.backdrop_path ? null : (
                         <ErrorImg>
@@ -605,6 +653,8 @@ function Home() {
                 <path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" />
               </svg>
             </NextBtn>
+
+            {/* <UpcomingText>UPCOMING MOVIE</UpcomingText> */}
           </Slider>
 
           <AnimatePresence>

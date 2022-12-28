@@ -270,7 +270,6 @@ function Search() {
   const { data, isLoading, refetch } = useQuery<IGetSearch>(["search", "resultSearch"], () =>
     getSearch(keyword)
   );
-  console.log(data);
 
   const clickedMovie =
     bigMovieMatch?.params.dataId &&

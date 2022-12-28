@@ -8,7 +8,7 @@ import { useMatch, useNavigate } from "react-router-dom"; //라우터 버전 5�
 
 const Wrapper = styled.div`
   background-color: black;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
 `;
 
 const Loader = styled.div`
@@ -486,7 +486,6 @@ function Tv() {
       setOffset(2);
     }
     const windowResize = () => {
-      console.log(window.innerWidth);
       if (window.innerWidth >= 1500) {
         setOffset(6);
       }
