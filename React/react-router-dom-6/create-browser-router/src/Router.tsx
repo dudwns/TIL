@@ -4,6 +4,7 @@ import Root from "./Root";
 import About from "./screens/About";
 import Home from "./screens/Home";
 import NotFound from "./screens/NotFound";
+import User from "./screens/users/User";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,20 @@ const router = createBrowserRouter([
         path: "about",
         element: <About />,
       },
+      {
+        path: "users/:userId", //:은 dynamic parameter라는 걸 나타냄
+        element: <User />,
+      },
+      /* {
+        path: "users",
+        element: ,
+        children: [
+          {
+            path: "users/:userId",
+            element: <User />,
+          },
+        ],
+      }, /users 경로에서 렌더링 할 페이지가 있으면 이렇게 해야됨 (지금은 users/userId 경로만 렌더링)*/
     ],
     errorElement: <NotFound />, //아무 자식도 발견되지 않았을 때 나타나는 페이지
   },
