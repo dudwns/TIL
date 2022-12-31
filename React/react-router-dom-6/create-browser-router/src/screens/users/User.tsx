@@ -1,12 +1,17 @@
-import { useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { users } from "../../db";
 
 function User() {
   const { userId } = useParams(); //URL의 dynamic parameter 정보를 알아낼 수 있음
   return (
-    <h1>
-      User with it {userId} is named: {users[Number(userId) - 1].name}
-    </h1>
+    <div>
+      <h1>
+        User with it {userId} is named: {users[Number(userId) - 1].name}
+      </h1>
+      {/* /를 쓰지 않으면 상대경로, /followers는 절대경로 */}
+      <Link to="followers">See followers</Link>
+      <Outlet /> {/* 자식이 있으면 자식을 렌더링 */}
+    </div>
   );
 }
 export default User;
