@@ -10,10 +10,15 @@ function User() {
       </h1>
       {/* /를 쓰지 않으면 상대경로, /followers는 절대경로 */}
       <Link to="followers">See followers</Link>
-      <Outlet /> {/* 자식이 있으면 자식을 렌더링 */}
+      <Outlet
+        context={{
+          nameOfMyUser: users[Number(userId) - 1].name,
+        }}
+      />
     </div>
   );
 }
 export default User;
 
 // useParams: Route path와 일치하는 현재 URL에서 동적 매개변수의 key/value 쌍 객체를 반환한다.
+// Outlet: 자식이 있으면 자식을 렌더링, context: 하위 경로와 state 또는 기타 값을 공유한다.

@@ -5,7 +5,7 @@ function Root() {
   return (
     <div>
       <Header />
-      <Outlet />
+      <Outlet context={{ darkMode: true }} /> {/* 모든 자식들에게 이 데이터를 공유 */}
     </div>
   );
 }
