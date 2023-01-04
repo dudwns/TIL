@@ -9,7 +9,7 @@
 | 타입      | 설명                                                                                                                                                    |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | number    | 숫자형 타입                                                                                                                                             |
-| string    | 문자형 타입                                                                                                                                             |
+| string    | 문자열 타입                                                                                                                                             |
 | boolean   | 논리적 참, 거짓을 나타내는 true 와 false                                                                                                                |
 | null      | 의도적으로 변수에 값이 없다는 것을 명시할 때 사용                                                                                                       |
 | undefined | 값이 존재하지 않음(선언 이후 변수에 값을 부여하지 않은 상태)                                                                                            |
@@ -176,7 +176,7 @@ NaN은 Not a Number의 축약형으로, 정의되지 않은 값이나 표현할 
 자바스크립트에서는 묵시적 타입 변환을 많이 사용하지만, 명시적으로 타입을 변환할 방법도 제공한다.
 명시적 타입 변환을 위해 자바스크립트가 제공하는 전역 함수는 다음과 같다.
 
-| 타입        | 설명             |
+| 함수        | 설명             |
 | ----------- | ---------------- |
 | Number()    | number로 변환    |
 | parseInt()  | 정수로 변환      |
@@ -312,4 +312,262 @@ if (isNaN(score) || score) { // isNan(): NaN이면 true 아니면 fales를 반�
 } else {
     console.log("F");
 }
+```
+
+<hr/>
+
+## HTML에 JavaScript 파일을 불러오는 방법
+
+`<script>` 태그를 사용한다.  
+주로 `<body>` 태그를 닫기 직전 위치에 작성한다.
+
+```
+<body>
+    <script src="app.js"></script> // src 속성에 js파일 경로를 입력
+</body>
+```
+
+<br>
+
+## JavaScript에서 HTML의 Element를 접근하는 방법
+
+### 1. document.getElementById()
+
+Element의 id값을 추적하여 반환한다.
+<br>
+<br>
+
+```
+<body>
+    <h1 id="title">index.html</h1>
+    <script src="app.js"></script>
+</body>
+```
+
+```
+const title = document.getElementById("title");
+```
+
+<br>
+
+### 2. document.getElementsByClassName()
+
+Element의 className값을 추적하여 반환한다.<br>
+많은 Element를 가져올 때 사용하고, array 형식으로 반환한다.
+<br>
+<br>
+
+```
+<body>
+    <div class="contents"></div>
+    <div class="contents"></div>
+    <div class="contents"></div>
+    <script src="app.js"></script>
+</body>
+```
+
+```
+const contents = document.getElementsByclassName("contents");
+```
+
+<br>
+
+### 3. document.getElementsByTagName()
+
+Element의 태그명을 추적하여 반환한다.<br>
+className과 마찬가지로 array 형식으로 반환한다.
+<br>
+<br>
+
+```
+<body>
+    <h1>hello</h1>
+    <script src="app.js"></script>
+</body>
+```
+
+```
+const h1 = document.getElementsByTagName("h1");
+```
+
+위 방식들은 array 형식으로 반환 되기 때문에 특정 Element들을 선택하거나, Element 내부의 Element를 선택하는 데에 한계가 있다.
+
+<br>
+
+### 4. document.querySelector("")
+
+가장 많이 사용하는 방식으로, CSS Selector를 이용하여 사용할 수 있다. (단 하나의 Element만 리턴, 해당하는 Element가 다수여도 첫번째 Element만 리턴)
+
+만약 id가 hello인 element 내부의 element h1을 가져온다고 하자.
+
+```
+<body>
+    <div class="hello">
+      <h1>Hi</h1>
+    </div>
+    <script src="app.js"></script>
+</body>
+```
+
+<br>
+CSS를 작성할 때 사용하는 선택자와 똑같이 사용하면 된다.
+
+```
+const title = document.querySelector(".hello h1"); //class가 "hello"인 element 내부에 있는 h1태그
+```
+
+### 5. document.querySelectorAll("")
+
+document.querySelector()와 동일하지만, 다수의 Element들을 가져오고 싶을 때 사용한다. (array 형식으로 반환)
+
+class가 "hello"인 element 내부에 해당하는 h1이 3개라고 하자.
+
+```
+<body>
+    <div class="hello">
+      <h1>Hi1</h1>
+    </div>
+    <div class="hello">
+      <h1>Hi2</h1>
+    </div>
+    <div class="hello">
+      <h1>Hi3</h1>
+    </div>
+    <script src="app.js"></script>
+</body>
+```
+
+```
+const title = document.querySelectorAll(".hello h1"); //class가 "hello"인 element 내부에 있는 모든 h1태그
+```
+
+querySelector()의 경우 첫번째 요소인 Hi1만 가져오지만, <br>
+querySelectorAll()의 경우 해당하는 Hi1, Hi2, Hi3을 모두 array 형식으로 가져온다.
+
+<hr>
+
+## Event(이벤트)
+
+웹페이지에서 마우스를 클릭했을 때, 키를 입력했을 때, 특정요소에 포커스가 이동되었을 때 등 어떤 사건을 발생시키는 것.
+
+<br>
+
+## 이벤트 종류
+
+### 1. 마우스 이벤트
+
+| 이벤트      | 설명                                                                                |
+| ----------- | ----------------------------------------------------------------------------------- |
+| click       | 요소에 마우스를 클릭했을 때 이벤트가 발생                                           |
+| dbclick     | 요소에 마우스를 더블클릭했을 때 이벤트가 발생                                       |
+| mouseover   | 요소에 마우스를 오버했을 때 이벤트가 발생                                           |
+| mouseout    | 요소에 마우스를 아웃했을 때 이벤트가 발생                                           |
+| mousedown   | 요소에 마우스를 눌렀을 때 이벤트가 발생                                             |
+| mouseup     | 요소에 마우스를 떼었을 때 이벤트가 발생                                             |
+| mousemove   | 요소에 마우스를 움직였을 때 이벤트가 발생                                           |
+| contextmenu | context menu (마우스 오른쪽 버튼을 눌렀을 때 나오는 메뉴)가 나오기 전에 이벤트 발생 |
+
+<br>
+
+### 2. 키 이벤트
+
+| 이벤트   | 설명                             |
+| -------- | -------------------------------- |
+| keydown  | 키를 눌렀을 때 이벤트가 발생     |
+| keyup    | 키를 떼었을 때 이벤트가 발생     |
+| keypress | 키를 누른 상태에서 이벤트가 발생 |
+
+<br>
+
+### 3. 폼 이벤트
+
+| 이벤트 | 설명                                                                     |
+| ------ | ------------------------------------------------------------------------ |
+| focus  | 요소에 포커스가 이동되었을 때 이벤트 발생                                |
+| blur   | 요소에 포커스가 벗어났을 때 이벤트 발생                                  |
+| change | 요소에 값이 변경 되었을 때 이벤트 발생                                   |
+| submit | submit 버튼을 눌렀을 때 이벤트 발생                                      |
+| reset  | reset 버튼을 눌렀을 때 이벤트 발생                                       |
+| select | input이나 textarea 요소 안의 텍스트를 드래그하여 선택했을 때 이벤트 발생 |
+
+<br>
+
+### 4. 로드 및 기타 이벤트
+
+| 이벤트 | 설명                                       |
+| ------ | ------------------------------------------ |
+| load   | 페이지의 로딩이 완료되었을 때 이벤트 발생  |
+| abort  | 이미지의 로딩이 중단되었을 때 이벤트 발생  |
+| unload | 페이지가 다른 곳으로 이동될 때 이벤트 발생 |
+| resize | 요소에 사이즈가 변경되었을 때 이벤트 발생  |
+| scroll | 스크롤바를 움직였을 때 이벤트 발생         |
+
+<br>
+
+## 이벤트 핸들러 등록 방법
+
+### 1. inline 방식
+
+인라인 방식은 이벤트를 이벤트 대상의 태그 속성으로 지정하는 것이다.
+
+```
+<input type = "button" onclick = "alert('Hello world');" value = "button" />
+```
+
+<br>
+
+### 2. 프로퍼티 방식
+
+프로퍼티 방식은 이벤트 대상에 해당하는 객체의 프로퍼티로 이벤트를 등록하는 방식이다.
+
+인라인 방식에 비해서 HTML과 JavaScript를 분리할 수 있다는 점에서 선호되는 방식이지만 뒤에서 배울 addEventListener 방식을 추천한다.
+
+이벤트 핸들러 프로퍼티 방식은 이벤트에 오직 하나의 이벤트 핸들러만을 바인딩할 수 있다.
+
+```
+<button class = "btn">Click me</button>
+
+<script>
+    const btn = document.querySelector(".btn");
+
+    btn.onclick = function () {
+        alert("Button clicked 1"); // 하나의 이벤트 핸들러만 바인딩하기 때문에 실행되지 않음
+    };
+    btn.onclick = function () {
+        alert("Button clicked 2"); //실행
+    };
+</script>
+```
+
+<br>
+
+### 3. addEventListener 방식
+
+eventTarget.addEventListener("eventType", functionName, 버블링, 캡쳐링 여부) //eventType에 on을 쓰지 않는다. (버블링은 false, 캡쳐링은 true)
+
+addEventListener() 메소드를 이용하여 대상 DOM 요소에 이벤트를 바인딩하고 해당 이벤트가 발생했을 때 실행될 콜백 함수(이벤트 핸들러)를 지정한다.
+
+addEventListener 함수 방식은 이전 방식에 비해 아래와 같이 보다 나은 장점을 갖는다.
+
+- 하나의 이벤트에 대해 하나 이상의 이벤트 핸들러를 추가할 수 있다.
+- 캡처링과 버블링을 지원한다.
+- HTML 요소뿐만아니라 모든 DOM 요소(HTML, XML, SVG)에 대해 동작한다. 브라우저는 웹 문서(HTML, XML, SVG)를 로드한 후, 파싱하여 DOM을 생성한다.
+
+```
+<body>
+    <div class="hello">
+      <h1>Hi</h1>
+    </div>
+    <script src="app.js"></script>
+</body>
+```
+
+```
+const title = document.querySelector("div.hello:first-child h1");
+
+function handleTitleClick() {
+  alert("title was clicked");
+}
+
+title.addEventListener("click", handleTitleClick); //click 할 때 handleTitleClick 이벤트를 실행
 ```
