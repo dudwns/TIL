@@ -390,15 +390,15 @@ className과 마찬가지로 array 형식으로 반환한다.
 const h1 = document.getElementsByTagName("h1");
 ```
 
-위 방식들은 array 형식으로 반환 되기 때문에 특정 Element들을 선택하거나, Element 내부의 Element를 선택하는 데에 한계가 있다.
+위 방식들은 array 형식으로 반환 되기 때문에 특정 Element를 선택하거나, Element 내부의 Element를 선택하는 데에 한계가 있다.
 
 <br>
 
-### 4. document.querySelector("")
+### 4. document.querySelector()
 
 가장 많이 사용하는 방식으로, CSS Selector를 이용하여 사용할 수 있다. (단 하나의 Element만 리턴, 해당하는 Element가 다수여도 첫번째 Element만 리턴)
 
-만약 id가 hello인 element 내부의 element h1을 가져온다고 하자.
+만약 id가 "hello"인 element 내부의 element h1을 가져온다고 하자.
 
 ```
 <body>
@@ -570,4 +570,58 @@ function handleTitleClick() {
 }
 
 title.addEventListener("click", handleTitleClick); //click 할 때 handleTitleClick 이벤트를 실행
+```
+
+이벤트를 제거할 때는 removeEventListener()를 사용한다.
+
+```
+title.removeEventListener("click", handleTitleClick); // event 제거
+```
+
+<hr>
+
+## 자바스크립트에서 Element의 Class 제어
+
+### className과 classList
+
+클래스 변경은 스크립트를 통해 자주 하게 되는 동작 중 하나입니다.
+
+아주 오래전 자바스크립트엔 "class"같은 예약어는 객체의 프로퍼티가 될 수 없다는 제약사항이 있었습니다. 지금은 이런 제약사항이 사라졌지만, 과거엔 "class" 프로퍼티를 사용할 수 없었기 때문에 elem.class를 사용하는 것 역시 불가능했습니다.
+
+이런 배경 때문에 클래스를 위한 프로퍼티 "className"가 도입되게 되었습니다. elem.className는 "class" 속성에 대응합니다.  
+<br>
+className은 class 문자열 전체를 변경하게 됩니다.
+
+```
+function handleTitleClick() {
+  const clickedClass = "clicked";
+  if (h1.className === clickedClass) { //class = "clicked"이면
+    h1.className = ""; //모든 class를 제거
+  } else {            // class = "clicked"가 아니면
+    h1.className = clickedClass; //무조건 class = "clicked"로 변경
+  }
+}
+```
+
+이렇게 속성값 전체를 바꾸는 게 아니고 클래스 하나만 추가하거나 제거하고 싶은 경우에는 elem.classList라는 프로퍼티를 사용할 수 있습니다.
+
+```
+function handleTitleClick() {
+  const clickedClass = "clicked";
+  if (h1.classList.contains(clickedClass)) { //현재 classList에 "clicked"가 존재하면
+    h1.classList.remove(clickedClass); //현재 classList에서  "clicked"만 제거
+  } else {                            //존재하지 않으면
+    h1.classList.add(clickedClass); //현재 classList에 "clicked" 추가
+  }
+}
+```
+
+classList에는 위 동작이 구현되어 있는 함수가 있습니다. (class의 유무를 확인하고 없으면 추가, 있으면 제거를 반복)
+
+elem.classList.toggle()을 사용하면 위 동작을 한 줄의 코드로 작성할 수 있습니다.
+
+```
+function handleTitleClick() {
+  h1.classList.toggle("clicked");
+}
 ```
