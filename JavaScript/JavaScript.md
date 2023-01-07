@@ -27,7 +27,7 @@ console.log(typeof a); // a의 타입을 알 수 있다.
 ## 선언자
 
 <h3>Var</h3>
-const와 let이 나오기 전에 주로 사용하던 선언자로 재선언과 재할당이 가능하다.<br>
+const와 let이 나오기 전에 주로 사용하던 선언자로 재선언과 재할당이 가능하다.
 
 ```
 var a = 1;
@@ -36,20 +36,20 @@ a = 3;  //재할당 가능
 ```
 
 <h3>const</h3>
-값이 변하지 않는 상수를 선언할 때 사용하는 선언자<br>
+값이 변하지 않는 상수를 선언할 때 사용하는 선언자로 재선언과 재할당이 불가능하다.
 
 ```
 const a = 1;
-const a = 2;  //재선언 금지
-a = 3;  //재할당 금지
+const a = 2;  //재선언 불가능
+a = 3;  //재할당 불가능
 ```
 
 <h3>let</h3>
-값이 바뀔 수 있는 변수를 선언할 때 사용하는 선언자<br>
+값이 바뀔 수 있는 변수를 선언할 때 사용하는 선언자로 재선언은 불가능하지만 재할당은 가능하다.
 
 ```
 let a = 1;
-let a = 2;  //재선언 금지
+let a = 2;  //재선언 불가능
 a = 3;  //재할당 가능
 ```
 
@@ -176,15 +176,15 @@ NaN은 Not a Number의 축약형으로, 정의되지 않은 값이나 표현할 
 자바스크립트에서는 묵시적 타입 변환을 많이 사용하지만, 명시적으로 타입을 변환할 방법도 제공한다.
 명시적 타입 변환을 위해 자바스크립트가 제공하는 전역 함수는 다음과 같다.
 
-| 함수        | 설명             |
-| ----------- | ---------------- |
-| Number()    | number로 변환    |
-| parseInt()  | 정수로 변환      |
-| parseFloat  | 소수로 변환      |
-| String()    | string으로 변환  |
-| .toString() | string으로 변환  |
-| Boolean()   | boolean으로 변환 |
-| Object()    | object로 변환    |
+| 함수         | 설명                             |
+| ------------ | -------------------------------- |
+| Number()     | number로 변환                    |
+| parseInt()   | 정수로 변환                      |
+| parseFloat() | 소수점 표현이 가능한 실수로 변환 |
+| String()     | string으로 변환                  |
+| .toString()  | string으로 변환                  |
+| Boolean()    | boolean으로 변환                 |
+| Object()     | object로 변환                    |
 
 ```
 Number("10"); // 숫자 10
@@ -578,6 +578,58 @@ title.addEventListener("click", handleTitleClick); //click 할 때 handleTitleCl
 title.removeEventListener("click", handleTitleClick); // event 제거
 ```
 
+<br>
+
+## event 객체
+
+이벤트를 발생시킨 요소와 발생한 이벤트에 대한 정보를 제공하는 객체
+
+DOM과 관련된 이벤트가 발생하면 event객체가 동적으로 생성되고 정보가 저장된다.
+
+이벤트 발생 요소, 이벤트 타입, 이벤트 관련 데이터 등이 저장된다.
+
+이벤트 핸들러의 인자로 암묵적으로 전달되기 때문에, 이벤트 핸들러의 첫번째 인자는 무조건 event 객체로 받는다.
+<br>
+
+event객체에서 공통적으로 사용하는 이벤트
+
+| 프로퍼티/메서드            | 타입         | R/W | 설명                                                                            |
+| -------------------------- | ------------ | --- | ------------------------------------------------------------------------------- |
+| bubbles                    | bool         | R   | 이벤트가 버블링되는지 나타냄                                                    |
+| cancelable                 | bool         | R   | 이벤트의 기본 동작 취소가능 여부                                                |
+| currentTarget              | element      | R   | 현재 이벤트를 처리중인 element                                                  |
+| defaultPrevented           | bool         | R   | true면 preventDefault()호출상태                                                 |
+| detail                     | integer      | R   | 이벤트와 관련된 추가정보                                                        |
+| eventPhase                 | integer      | R   | 이벤트 핸들러가 호출된 단계 (1:캡처링, 2:타깃, 3:버블링)                        |
+| preventDefault()           | Function     | R   | 이벤트의 기본행동 취소, cancelable가 true일때 가능함                            |
+| stopImmediatePropagation() | Function     | R   | 이벤트 캡처링, 이벤트 버블링을 모두 취소하며 다른 이벤트 핸들러 호출을 막음.    |
+| stopPropagation()          | Function     | R   | 이벤트 캡처링, 이벤트 버블링을 모두 취소함. bubbles가 true일때 가능함           |
+| target                     | element      | R   | 이벤트 타깃                                                                     |
+| trusted                    | bool         | R   | 브라우저에서 생성한 이벤트라면 true 개발자가 만든 자바스크립트 이벤트라면 false |
+| type                       | string       | R   | 발생한 이벤트 타입                                                              |
+| view                       | AbstractView | R   | 이벤트와 연결된 추상화된 뷰, 이벤트가 발생한 window객체와 일치                  |
+
+## event.preventDefault()
+
+이벤트의 기본적인 동작을 실행하지 않도록 지정
+
+주로 사용되는 경우
+
+1. a 태그를 눌렀을 때 href 링크로 이동하지 않게 할 경우
+2. form 안에 submit 역할을 하는 버튼을 눌렀어도 페이지가 새로고침 되게 하고싶지 않은 경우 (submit은 작동됨)
+
+```
+const loginForm = document.querySelector("#login-form");
+const loginInput = document.querySelector("#login-form input");
+
+function onLoginSubmit(event) {
+  event.preventDefault(); //이벤트의 기본 동작을 막는다.
+  console.log(loginInput.value);
+}
+
+loginForm.addEventListener("submit", onLoginSubmit);
+```
+
 <hr>
 
 ## 자바스크립트에서 Element의 Class 제어
@@ -588,7 +640,7 @@ title.removeEventListener("click", handleTitleClick); // event 제거
 
 아주 오래전 자바스크립트엔 "class"같은 예약어는 객체의 프로퍼티가 될 수 없다는 제약사항이 있었습니다. 지금은 이런 제약사항이 사라졌지만, 과거엔 "class" 프로퍼티를 사용할 수 없었기 때문에 elem.class를 사용하는 것 역시 불가능했습니다.
 
-이런 배경 때문에 클래스를 위한 프로퍼티 "className"가 도입되게 되었습니다. elem.className는 "class" 속성에 대응합니다.  
+이런 배경 때문에 클래스를 위한 프로퍼티 "className"이 도입하게 되었습니다. elem.className는 "class" 속성에 대응합니다.  
 <br>
 className은 class 문자열 전체를 변경하게 됩니다.
 
@@ -603,19 +655,21 @@ function handleTitleClick() {
 }
 ```
 
-이렇게 속성값 전체를 바꾸는 게 아니고 클래스 하나만 추가하거나 제거하고 싶은 경우에는 elem.classList라는 프로퍼티를 사용할 수 있습니다.
+<br>
+위처럼 속성값 전체를 바꾸는 게 아니고 클래스 하나만 추가하거나 제거하고 싶은 경우에는 elem.classList라는 프로퍼티를 사용할 수 있습니다.
 
 ```
 function handleTitleClick() {
   const clickedClass = "clicked";
   if (h1.classList.contains(clickedClass)) { //현재 classList에 "clicked"가 존재하면
-    h1.classList.remove(clickedClass); //현재 classList에서  "clicked"만 제거
+    h1.classList.remove(clickedClass); //현재 classList에 "clicked"만 제거
   } else {                            //존재하지 않으면
     h1.classList.add(clickedClass); //현재 classList에 "clicked" 추가
   }
 }
 ```
 
+<br>
 classList에는 위 동작이 구현되어 있는 함수가 있습니다. (class의 유무를 확인하고 없으면 추가, 있으면 제거를 반복)
 
 elem.classList.toggle()을 사용하면 위 동작을 한 줄의 코드로 작성할 수 있습니다.
