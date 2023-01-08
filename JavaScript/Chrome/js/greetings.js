@@ -23,7 +23,7 @@ function paintGreetings(username) {
   greeting.classList.remove(HIDDEN_CLASSNAME);
 }
 
-const savedUsername = localStorage.getItem(USERNAME_KEY);
+const savedUsername = localStorage.getItem(USERNAME_KEY); //로컬 스토리지에 있는 값을 가져옴
 
 if (savedUsername === null) {
   loginForm.classList.remove(HIDDEN_CLASSNAME);
