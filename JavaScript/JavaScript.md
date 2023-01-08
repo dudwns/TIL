@@ -731,3 +731,92 @@ const numsString = localStorage.getItem('nums');
 const personObj = JSON.parse(personString);
 const numsArr = JSON.parse(numsString);
 ```
+
+<hr>
+
+## 함수의 실행 시간 제어
+
+### setInterval
+
+일정 간격으로 함수를 주기적으로 호출하고 싶을 때 사용한다.
+setInterval(함수명, 시간) //시간은 ms단위로 나타낸다.
+단 처음에 바로 실행되지 않고 설정한 시간이 지나고 부터 실행된다.
+
+```
+function sayHello() {
+  console.log("hello");
+}
+
+const intervalId = setInterval(sayHello, 2000); //5초 간격으로 함수를 실행
+
+```
+
+Interval 함수 중단
+
+```
+clearInterval(intervalId);
+```
+
+<br>
+
+### setTimeout
+
+일정 시간이 지난 후에 함수를 호출하고 싶을 때 사용한다.
+setTimeout(함수명, 간격) //간격은 ms단위로 나타낸다.
+
+```
+function sayHello() {
+  console.log("hello");
+}
+
+const = setTimeout(sayHello, 5000); //5초 후에 함수를 한번만 실행
+```
+
+Timeout 함수 중단
+
+```
+clearTimeout(timeoutId)
+```
+
+<hr>
+
+## Date 객체
+
+자바스크립트에서는 Date 객체를 사용하여 매 순간 변화하는 시간과 날짜에 관한 정보를 손쉽게 얻을 수 있다.
+
+| 함수 (get)        | 함수(set)         | 의미      | 설명                                                                         |
+| ----------------- | ----------------- | --------- | ---------------------------------------------------------------------------- |
+| getFullYear()     | setFullYear()     | 년도      |                                                                              |
+| getMonth()        | setMonth()        | 월        | 0~11 > 1월~12월                                                              |
+| getDate()         | setDate()         | 일        | 현재 이벤트를 처리중인 element                                               |
+| getDay()          | setDay()          | 요일      | 0~6 > 일요일 ~ 토요일                                                        |
+| getHours()        | setHours()        | 시간      | 이벤트와 관련된 추가정보                                                     |
+| getMinutes()      | setMinutes()      | 분        | 이벤트 핸들러가 호출된 단계 (1:캡처링, 2:타깃, 3:버블링)                     |
+| getSeconds()      | setSeconds()      | 초        | 이벤트의 기본행동 취소, cancelable가 true일때 가능함                         |
+| getMilliseconds() | setMilliseconds() | 밀리초    | 이벤트 캡처링, 이벤트 버블링을 모두 취소하며 다른 이벤트 핸들러 호출을 막음. |
+| getTime()         | setTime()         | Unix 타임 | 1970/1/1 12:00 기준 경과한 밀리 초                                           |
+
+<br>
+
+## padStart()와 padEnd()
+
+padStart()는 현재 문자열의 시작을 다른 문자열로 채워, 주어진 길이를 만족하는 새로운 문자열을 반환합니다. 채워넣기는 대상 문자열의 시작(좌측)부터 적용됩니다. (String 타입만 가능)
+
+padEnd()는 현재 문자열의 시작을 다른 문자열로 채워, 주어진 길이를 만족하는 새로운 문자열을 반환합니다. 채워넣기는 대상 문자열의 끝(우측)부터 적용됩니다. (String 타입만 가능)
+
+시간을 두자릿 수로 표현하는 예제 (1->01, 2 ->02, 3->03)
+
+```
+const clock = document.querySelector("h2#clock"); //h2태그중 id가 clock인 element
+
+function getClock() {
+  const date = new Date(); //Date 객체 생성
+  const hours = String(date.getHours()).padStart(2, "0"); //이 string은 2글자가 되어야하고 2글자 미만이면 앞에 0을 붙임
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+  clock.innerText = `${hours}:${minutes}:${seconds}`; //시, 분, 초를 나타냄
+}
+
+getClock();
+setInterval(getClock, 1000); //1초마다 함수를 실행
+```
