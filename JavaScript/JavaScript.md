@@ -679,3 +679,91 @@ function handleTitleClick() {
   h1.classList.toggle("clicked");
 }
 ```
+
+<hr>
+
+## 로컬 스토리지
+
+localStorage를 사용하면, 브라우저에 key-value 값을 Storage에 저장할 수 있습니다.
+
+저장한 데이터는 세션간에 공유됩니다.
+
+즉, 세션이 바뀌어도 저장한 데이터가 유지됩니다.
+
+| 함수 및 속성          | 설명                                         |
+| --------------------- | -------------------------------------------- |
+| setItem( key, value ) | localStorage에 키, 값을 추가한다.            |
+| getItem( key )        | localStorage에 있는 값을 가져온다.           |
+| removeItem( key )     | localStorage에 있는 값을 삭제한다.           |
+| clear()               | 도메인 내의 localStorage 값을 전부 삭제한다. |
+| key( index )          | index로 key값 찾기                           |
+| length                | localStorage에 들어있는 아이템 개수를 반환   |
+
+<br>
+
+## 로컬 스토리지
+
+localStorage를 사용하면, 브라우저에 key-value 값을 Storage에 저장할 수 있습니다.
+
+저장한 데이터는 세션간에 공유됩니다.
+
+즉, 세션이 바뀌어도 저장한 데이터가 유지됩니다.
+
+| 함수 및 속성          | 설명                                         |
+| --------------------- | -------------------------------------------- |
+| setItem( key, value ) | localStorage에 키, 값을 추가한다.            |
+| getItem( key )        | localStorage에 있는 값을 가져온다.           |
+| removeItem( key )     | localStorage에 있는 값을 삭제한다.           |
+| clear()               | 도메인 내의 localStorage 값을 전부 삭제한다. |
+| key( index )          | index로 key값 찾기                           |
+| length                | localStorage에 들어있는 아이템 개수를 반환   |
+
+<br>
+
+## 로컬 스토리지
+
+localStorage를 사용하면, 브라우저에 key-value 값을 Storage에 저장할 수 있습니다.
+
+저장한 데이터는 세션간에 공유됩니다.
+
+즉, 세션이 바뀌어도 저장한 데이터가 유지됩니다.
+
+| 함수 및 속성          | 설명                                         |
+| --------------------- | -------------------------------------------- |
+| setItem( key, value ) | localStorage에 키, 값을 추가한다.            |
+| getItem( key )        | localStorage에 있는 값을 가져온다.           |
+| removeItem( key )     | localStorage에 있는 값을 삭제한다.           |
+| clear()               | 도메인 내의 localStorage 값을 전부 삭제한다. |
+| key( index )          | index로 key값 찾기                           |
+| length                | localStorage에 들어있는 아이템 개수를 반환   |
+
+<br>
+
+localStorage에는 문자열의 값만 저장되기 때문에 배열이나 객체를 저장하기 위해서는 문자열로 변환해서 저장해야 합니다.
+
+```
+// localStorage에 저장할 객체
+const obj = {
+  name : 'anna',
+  age : 20
+}
+
+// localStorage에 저장할 배열
+const arr = [1, 2, 3];
+
+// 객체, 배열을 JSON 문자열로 변환
+const objString = JSON.stringify(obj);
+const arrString = JSON.stringify(arr);
+
+// setItem
+localStorage.setItem('person', objString);
+localStorage.setItem('nums', arrString);
+
+// getItem
+const personString = localStorage.getItem('person');
+const numsString = localStorage.getItem('nums');
+
+// JSON 문자열을 객체, 배열로 변환
+const personObj = JSON.parse(personString);
+const numsArr = JSON.parse(numsString);
+```
