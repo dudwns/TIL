@@ -820,3 +820,43 @@ function getClock() {
 getClock();
 setInterval(getClock, 1000); //1초마다 함수를 실행
 ```
+
+<hr>
+
+## Math 객체
+
+Math 객체는 수학에서 자주 사용하는 상수와 함수들을 미리 구현해 놓은 자바스크립트 표준 내장 객체이다.
+
+생성자가 존재하지 않아서 따로 인스터스를 생성하지 않더라도 Math 객체의 모든 method나 property를 바로 사용할 수 있다.
+
+자주 사용하는 함수 및 프로퍼티
+| 함수 및 프로퍼티 | 설명 |
+| -------- | -------------------------------- |
+| Math.min(x,y,z....) | 인수로 전달받은 값 중에서 가장 작은 수를 반환 |
+| Math.max(x,y,z....) | 인수로 전달받은 값 중에서 가장 큰 수를 반환 |
+| Math.random() | 0보다 크거나 같고 1보다 작은 랜덤 숫자 반환 |
+| Math.round(x) | 소수점 첫 번째 자리에서 반올림 후 반환 |
+| Math.floor(x) | 인수와 같거나 작은 수 중에서 가장 큰 정수 반환 |
+| Math.ceil(x) | 인수와 같거나 큰 수 중에서 가장 작은 정수 반환 |
+| Math.abs(x) | x의 절댓값 반환 |
+| Math.sqrt(x) | x의 제곱근 반환 |
+| Math.cbrt(x) | x의 세제곱근 반환 |
+| Math.exp(x) | e의 x제곱근 값을 반환 |
+| Math.log(x) | x의 자연로그 값을 반환.(ln x) |
+| Math.log2(x) | x의 2를 밑으로 가지는 로그 값을 반환 |
+| Math.pow(x,y) | x의 y제곱을 반환 |
+| Math.sign(x) | x의 부호 값을 반환 |
+| Math.trunc(x) | x의 모든 소수 부분을 삭제하고 정수 부분만을 반환 |
+| Math.PI | 원의 원주를 지름으로 나눈 비율(원주율) 값 |
+
+<hr>
+
+## Javascript에서 HTML Element 생성 및 추가
+
+```
+const bgImage = document.createElement("img"); //자바스크립트에서 HTML element를 생성
+
+bgImage.src = `img/${chosenImage}`; //img의 src속성 설정
+
+document.body.appendChild(bgImage); // body의 맨 끝에 배치
+```
