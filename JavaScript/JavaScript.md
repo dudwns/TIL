@@ -736,7 +736,7 @@ const numsArr = JSON.parse(numsString);
 
 ## 함수의 실행 시간 제어
 
-### setInterval
+### setInterval()
 
 일정 간격으로 함수를 주기적으로 호출하고 싶을 때 사용한다.
 setInterval(함수명, 시간) //시간은 ms단위로 나타낸다.
@@ -759,17 +759,17 @@ clearInterval(intervalId);
 
 <br>
 
-### setTimeout
+### setTimeout()
 
 일정 시간이 지난 후에 함수를 호출하고 싶을 때 사용한다.
-setTimeout(함수명, 간격) //간격은 ms단위로 나타낸다.
+setTimeout(함수명, 시간) //시간은 ms단위로 나타낸다.
 
 ```
 function sayHello() {
   console.log("hello");
 }
 
-const = setTimeout(sayHello, 5000); //5초 후에 함수를 한번만 실행
+const timeoutId = setTimeout(sayHello, 5000); //5초 후에 함수를 한번만 실행
 ```
 
 Timeout 함수 중단
@@ -787,9 +787,9 @@ clearTimeout(timeoutId)
 | 함수 (get)        | 함수(set)         | 의미      | 설명                                                                         |
 | ----------------- | ----------------- | --------- | ---------------------------------------------------------------------------- |
 | getFullYear()     | setFullYear()     | 년도      |                                                                              |
-| getMonth()        | setMonth()        | 월        | 0~11 > 1월~12월                                                              |
+| getMonth()        | setMonth()        | 월        | 0 ~ 11 > 1월 ~ 12월                                                          |
 | getDate()         | setDate()         | 일        | 현재 이벤트를 처리중인 element                                               |
-| getDay()          | setDay()          | 요일      | 0~6 > 일요일 ~ 토요일                                                        |
+| getDay()          | setDay()          | 요일      | 0 ~ 6 > 일요일 ~ 토요일                                                      |
 | getHours()        | setHours()        | 시간      | 이벤트와 관련된 추가정보                                                     |
 | getMinutes()      | setMinutes()      | 분        | 이벤트 핸들러가 호출된 단계 (1:캡처링, 2:타깃, 3:버블링)                     |
 | getSeconds()      | setSeconds()      | 초        | 이벤트의 기본행동 취소, cancelable가 true일때 가능함                         |
