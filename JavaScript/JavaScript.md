@@ -609,6 +609,8 @@ event객체에서 공통적으로 사용하는 이벤트
 | type                       | string       | R   | 발생한 이벤트 타입                                                              |
 | view                       | AbstractView | R   | 이벤트와 연결된 추상화된 뷰, 이벤트가 발생한 window객체와 일치                  |
 
+<br>
+
 ## event.preventDefault()
 
 이벤트의 기본적인 동작을 실행하지 않도록 지정
@@ -681,44 +683,6 @@ function handleTitleClick() {
 ```
 
 <hr>
-
-## 로컬 스토리지
-
-localStorage를 사용하면, 브라우저에 key-value 값을 Storage에 저장할 수 있습니다.
-
-저장한 데이터는 세션간에 공유됩니다.
-
-즉, 세션이 바뀌어도 저장한 데이터가 유지됩니다.
-
-| 함수 및 속성          | 설명                                         |
-| --------------------- | -------------------------------------------- |
-| setItem( key, value ) | localStorage에 키, 값을 추가한다.            |
-| getItem( key )        | localStorage에 있는 값을 가져온다.           |
-| removeItem( key )     | localStorage에 있는 값을 삭제한다.           |
-| clear()               | 도메인 내의 localStorage 값을 전부 삭제한다. |
-| key( index )          | index로 key값 찾기                           |
-| length                | localStorage에 들어있는 아이템 개수를 반환   |
-
-<br>
-
-## 로컬 스토리지
-
-localStorage를 사용하면, 브라우저에 key-value 값을 Storage에 저장할 수 있습니다.
-
-저장한 데이터는 세션간에 공유됩니다.
-
-즉, 세션이 바뀌어도 저장한 데이터가 유지됩니다.
-
-| 함수 및 속성          | 설명                                         |
-| --------------------- | -------------------------------------------- |
-| setItem( key, value ) | localStorage에 키, 값을 추가한다.            |
-| getItem( key )        | localStorage에 있는 값을 가져온다.           |
-| removeItem( key )     | localStorage에 있는 값을 삭제한다.           |
-| clear()               | 도메인 내의 localStorage 값을 전부 삭제한다. |
-| key( index )          | index로 key값 찾기                           |
-| length                | localStorage에 들어있는 아이템 개수를 반환   |
-
-<br>
 
 ## 로컬 스토리지
 
