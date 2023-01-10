@@ -604,7 +604,7 @@ event객체에서 공통적으로 사용하는 이벤트
 | preventDefault()           | Function     | R   | 이벤트의 기본행동 취소, cancelable가 true일때 가능함                            |
 | stopImmediatePropagation() | Function     | R   | 이벤트 캡처링, 이벤트 버블링을 모두 취소하며 다른 이벤트 핸들러 호출을 막음.    |
 | stopPropagation()          | Function     | R   | 이벤트 캡처링, 이벤트 버블링을 모두 취소함. bubbles가 true일때 가능함           |
-| target                     | element      | R   | 이벤트 타깃                                                                     |
+| target                     | element      | R   | 이벤트를 발생시킨 타겟                                                          |
 | trusted                    | bool         | R   | 브라우저에서 생성한 이벤트라면 true 개발자가 만든 자바스크립트 이벤트라면 false |
 | type                       | string       | R   | 발생한 이벤트 타입                                                              |
 | view                       | AbstractView | R   | 이벤트와 연결된 추상화된 뷰, 이벤트가 발생한 window객체와 일치                  |
@@ -701,9 +701,24 @@ localStorage를 사용하면, 브라우저에 key-value 값을 Storage에 저장
 | key( index )          | index로 key값 찾기                           |
 | length                | localStorage에 들어있는 아이템 개수를 반환   |
 
+localStorage에는 문자열의 값만 저장되기 때문에 배열이나 객체를 저장하기 위해서는 문자열로 변환해서 저장해야 합니다.
+
 <br>
 
-localStorage에는 문자열의 값만 저장되기 때문에 배열이나 객체를 저장하기 위해서는 문자열로 변환해서 저장해야 합니다.
+## JSON이란?
+
+JSON은 JavaScript Object Notation의 약자로, 브라우저와 서버사이에서 오고가는 데이터의 형식이다.
+
+## JSON 내장 객체
+
+자바스크립트에서는 JSON 포멧의 데이터를 간편하게 다룰 수 있도록 JSON이라는 객체를 내장하고 있습니다.
+
+JSON 내장 객체는 JavaScript 객체와 JSON 문자열 간의 상호 변환을 수행해주는 두 개의 메서드를 제공합니다.
+
+| 함수             | 설명                                        |
+| ---------------- | ------------------------------------------- |
+| JSON.stringify() | JavaScript 객체를 JSON 문자열로 변환시킨다. |
+| JSON.parse()     | JSON 문자열을 JavaScript 객체로 변환시킨다. |
 
 ```
 // localStorage에 저장할 객체
@@ -859,4 +874,10 @@ const bgImage = document.createElement("img"); //자바스크립트에서 HTML e
 bgImage.src = `img/${chosenImage}`; //img의 src속성 설정
 
 document.body.appendChild(bgImage); // body의 맨 끝에 배치
+```
+
+삭제
+
+```
+bgImage.remove();
 ```
