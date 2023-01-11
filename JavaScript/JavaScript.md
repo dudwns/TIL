@@ -886,7 +886,7 @@ bgImage.remove(); //element 삭제
 
 <hr>
 
-## filter
+## filter()
 
 filter() 메서드는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환합니다.
 
@@ -917,3 +917,84 @@ const items2 = items.filter((item) => item < 40);
 
 console.log(items2); // [10, 30, 20]
 ```
+
+## forEach() 와 map()
+
+### 1. map()은 forEach()와 달리 새로운 배열을 반환
+
+forEach()가 배열 요소마다 한 번씩 주어진 함수(콜백)를 실행하는 것과 달리,
+
+map()은 배열 내의 모든 요소 각각에 대하여 주어진 함수(콜백)를 호출한 결과를 모아 새로운 배열을 반환한다는 특징을 가지고 있다.
+
+```
+// Example of forEach()
+
+const arr = [1, 2, 3, 4, 5];
+
+const mulArr = [];
+
+arr.forEach((num) => {
+  mulArr.push(num * 3);
+});
+
+console.log(mulArr); // [3, 6, 9, 12, 15]
+```
+
+```
+// Example of map()
+
+const arr = [1, 2, 3, 4, 5];
+
+const mulArr = arr.map((num) => num * 3);
+
+console.log(mulArr); // [3, 6, 9, 12, 15]
+```
+
+### 2. 리턴값을 보내지 않는 forEach()
+
+forEach()는 함수 밖으로 리턴값을 받지 못한다. 아래의 코드를 살펴보자.
+
+```
+let arr = [1, 2, 3, 4, 5];
+
+let a = arr.forEach(function(value){
+	return value;
+});
+
+console.log(a);   //undefined
+```
+
+forEach()는 undefined가 출력된다.
+
+<br>
+
+```
+let arr=[1, 2, 3, 4, 5];
+
+let a = arr.map(function(value){
+	return value +1;
+});
+
+console.log(a);  // [2, 3, 4, 5, 6]
+```
+
+map()의 경우에는 [2, 3, 4, 5, 6]이 들어있는 배열이 출력된다.
+
+map은 리턴값을 출력할 수 있다.
+<br>
+즉, forEach와 map의 가장 큰 차이는 바로 리턴값에 있다.
+
+또한 forEach() 기존의 Ararry를 변경하는 반면, map()은 새로운 Ararry를 반환한다.
+
+성능면에서는 map이 forEach보다 빠르고 유리하다.
+
+상황에 따라 맞게 사용하면 될 것이다.
+<br>
+
+<정리>
+
+1. forEach()로 할 수 있는 일은 map()으로 할 수 있으며, 그 반대도 가능하다.
+
+2. map()은 메모리를 할당하고 반환 값을 저장한다.<br>forEach()는 반환 값을 버리고 항상 정의되지 않은 값을 반환한다.
+
+3. forEach()는 콜백 함수가 현재 배열을 변경하도록합니다. map ()은 대신 ​​새 배열을 반환한다.
