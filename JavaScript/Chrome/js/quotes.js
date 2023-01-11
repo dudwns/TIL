@@ -1,49 +1,44 @@
 const quotes = [
   {
-    quote: "I never dreamed about success, I worked for it",
-    author: "Estee Lauder",
-  },
-  {
-    quote: "Do not try to be original, just try to be good.",
-    author: "Paul Rand",
-  },
-  {
-    quote: "Do not be afraid to give up the good to go for the great",
-    author: "John D. Rockefeller",
-  },
-  {
     quote:
-      "If you cannot fly then run. If you cannot run, then walk. And if you cannot walk, then crawl, but whatever you do, you have to keep moving forward.",
-    author: "Martin Luther King Jr.",
+      "만약 누군가를 당신의 편으로 만들고 싶다면, 먼저 당신이 그의 진정한 친구임을 확신시켜라.",
+    author: "에이브러햄 링컨",
   },
   {
-    quote:
-      "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time.",
-    author: "Thomas Edison",
+    quote: "재능은 게임에서 이기게 한다. 그러나 팀워크는 우승을 가져온다.",
+    author: "마이클 조던",
   },
   {
-    quote:
-      "The fastest way to change yourself is to hang out with people who are already the way you want to be",
-    author: "REid Hoffman",
+    quote: "실패가 나태함에 대한 유일한 징벌은 아니다. 다른 이들의 성공도 있지 않은가.",
+    author: "쥘 르나르",
   },
   {
-    quote:
-      "Money is like gasoline during a road trip. You do not want to run out of gas on your trip, but you are not doing a tour of gas stations",
-    author: "Tim O Reilly",
+    quote: "오늘 누군가가 그늘에 앉아 쉴 수 있는 이유는 오래 전에 누군가가 나무를 심었기 때문이다.",
+    author: "워런 버핏.",
   },
   {
-    quote:
-      "Some people dream of success, while other people get up every morning and make it happen",
-    author: "Wayne Huizenga",
+    quote: "지금 적극적으로 실행되는 괜찮은 계획이 다음 주의 완벽한 계획보다 낫다.",
+    author: "조지 S. 패튼",
   },
   {
-    quote: "The only thing worse than starting something and falling.. is not starting something",
-    author: "SEth Godin",
+    quote: "수정을 용납하지 않는 계획은 나쁜 계획이다.",
+    author: "퍼블릴리어스 사이러스",
   },
   {
-    quote:
-      "If you really want to do something, you will find a way. If you do not, you will find an excuse.",
-    author: "Jim Rohn",
+    quote: "희망차게 여행하는 것이 목적지에 도착하는 것보다 좋다.",
+    author: "로버트 루이스 스티븐슨",
+  },
+  {
+    quote: "당신이 젊은 시절 꿈꾸었던 것에 충실하라.",
+    author: "프리드리히 실러",
+  },
+  {
+    quote: "웃음 없는 하루는 낭비한 하루다.",
+    author: "찰리 채플린",
+  },
+  {
+    quote: "우리가 무슨 생각을 하느냐가 우리가 어떤 사람이 되는지를 결정한다.",
+    author: "오프라 윈프리",
   },
 ];
 
@@ -53,4 +48,4 @@ const author = document.querySelector("#quote span:last-child");
 const todaysQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
 quote.innerText = todaysQuote.quote;
-author.innerText = todaysQuote.author;
+author.innerText = `- ${todaysQuote.author} -`;

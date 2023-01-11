@@ -8,10 +8,10 @@ function onGeoOK(position) {
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      const weather = document.querySelector("#weather span:first-child");
-      const city = document.querySelector("#weather span:last-child");
-      weather.innerText = `${data.weather[0].main} / ${data.main.temp}`;
-      city.innerText = data.name;
+      const weather = document.querySelector("#weather div:first-child");
+      const city = document.querySelector("#weather div:last-child");
+      weather.innerText = `날씨: ${data.weather[0].main} / ${data.main.temp} °C`;
+      city.innerText = `지역: ${data.name}`;
     }); //API를 불러옴, fetch는 promise(당장 일어나지 않고 시간이 좀 걸린 뒤에 일어남)
 }
 
