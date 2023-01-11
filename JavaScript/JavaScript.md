@@ -753,7 +753,7 @@ const numsArr = JSON.parse(numsString);
 
 ### setInterval()
 
-일정 간격으로 함수를 주기적으로 호출하고 싶을 때 사용한다.
+일정 간격으로 함수를 주기적으로 호출하고 싶을 때 사용한다.<br>
 setInterval(함수명, 시간) //시간은 ms단위로 나타낸다.
 단 처음에 바로 실행되지 않고 설정한 시간이 지나고 부터 실행된다.
 
@@ -776,7 +776,7 @@ clearInterval(intervalId);
 
 ### setTimeout()
 
-일정 시간이 지난 후에 함수를 호출하고 싶을 때 사용한다.
+일정 시간이 지난 후에 함수를 호출하고 싶을 때 사용한다.<br>
 setTimeout(함수명, 시간) //시간은 ms단위로 나타낸다.
 
 ```
@@ -844,6 +844,8 @@ Math 객체는 수학에서 자주 사용하는 상수와 함수들을 미리 �
 
 생성자가 존재하지 않아서 따로 인스터스를 생성하지 않더라도 Math 객체의 모든 method나 property를 바로 사용할 수 있다.
 
+<br>
+
 자주 사용하는 함수 및 프로퍼티
 | 함수 및 프로퍼티 | 설명 |
 | -------- | -------------------------------- |
@@ -879,5 +881,39 @@ document.body.appendChild(bgImage); // body의 맨 끝에 배치
 삭제
 
 ```
-bgImage.remove();
+bgImage.remove(); //element 삭제
+```
+
+<hr>
+
+## filter
+
+filter() 메서드는 주어진 함수의 테스트를 통과하는 모든 요소를 모아 새로운 배열로 반환합니다.
+
+true를 반환하면 요소를 유지하고, false를 반환하면 요소를 버립니다.
+
+filter()는 기존의 배열을 변화시키지(mutate) 않고 새로운 배열을 반환합니다.
+
+예제
+
+```
+function isFilter(item){
+  return item < 40;
+}
+
+const items = [10, 20, 50, 30, 40, 60];
+
+const items2 = items.filter(isFilter);
+
+console.log(items2); // [10, 30, 20]
+```
+
+arrow 함수로도 가능
+
+```
+const items = [10, 30, 50, 20, 40, 60];
+
+const items2 = items.filter((item) => item < 40);
+
+console.log(items2); // [10, 30, 20]
 ```
