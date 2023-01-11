@@ -52,12 +52,3 @@ if (savedToDos) {
   toDos = parsedToDos; //이전의 값들을 배열에 저장
   parsedToDos.forEach(paintToDo); //forEach는 array의 각 item에 대해 function을 실행한다.
 }
-
-function isFilter(item) {
-  return item < 40;
-}
-
-const items = [10, 30, 50, 20, 40, 60];
-console.log(items);
-const items2 = items.filter(isFilter);
-console.log(items2);
