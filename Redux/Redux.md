@@ -9,12 +9,16 @@ Redux에서 제공하는 패턴과 도구를 사용하면 애플리케이션의 
 ## Redux 용어 및 함수
 
 store: state들을 담는 저장소입니다.
+
 reducer: state를 수정하는 함수
+
 store.dispatch({ type: ADD }): reducer에게 인자를 전달한다. 객체만 가능하다.
+
 countStore.subscribe(함수명): state의 변화를 감지하고 변화가 있을 때 함수를 실행한다.
+
 store.getState(): state 값을 가져온다.
 
-state를 + 또는 - 시키는 Redux 예제
+바닐라 JS에서 state를 + 또는 - 시키는 Redux 예제
 
 ```javascript
 import { legacy_createStore } from "redux";
