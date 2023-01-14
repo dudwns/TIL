@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { actionCreators } from "../store";
+import ToDo from "../ToDo";
 
 function Home({ toDos, addToDo }) {
   const [text, setText] = useState("");
@@ -12,9 +13,9 @@ function Home({ toDos, addToDo }) {
 
   function onSubmit(event) {
     event.preventDefault();
-    console.log(text);
+
     addToDo(text);
-    // dispatch(addToDo(text)); useDispatch()로 인해 dispatch 사용 가능
+    // dispatch(actionCreators.addToDo(text)); useDispatch()로 인해 dispatch 사용 가능
     setText("");
   }
   return (
@@ -24,7 +25,11 @@ function Home({ toDos, addToDo }) {
         <input type="text" value={text} onChange={onChange}></input>
         <button>ADD</button>
       </form>
-      <ul>{JSON.stringify(toDos)}</ul>
+      <ul>
+        {toDos.map((toDo) => (
+          <ToDo {...toDo} key={toDo.id} />
+        ))}
+      </ul>
     </> //컴포넌트에 렌더링
   );
 }
@@ -35,7 +40,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { addToDo: (text) => dispatch(actionCreators.addToDo(text)) }; //dispatch 하는 새로운 함수를 만들어 props로 전달
+  return { addToDo: (text) => dispatch(actionCreators.addToDo(text)) }; //dispatch 하는 새로운 함수를 만들어 component의 prop으로 전달
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
