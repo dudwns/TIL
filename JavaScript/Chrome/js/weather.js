@@ -1,4 +1,4 @@
-const API_KEY = config.apikey;
+const API_KEY = "86ccc4c1951fe9562e2063e837c1140b";
 
 function onGeoOK(position) {
   //위치 정보가 담긴 인자를 받음
