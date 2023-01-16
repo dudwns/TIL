@@ -71,6 +71,7 @@ const week = ["mon", "tue", "wed", "thu", "fri", "sat"]; //배열 선언
 배열에 원소를 추가하는 방법
 
 ```
+week.unshift("sun"); //첫 번째에 원소 추가
 week.push("sun"); // 마지막에 원소 추가
 ```
 
