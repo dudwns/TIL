@@ -1,7 +1,8 @@
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-function Detail({ toDos }) {
+function Detail() {
+  const toDos = useSelector((state) => state);
   const currentId = useParams().id;
   const toDo = toDos.find((toDo) => toDo.id === parseInt(currentId));
 
@@ -13,9 +14,4 @@ function Detail({ toDos }) {
   );
 }
 
-function mapStateToProps(state) {
-  console.log(state);
-  return { toDos: state };
-}
-
-export default connect(mapStateToProps)(Detail);
+export default Detail;
