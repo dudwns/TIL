@@ -8,38 +8,23 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { withStyles } from "@mui/material"; //css를 작성할 수 있도록 하는 라이브러리
 import { useEffect, useState } from "react";
-import Stack from "@mui/material/Stack";
-import CircularProgress from "@mui/material/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress"; // progress 작성 라이브러리
+import Box from "@mui/material/Box";
 
 function App() {
   const [customersDate, setCustomersDate] = useState([]);
-
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-    }, 800);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  const [isLoad, setIsLoad] = useState(true);
 
   useEffect(() => {
     (async () => {
       const customersData = await (await fetch(`/api/customers`)).json();
       setCustomersDate(customersData);
+      setIsLoad(false);
     })();
   }, []);
 
   return (
     <>
-      <Stack spacing={2} direction="row">
-        <CircularProgress variant="determinate" value={25} />
-        <CircularProgress variant="determinate" value={50} />
-        <CircularProgress variant="determinate" value={75} />
-        <CircularProgress variant="determinate" value={100} />
-        <CircularProgress variant="determinate" value={progress} />
-      </Stack>
       <Paper id="paper">
         <Table id="container">
           <TableHead>
@@ -53,21 +38,29 @@ function App() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {customersDate
-              ? customersDate.map((customer) => {
-                  return (
-                    <Customer
-                      key={customer.id}
-                      id={customer.id}
-                      image={customer.image}
-                      name={customer.name}
-                      birthday={customer.birsday}
-                      gender={customer.gender}
-                      job={customer.job}
-                    />
-                  );
-                })
-              : ""}
+            {isLoad ? (
+              <TableRow>
+                <TableCell colSpan="6" align="center">
+                  <Box>
+                    <CircularProgress />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ) : (
+              customersDate.map((customer) => {
+                return (
+                  <Customer
+                    key={customer.id}
+                    id={customer.id}
+                    image={customer.image}
+                    name={customer.name}
+                    birthday={customer.birsday}
+                    gender={customer.gender}
+                    job={customer.job}
+                  />
+                );
+              })
+            )}
           </TableBody>
         </Table>
       </Paper>
