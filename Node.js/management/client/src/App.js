@@ -12,13 +12,13 @@ import CircularProgress from "@mui/material/CircularProgress"; // progress ìž‘ì„
 import Box from "@mui/material/Box";
 
 function App() {
-  const [customersDate, setCustomersDate] = useState([]);
+  const [customersData, setCustomersData] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
 
   useEffect(() => {
     (async () => {
-      const customersData = await (await fetch(`/api/customers`)).json();
-      setCustomersDate(customersData);
+      const data = await (await fetch(`/api/customers`)).json();
+      setCustomersData(data);
       setIsLoad(false);
     })();
   }, []);
@@ -47,7 +47,7 @@ function App() {
                 </TableCell>
               </TableRow>
             ) : (
-              customersDate.map((customer) => {
+              customersData.map((customer) => {
                 return (
                   <Customer
                     key={customer.id}
