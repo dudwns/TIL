@@ -21,6 +21,27 @@ const connection = mysql.createConnection({
 });
 connection.connect(); //실제로 연결 실행
 
+const multer = require("multer"); //multer 라이브러리를 불러옴
+const upload = multer({ dest: "./upload" }); //upload 폴더를 사용자의 파일이 업로드 되는 공간으로 설정
+
+app.use("/image", express.static("./upload")); // upload 폴더를 공유, 사용자가 image 폴더로 접근하면 실질적으로는 upload 폴더와 매핑됨
+
+//insert
+app.post("/api/customers", upload.single("image"), (req, res) => {
+  let sql = "INSERT INTO CUSTOMER VALUES (null, ?, ?, ?, ?, ?)";
+  let name = req.body.name;
+  let image = "/image/" + req.file.filename;
+  let birthday = req.body.birthday;
+  let gender = req.body.gender;
+  let job = req.body.job;
+  let params = [image, name, birthday, gender, job];
+  connection.query(sql, params, (err, rows, fields) => {
+    res.send(rows);
+    // console.log(err); 오류가 나면 디버깅하는 방법
+    // console.log(rows);
+  });
+});
+
 // api/customers에 접속하면 쿼리문을 보냄, 그 결과를 사용자에게 보냄
 app.get("/api/customers", (req, res) => {
   connection.query("SELECT * FROM CUSTOMER", (err, rows, fields) => {

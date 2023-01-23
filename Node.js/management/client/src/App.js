@@ -10,10 +10,22 @@ import { withStyles } from "@mui/material"; //css를 작성할 수 있도록 하
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress"; // progress 작성 라이브러리
 import Box from "@mui/material/Box";
+import CustomerAdd from "./components/CustomerAdd";
 
 function App() {
   const [customersData, setCustomersData] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
+
+  const stateRefresh = () => {
+    setCustomersData("");
+    setIsLoad(true);
+
+    (async () => {
+      const data = await (await fetch(`/api/customers`)).json();
+      setCustomersData(data);
+      setIsLoad(false);
+    })();
+  };
 
   useEffect(() => {
     (async () => {
@@ -64,6 +76,7 @@ function App() {
           </TableBody>
         </Table>
       </Paper>
+      <CustomerAdd stateRefresh={stateRefresh} />
     </>
   );
 }
