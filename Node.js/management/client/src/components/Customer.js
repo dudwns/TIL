@@ -1,6 +1,7 @@
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
-function Customer({ name, birthday, gender, job, id, image }) {
+import CustomerDelete from "./CustomerDelete";
+function Customer({ name, birthday, gender, job, id, image, stateRefresh }) {
   return (
     <TableRow>
       <TableCell>{id}</TableCell>
@@ -11,6 +12,9 @@ function Customer({ name, birthday, gender, job, id, image }) {
       <TableCell>{birthday}</TableCell>
       <TableCell>{gender}</TableCell>
       <TableCell>{job}</TableCell>
+      <TableCell>
+        <CustomerDelete id={id} stateRefresh={stateRefresh} />
+      </TableCell>
     </TableRow>
   );
 }
