@@ -11,6 +11,23 @@ import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress"; // progress 작성 라이브러리
 import Box from "@mui/material/Box";
 import CustomerAdd from "./components/CustomerAdd";
+import styled from "styled-components";
+
+const Container = styled.div`
+  height: 100vh;
+  background-color: #2f2f2f;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+
+  & h1 {
+    color: whitesmoke;
+    text-align: center;
+    padding-top: 30px;
+  }
+`;
 
 function App() {
   const [customersData, setCustomersData] = useState([]);
@@ -36,7 +53,8 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Container>
+      <h1>고객 리스트</h1>
       <Paper id="paper">
         <Table id="container">
           <TableHead>
@@ -79,7 +97,7 @@ function App() {
         </Table>
       </Paper>
       <CustomerAdd stateRefresh={stateRefresh} />
-    </>
+    </Container>
   );
 }
 

@@ -1,8 +1,11 @@
 #paper {
-  width: "100%";
   overflow-x: "auto";
+  width: 1000px;
   margin-top: 30px;
+  border: 1px solid black;
 }
-#container {
-  min-width: 1080px;
+
+* {
+  margin: 0;
+  padding: 0;
 }
