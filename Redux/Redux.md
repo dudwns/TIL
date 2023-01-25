@@ -123,6 +123,25 @@ export default store;
 ```
 
 <br>
+react-redux를 사용하기 위해 Provider로 감싸준다.
+store 속성에 작성한 store값을 불러와서 설정한다.
+
+```javascript
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { Provider } from "react-redux";
+import store from "./store";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider> //react-redux를 사용하기 위해 감싸준다. store 필요
+);
+```
+
+<br>
 hook이 없었을 땐 connect를 사용했지만, 이제는 hook을 통해 state를 가져오고, dispatch 할 수 있다.
 
 ```javascript
