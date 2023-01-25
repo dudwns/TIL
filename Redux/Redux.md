@@ -24,6 +24,7 @@ countStore.subscribe(함수명): state의 변화를 감지하고 변화가 있�
 
 store.getState(): state 값을 가져온다.
 
+<br>
 바닐라 JS에서 state를 + 또는 - 시키는 Redux 예제
 
 ```javascript
