@@ -1,11 +1,13 @@
 #paper {
-  overflow-x: "auto";
-  width: 1000px;
+  width: 90%;
+  min-width: 600px;
   margin-top: 30px;
-  border: 1px solid black;
+  border: 1px solid gray;
 }
 
 * {
   margin: 0;
   padding: 0;
+  list-style: none;
+  box-sizing: border-box;
 }

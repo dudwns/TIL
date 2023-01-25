@@ -12,36 +12,59 @@ import CircularProgress from "@mui/material/CircularProgress"; // progress 작�
 import Box from "@mui/material/Box";
 import CustomerAdd from "./components/CustomerAdd";
 import styled from "styled-components";
+import Header from "./components/Header";
+import { useRecoilState } from "recoil";
+import { isKeyword } from "./atom";
 
 const Container = styled.div`
   height: 100vh;
-  background-color: #2f2f2f;
+  background-color: whitesmoke;
   width: 100%;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: auto;
-
-  & h1 {
-    color: whitesmoke;
-    text-align: center;
-    padding-top: 30px;
-  }
+  padding-bottom: 100px;
+  margin-top: 63px;
+  padding-top: 70px;
 `;
 
 function App() {
   const [customersData, setCustomersData] = useState([]);
   const [isLoad, setIsLoad] = useState(true);
+  const cellList = ["번호", "프로필 이미지", "이름", "생년월일", "성별", "직업", "설정"];
+  const [searchKeyword, setSearchKeyword] = useRecoilState(isKeyword);
 
   const stateRefresh = () => {
     setCustomersData("");
     setIsLoad(true);
+    setSearchKeyword("");
 
     (async () => {
       const data = await (await fetch(`/api/customers`)).json();
       setCustomersData(data);
       setIsLoad(false);
     })();
+  };
+
+  const filteredComponents = (data) => {
+    const newData = data.filter((c) => {
+      return c.name.indexOf(searchKeyword) > -1;
+    });
+    return newData.map((c) => {
+      return (
+        <Customer
+          stateRefresh={stateRefresh}
+          key={c.id}
+          id={c.id}
+          image={c.image}
+          name={c.name}
+          birthday={c.birsday}
+          gender={c.gender}
+          job={c.job}
+        />
+      );
+    });
   };
 
   useEffect(() => {
@@ -53,51 +76,36 @@ function App() {
   }, []);
 
   return (
-    <Container>
-      <h1>고객 리스트</h1>
-      <Paper id="paper">
-        <Table id="container">
-          <TableHead>
-            <TableRow>
-              <TableCell>번호</TableCell>
-              <TableCell>이미지</TableCell>
-              <TableCell>이름</TableCell>
-              <TableCell>생년월일</TableCell>
-              <TableCell>성별</TableCell>
-              <TableCell>직업</TableCell>
-              <TableCell>설정</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {isLoad ? (
+    <>
+      <Header />
+      <Container id="container">
+        <CustomerAdd stateRefresh={stateRefresh} />
+        <Paper id="paper">
+          <Table id="container">
+            <TableHead id="tableHead">
               <TableRow>
-                <TableCell colSpan="6" align="center">
-                  <Box>
-                    <CircularProgress />
-                  </Box>
-                </TableCell>
+                {cellList.map((c, index) => (
+                  <TableCell key={index}>{c}</TableCell>
+                ))}
               </TableRow>
-            ) : (
-              customersData.map((customer) => {
-                return (
-                  <Customer
-                    stateRefresh={stateRefresh}
-                    key={customer.id}
-                    id={customer.id}
-                    image={customer.image}
-                    name={customer.name}
-                    birthday={customer.birsday}
-                    gender={customer.gender}
-                    job={customer.job}
-                  />
-                );
-              })
-            )}
-          </TableBody>
-        </Table>
-      </Paper>
-      <CustomerAdd stateRefresh={stateRefresh} />
-    </Container>
+            </TableHead>
+            <TableBody>
+              {isLoad ? (
+                <TableRow>
+                  <TableCell colSpan="6" align="center">
+                    <Box>
+                      <CircularProgress />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                filteredComponents(customersData)
+              )}
+            </TableBody>
+          </Table>
+        </Paper>
+      </Container>
+    </>
   );
 }
 

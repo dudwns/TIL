@@ -10,25 +10,30 @@ const Container = styled.div`
 `;
 
 const JoinForm = styled.div`
-  border: 1px solid black;
+  border: 1px solid whitesmoke;
   width: 700px;
-  height: 600px;
+  min-height: 600px;
+  overflow-y: auto;
   position: fixed;
-  top: 5%;
+  top: 15%;
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: #2f2f2f;
+  background-color: rgb(62, 80, 181);
   border-radius: 10px;
   display: ${(props) => (props.value ? "flex" : "none")};
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   color: whitesmoke;
+  overflow-x: auto;
+
   & div {
     margin-bottom: 50px;
   }
   & h1 {
     margin-bottom: 80px;
+    text-align: center;
   }
   & button {
     background-color: whitesmoke;
@@ -37,11 +42,18 @@ const JoinForm = styled.div`
     width: 100%;
     font-size: 20px;
     cursor: pointer;
-    margin-top: 40px;
+    margin-top: 20px;
+    border: none;
   }
 
   & input {
     border-radius: 5px;
+    border: none;
+    padding-left: 5px;
+  }
+
+  & input:focus {
+    outline: none;
   }
 `;
 
@@ -73,6 +85,9 @@ const AddBtn = styled.div`
     border-radius: 5px;
     margin-top: 30px;
     cursor: pointer;
+    background-color: rgb(62, 80, 181);
+    border: none;
+    color: whitesmoke;
   }
 `;
 
@@ -131,7 +146,7 @@ function CustomerAdd({ stateRefresh }) {
             setOpen(true);
           }}
         >
-          회원 등록하기
+          고객 추가하기
         </button>
       </AddBtn>
 
