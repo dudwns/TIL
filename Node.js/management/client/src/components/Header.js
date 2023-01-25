@@ -60,7 +60,6 @@ const Header = () => {
   const [searchKeyword, setSearchKeyword] = useRecoilState(isKeyword);
   const handleValueChange = (e) => {
     setSearchKeyword(e.target.value);
-    console.log(searchKeyword);
   };
 
   return (

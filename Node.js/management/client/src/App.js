@@ -20,13 +20,12 @@ const Container = styled.div`
   height: 100vh;
   background-color: whitesmoke;
   width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 100px;
   margin-top: 63px;
   padding-top: 70px;
+  margin-bottom: 300px;
 `;
 
 function App() {

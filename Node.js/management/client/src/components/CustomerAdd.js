@@ -12,7 +12,7 @@ const Container = styled.div`
 const JoinForm = styled.div`
   border: 1px solid whitesmoke;
   width: 700px;
-  min-height: 600px;
+  height: 600px;
   overflow-y: auto;
   position: fixed;
   top: 15%;
@@ -26,7 +26,29 @@ const JoinForm = styled.div`
   align-items: center;
   justify-content: center;
   color: whitesmoke;
-  overflow-x: auto;
+  z-index: 10;
+
+  @media only screen and (max-width: 730px) {
+    width: 600px;
+  }
+
+  @media only screen and (max-width: 645px) {
+    width: 550px;
+  }
+  @media only screen and (max-height: 740px) {
+    height: 500px;
+    padding-top: 100px;
+  }
+
+  @media only screen and (max-height: 620px) {
+    height: 400px;
+    padding-top: 200px;
+  }
+
+  @media only screen and (max-height: 480px) {
+    height: 300px;
+    padding-top: 300px;
+  }
 
   & div {
     margin-bottom: 50px;
