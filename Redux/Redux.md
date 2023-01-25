@@ -123,8 +123,7 @@ export default store;
 ```
 
 <br>
-react-redux를 사용하기 위해 Provider로 감싸준다.
-store 속성에 작성한 store값을 불러와서 설정한다.
+react-redux를 사용하기 위해 Provider로 감싸주고, store 속성에 작성한 store값을 불러와서 설정한다.
 
 ```javascript
 import React from "react";
