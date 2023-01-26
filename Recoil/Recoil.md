@@ -136,3 +136,53 @@ function App() {
 
 export default App;
 ```
+
+<hr>
+
+## TypeScript에서 Recoil 사용
+
+atom 생성
+
+```typescript
+import { atom } from "recoil";
+
+export interface Iuser {
+  id: string;
+  password: number;
+  name: string;
+}
+
+//atom을 구분해줄 고유의 값
+//deatult는 해당 key값을 가진 atom의 기본값
+export const userAtom = atom<Iuser>({
+  key: "user",
+  default: {
+    id: "Admin",
+    password: 1234,
+    name: "홍길동",
+  },
+});
+```
+
+<br>
+
+atom 사용
+
+```typescript
+import { useRecoilState } from "recoil";
+import { Iuser, userAtom } from "./atoms";
+
+function App() {
+  const [user, setUser] = useRecoilState<Iuser>(userAtom); //useState와 거의 유사하다. (atom을 통해 가져옴)
+
+  return (
+    <>
+      <p>아이디: {user.id}</p>
+      <p>비밀번호: {user.password}</p>
+      <p>이름: {user.name}</p>
+    </>
+  );
+}
+
+export default App;
+```
