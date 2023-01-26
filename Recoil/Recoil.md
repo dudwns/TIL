@@ -1,5 +1,7 @@
 # Recoil
 
+<br>
+
 ## Recoil이란?
 
 Recoil은 React 프로젝트를 위한 많은 전역 상태관리 라이브러리들 중 하나로, 2020년 5월 Facebook에서 출시하였다.
@@ -30,7 +32,6 @@ atom에는 우리가 전역적으로 사용할 상태(state)를 담는다.
 
 ## Recoil 사용 방법
 
-설치
 npm을 이용하여 설치
 
 ```
@@ -143,7 +144,7 @@ export default App;
 
 atom 생성
 
-```typescript
+```javascript
 import { atom } from "recoil";
 
 export interface Iuser {
@@ -154,26 +155,29 @@ export interface Iuser {
 
 //atom을 구분해줄 고유의 값
 //deatult는 해당 key값을 가진 atom의 기본값
-export const userAtom = atom<Iuser>({
-  key: "user",
-  default: {
-    id: "Admin",
-    password: 1234,
-    name: "홍길동",
-  },
-});
+export const userAtom =
+  atom <
+  Iuser >
+  {
+    key: "user",
+    default: {
+      id: "Admin",
+      password: 1234,
+      name: "홍길동",
+    },
+  };
 ```
 
 <br>
 
 atom 사용
 
-```typescript
+```javascript
 import { useRecoilState } from "recoil";
 import { Iuser, userAtom } from "./atoms";
 
 function App() {
-  const [user, setUser] = useRecoilState<Iuser>(userAtom); //useState와 거의 유사하다. (atom을 통해 가져옴)
+  const [user, setUser] = useRecoilState < Iuser > userAtom; //useState와 거의 유사하다. (atom을 통해 가져옴)
 
   return (
     <>
