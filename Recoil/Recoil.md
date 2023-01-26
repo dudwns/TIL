@@ -1,7 +1,5 @@
 # Recoil
 
-<br>
-
 ## Recoil이란?
 
 Recoil은 React 프로젝트를 위한 많은 전역 상태관리 라이브러리들 중 하나로, 2020년 5월 Facebook에서 출시하였다.
