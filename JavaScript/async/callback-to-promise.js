@@ -24,11 +24,27 @@ class UserStorage {
   }
 }
 
-const userStorage = new UserStorage();
+/* const userStorage = new UserStorage();
 const id = prompt("enter your id");
 const password = prompt("enter your password");
 userStorage
   .loginUser(id, password) //로그인을 하고, 로그인을 성공하면 유저가 전달되니까
   .then(userStorage.getRoles) // 그 유저를 이용해서 getRoles를 호출하고
   .then((user) => alert(`Hello ${user.name}, you have a ${user.role} role`)) //모든게 다 성공적으로 동작하면 최종적으로 name과 role을 띄움
-  .catch(console.log); // 실패하면 에러를 출력
+  .catch(console.log); // 실패하면 에러를 출력 */
+
+//async으로 바꾸기
+const userStorage = new UserStorage();
+const id = prompt("enter your id");
+const password = prompt("enter your password");
+
+async function checkUser() {
+  try {
+    const userId = await userStorage.loginUser(id, password);
+    const user = await userStorage.getRoles(userId);
+    alert(`Hello ${user.name}, you have a ${user.role}`);
+  } catch (error) {
+    console.log(error);
+  }
+}
+checkUser();
