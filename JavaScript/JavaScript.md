@@ -68,18 +68,62 @@ const week = ["mon", "tue", "wed", "thu", "fri", "sat"]; //배열 선언
 ```
 
 <br>
+배열의 원소를 가져오는 방법
+
+```
+console.log(week[4]); // fri 출력, 그 이유는 인덱스를 0부터 세기 때문이다.
+```
+
+<br>
 배열에 원소를 추가하는 방법
 
 ```
-week.unshift("sun"); //첫 번째에 원소 추가
+week.unshift("sun"); // 첫 번째에 원소 추가, 전체 배열을 움직이기 때문에 속도가 느림
 week.push("sun"); // 마지막에 원소 추가
 ```
 
 <br>
-배열의 원소를 가져오는 방법
+배열의 원소를 삭제하는 방법
 
 ```
-console.log(week[4]); //fri 출력, 그 이유는 인덱스를 0부터 세기 때문이다.
+week.shift(); // 첫 번째 원소 삭제, 전체 배열을 움직이기 때문에 속도가 느림
+week.pop(); // 마지막 원소 삭제
+week.splice(1, 1) // index가 1인 원소에서 시작해서 하나만 삭제
+```
+
+<br>
+배열의 원소를 수정하는 방법
+
+```
+week.splice(1, 1, "tuesday"); // index가 1인 "tue"를 삭제하고 "tuesday"로 변경 // ['mon', 'tuesday', 'wed', 'tue', 'thu', 'fri', 'sat']
+week.splice(1, 0, "tuesday"); // 아무것도 삭제하지 않고, index 1에 "tuesday"를 추가 // ['mon', 'tuesday', 'tue', 'wed', 'tue', 'thu', 'fri', 'sat']
+```
+
+<br>
+원소의 index 알아내기 (없으면 -1 리턴)
+
+```
+const week = ["mon", "tue", "wed", "tue", "thu", "fri", "wed", "sat"];
+
+console.log(week.indexOf("wed")); // 2 (앞에서부터 탐색)
+console.log(week.lastIndexOf("wed")); // 6 (뒤에서부터 탐색)
+```
+
+<br>
+배열에 해당 원소를 포함하고 있는지 알아내기 (있으면 true, 없으면 false를 리턴)
+```
+console.log(week.includes("wed")); // true
+```
+
+<br>
+배열 합치기
+
+```
+const array1 = [1, 2, 3];
+const array2 = [4, 5, 6];
+
+const result = array1.concat(array2);
+console.log(result); // [1, 2, 3, 4, 5, 6]
 ```
 
 <hr>
