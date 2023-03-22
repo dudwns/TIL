@@ -150,6 +150,7 @@ function CustomerAdd({ stateRefresh }) {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     addCustomer().then((response) => {
+      console.log(response);
       console.dir(response.data);
       stateRefresh();
     });
