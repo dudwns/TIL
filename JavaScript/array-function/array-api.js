@@ -16,8 +16,9 @@ console.log(array); //원본 자체가 바뀜
 
 // 제외하고 싶은 인자를 제외한 새로운 배열을 리턴
 const array2 = [1, 2, 3, 4, 5];
-// const result4 = array2.splice(0, 2); //원본 자체에서 인자를 삭제하고, 삭제한 인자를 배열로 리턴
-const result4 = array2.slice(2, 5); // 삭제하고 남은 인자로 새로운 배열을 리턴
+// const result4 = array2.splice(0, 2); //원본 자체에서 인자를 삭제하고, 삭제한 인자를 배열로 리턴 (시작 인덱스, 개수)
+// const result4 = array2.splice(2, 0, 1, 2) index가 2인 자리에 원소 추가 가능 [1, 2, 1, 2, 3, 4, 5]
+const result4 = array2.slice(2, 5); // 인자를 복제해서 새로운 배열을 리턴 (시작 인덱스, 종료 인덱스 - 1) [3, 4, 5]
 console.log(result4);
 console.log(array2);
 
