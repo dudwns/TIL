@@ -5,7 +5,7 @@ console.log(result1);
 
 // split: 주어진 String을 배열로 반환
 const fruitsStr = "사과, 키위, 바나나, 체리";
-const result2 = fruitsStr.split(",", 2); //구분자는 필수, limit(앞에 2개만 가능)
+const result2 = fruitsStr.split("", 2); // 구분자, limit(앞에 2개만 가능)
 console.log(result2);
 
 // reverse: 주어진 배열의 순서를 거꾸로
