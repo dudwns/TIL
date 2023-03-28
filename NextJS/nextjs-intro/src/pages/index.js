@@ -1,16 +1,46 @@
 import Seo from "components/Seo";
-import Head from "next/head"; //react helmet과 유사한 기능
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home({ results }) {
+  const router = useRouter();
+  const onClick = (id, title) => {
+    // router.push(`/movies/${id}`); // Link가 아닌 코드를 통해 유저를 navigating 하는 방법
+    router.push(
+      {
+        pathname: `/movies/${id}`,
+        query: {
+          title, // url에서 url로 정보를 넘겨줄 때
+        },
+      },
+      `/movies/${id}`
+    ); // 클라이언트에게 보이는 url을 마스킹
+  };
+
   return (
     <div className="container">
       <Seo title="Home" />
 
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
+        <div
+          onClick={() => onClick(movie.id, movie.original_title)}
+          className="movie"
+          key={movie.id}
+        >
           <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <h4>
+            <Link
+              href={{
+                pathname: `/movies/${movie.id}`,
+                query: {
+                  title: movie.original_title, // url에서 url로 정보를 넘겨줄 때
+                },
+              }}
+              as={`/movies/${movie.id}`}
+            >
+              {movie.original_title}
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
