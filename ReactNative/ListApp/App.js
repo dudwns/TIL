@@ -9,6 +9,7 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import { theme } from "./colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -62,7 +63,9 @@ export default function App() {
   const loadToDos = async () => {
     try {
       const s = await AsyncStorage.getItem(STORAGE_KEY);
-      setTodos(JSON.parse(s));
+      if (s) {
+        setTodos(JSON.parse(s));
+      }
     } catch (e) {
       console.log(e);
     }
@@ -71,7 +74,9 @@ export default function App() {
   const loadMenu = async () => {
     try {
       const s = await AsyncStorage.getItem(WORKIN_KEY);
-      s === "true" ? setWorking(true) : setWorking(false);
+      if (s) {
+        s === "true" ? setWorking(true) : setWorking(false);
+      }
     } catch (e) {
       console.log(e);
     }
@@ -89,18 +94,29 @@ export default function App() {
   };
 
   const deleteToDo = async (key) => {
-    Alert.alert("삭제하시겠습니까?", "확실합니까?", [
-      { text: "취소" },
-      {
-        text: "예",
-        onPress: async () => {
-          const newToDos = { ...toDos };
-          delete newToDos[key]; // 이 object는 아직 state에 있지 않기 때문에 mutate 해도 됨
-          setTodos(newToDos);
-          await saveToDos(newToDos);
+    if (Platform.OS === "web") {
+      const ok = confirm("삭제하고 싶은가요?"); //web에서는 confirm을 사용
+      if (ok) {
+        const newToDos = { ...toDos };
+        delete newToDos[key]; // 이 object는 아직 state에 있지 않기 때문에 mutate 해도 됨
+        setTodos(newToDos);
+        await saveToDos(newToDos);
+      }
+    } else {
+      // web이 아니면 Alert를 사용
+      Alert.alert("삭제하시겠습니까?", "확실합니까?", [
+        { text: "취소" },
+        {
+          text: "예",
+          onPress: async () => {
+            const newToDos = { ...toDos };
+            delete newToDos[key]; // 이 object는 아직 state에 있지 않기 때문에 mutate 해도 됨
+            setTodos(newToDos);
+            await saveToDos(newToDos);
+          },
         },
-      },
-    ]);
+      ]);
+    }
   };
 
   const doneToDo = async (key) => {
