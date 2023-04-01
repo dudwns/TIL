@@ -39,17 +39,17 @@ Expo-cli는 보편적인 React 애플리케이션을 위한 프레임워크이�
 ### Expo CLI 장점
 
 - 초기 구성이 쉬어서 빠르고 간편하게 설치가 가능하며 React Native를 처음 개발하는 사람에게 편리하다.
-- React Natvie를 위한 기본 설정이 미리 구성이 되었다는 장점이 있다.
+- React Natvie를 위한 기본 설정이 미리 구성이 되었다는 장점이 있다.<br>
   네이티브 파일들을 개발자에게 숨겨두고 Expo가 자동으로 관리를 해준다
 - Android / Xcode를 설치하지 않아도 QR코드를 통해서 해당 프로젝트를 실행 할 수 있게 해준다.
-- Apple / Google Store에 배포와 업데이트를 하기에 간편하다.
-  배포마다 검사를 받지 않는다.
+- Apple / Google Store에 배포와 업데이트를 하기에 간편하다.<br>
+  배포마다 검사를 받지 않는다.<br>
   Expo Wrapper를 포함한 Standalone 앱 배포가 가능하다.
 
 ### Expo CLI 단점
 
-- OS Layer와 상호작용이 불가능하다.
-- Java, kotlin, Object-C, Swiftf로 작성된 네이티브 모듈을 추가 할 수 없다.
+- OS Layer와 상호작용이 불가능하다.<br>
+  Java, kotlin, Object-C, Swiftf로 작성된 네이티브 모듈을 추가 할 수 없다.
 - 일부 IOS 및 Andriod API를 사용할 수 없다.
 - APP의 15 ~ 25MB로 기본 파일 크기가 크다
 - 기능이 많은 앱 개발에는 부적합하다.
