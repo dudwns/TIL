@@ -213,3 +213,48 @@ const deleteToDo = (key) => {
   ]);
 };
 ```
+
+## Expo Publishing
+
+터미널에 `expo publish ` 실행하면 빌드가 되고 URL이 생긴다.
+
+## React Native Web
+
+React Native로 만든 코드를 웹에서도 빌드할 수 있다.<br>
+`<View>`는 `<div>`, `<Text>`는 `<span>`로 자동으로 변경된다. (일반적인 HTML 코드로 바뀜)
+
+툴 설치 명령어
+
+```
+npx expo install react-native-web@~0.18.10 react-dom@18.2.0 @expo/webpack-config@^18.0.1
+```
+
+## Platform
+
+어느 플랫폼에서 실행되고 있는지 확인할 수 있다.
+
+```javascript
+if (Platform.OS === "web") {
+  const ok = confirm("삭제하고 싶은가요?"); //web에서는 confirm을 사용
+  if (ok) {
+    const newToDos = { ...toDos };
+    delete newToDos[key]; // 이 object는 아직 state에 있지 않기 때문에 mutate 해도 됨
+    setTodos(newToDos);
+    await saveToDos(newToDos);
+  }
+} else {
+  // web이 아니면 Alert를 사용
+  Alert.alert("삭제하시겠습니까?", "확실합니까?", [
+    { text: "취소" },
+    {
+      text: "예",
+      onPress: async () => {
+        const newToDos = { ...toDos };
+        delete newToDos[key]; // 이 object는 아직 state에 있지 않기 때문에 mutate 해도 됨
+        setTodos(newToDos);
+        await saveToDos(newToDos);
+      },
+    },
+  ]);
+}
+```
