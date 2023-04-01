@@ -10,6 +10,12 @@
 
 4. `<StatusBar>`는 화면에 렌더링 되지 않음 (시계, 와이파이, 배터리 등을 표시하는 운영체제와 소통하는 component)
 
+## Component와 API의 차이점
+
+Component: 화면에 렌더링 할 항목, return 내부에 포함시키는 것 ex) `<View>`, `<StatusBar>`
+
+API: 자바스크립트 코드가 운영 체제와 소통하는 것 ex) Vibration
+
 ## react native packages에 관해서
 
 초기 React Native 팀은 개발자들에게 최대한 많은 API와 Component를 제공하려고 했다.
@@ -24,11 +30,43 @@
 
 그래서 Expo는 React Native의 기능들을 복제하여 좀 더 개선된 버전으로 만들었다.
 
-## Component와 API의 차이점
+## Expo CLI
 
-Component: 화면에 렌더링 할 항목, return 내부에 포함시키는 것 ex) `<View>`, `<StatusBar>`
+Expo-cli는 보편적인 React 애플리케이션을 위한 프레임워크이자 플랫폼이다.
 
-API: 자바스크립트 코드가 운영 체제와 소통하는 것 ex) Vibration
+동일한 JavaScript/TypeScript 코드베이스에서 iOS, Android 및 웹 앱을 개발, 빌드, 배포 및 빠르게 반복하는 데 도움이 되는 React Native 및 기본 플랫폼을 기반으로 구축된 도구 및 서비스 세트이다.
+
+### Expo CLI 장점
+
+- 초기 구성이 쉬어서 빠르고 간편하게 설치가 가능하며 React Native를 처음 개발하는 사람에게 편리하다.
+- React Natvie를 위한 기본 설정이 미리 구성이 되었다는 장점이 있다.
+  네이티브 파일들을 개발자에게 숨겨두고 Expo가 자동으로 관리를 해준다
+- Android / Xcode를 설치하지 않아도 QR코드를 통해서 해당 프로젝트를 실행 할 수 있게 해준다.
+- Apple / Google Store에 배포와 업데이트를 하기에 간편하다.
+  배포마다 검사를 받지 않는다.
+  Expo Wrapper를 포함한 Standalone 앱 배포가 가능하다.
+
+### Expo CLI 단점
+
+- OS Layer와 상호작용이 불가능하다.
+- Java, kotlin, Object-C, Swiftf로 작성된 네이티브 모듈을 추가 할 수 없다.
+- 일부 IOS 및 Andriod API를 사용할 수 없다.
+- APP의 15 ~ 25MB로 기본 파일 크기가 크다
+- 기능이 많은 앱 개발에는 부적합하다.
+- 블루투스 이용 불가
+- Eject 기능을 통해 설정하는 작업이 필요해서 오히려 번거러워질 수 있다.
+
+### Expo CLI 설치
+
+```
+npm install --global expo-cli
+```
+
+### 프로젝트 만들기
+
+```
+expo init 프로젝트명
+```
 
 ## ScrollView
 
