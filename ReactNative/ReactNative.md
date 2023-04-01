@@ -4,11 +4,11 @@
 
 1. React Native는 웹사이트가 아니다. HTML 태그를 사용할 수 없음, `<div>` 대신 `<View>`를 사용
 
-2. 모든 텍스트는 <Text> 컴포넌트 안에 들어가야 함
+2. 모든 텍스트는 `<Text>` 컴포넌트 안에 들어가야 함
 
 3. StyleSheet.create를 사용하는 이유는 아주 좋은 완성 기능을 제공함, 또한 컴포넌트와 따로 작성하면서 style이 거대해지는 것을 방지함
 
-4. <StatusBar>는 화면에 렌더링 되지 않음 (시계, 와이파이, 배터리 등을 표시하는 운영체제와 소통하는 component)
+4. `<StatusBar>`는 화면에 렌더링 되지 않음 (시계, 와이파이, 배터리 등을 표시하는 운영체제와 소통하는 component)
 
 ## react native packages에 관해서
 
@@ -162,7 +162,9 @@ React Native에서 유일하게 키보드를 통해 입력값을 받을 수 있�
 Async Storage는 string 데이터만 저장할 수 있으므로 string개체 데이터를 저장하려면 먼저 직렬화해야 한다.<br>
 JSON으로 직렬화할 수 있는 데이터의 경우 데이터를 저장할 때와 데이터를 로드할 때 사용할 수 있다.
 
-`import AsyncStorage from '@react-native-async-storage/async-storage';`
+```javascript
+import AsyncStorage from "@react-native-async-storage/async-storage";
+```
 
 저장
 
