@@ -90,6 +90,63 @@ export default function MovieDetail() {
 
 처럼 코드를 작성하여 화면에 출력할 수 있다.
 
+### redirect
+
+```javascript
+const router = useRouter();
+router.push("URL"); // 해당 페이지로 이동, 뒤로가기 히스토리에 기록이 남음
+router.replace("URL"); // push와 다른 점은 뒤로가기 히스토리에 기록이 남지 않음
+```
+
 ### 404 페이지 커스텀 방법
 
 pages폴더 안에 404.js를 생성하면 된다.
+
+### SWR (Stale While Revalidate)
+
+SWR은 먼저 캐시로부터 데이터를 반환한 후, fetch 요청(재검증)을 하고, 최종적으로 최신화된 데이터를 가져오는 전략입니다.
+
+SWR을 사용하면 컴포넌트는 지속적이며 자동으로 데이터 업데이트 스트림을 받게 됩니다. 그리고 UI는 항상 빠르고 반응적입니다.
+
+SWR은 React 프레임워크인 Next.js를 만든 동일한 팀이 만들었습니다.
+
+설치
+
+```
+npm i swr
+```
+
+사용하기
+
+```javascript
+import useSWR from "swr";
+
+const fetcher = (url: string) => fetch(url).then((response) => response.json());
+
+export default function useUser() {
+  const { data, error } = useSWR("/api/users/me", fetcher);
+  return data;
+}
+```
+
+2개의 인자가 필요, 첫 번째는 요청을 보낼 URL(캐시를 저장할 때 사용할 Key이기도 함), 두 번째는 fetcher 함수
+
+#### Global Configuration
+
+컨텍스트 SWRConfig는 모든 SWR 훅에 대한 Global Configuration(옵션)을 제공할 수 있습니다.
+
+```javascript
+import "@/styles/globals.css";
+import type { AppProps } from "next/app";
+import { SWRConfig } from "swr"; //모든 SWR 훅에 대한 global 옵션을 제공
+
+export default function App({ Component, pageProps }: AppProps) {
+  return (
+    <SWRConfig value={{ fetcher: (url: string) => fetch(url).then((response) => response.json()) }}>
+      <div className="w-full max-w-xl mx-auto">
+        <Component {...pageProps} />
+      </div>
+    </SWRConfig>
+  );
+}
+```
