@@ -1043,3 +1043,25 @@ map은 리턴값을 출력할 수 있다.
 2. map()은 메모리를 할당하고 반환 값을 저장한다.<br>forEach()는 반환 값을 버리고 항상 정의되지 않은 값을 반환한다.
 
 3. forEach()는 콜백 함수가 현재 배열을 변경하도록합니다. map ()은 대신 ​​새 배열을 반환한다.
+
+## geolocation API
+
+사용자의 현재 위치를 지도에 표시하거나 위치 기반 개인화 정보를 제공하는 등, 웹 앱에서 위치 정보를 가져와야 하는 경우가 종종 있습니다.
+
+Geolocation API는 navigator.geolocation을 통해 접근합니다.
+
+이 때, 사용자의 브라우저는 위치 정보 접근 권한을 요청하게 되고, 사용자가 허가할 경우 현재 장치에서 사용 가능한 최선의 방법(GPS, WiFi, ...)을 통해 위치를 알아냅니다.
+
+사용
+
+```javascript
+const [coords, setCoords] = useState < UseCoordsState > { latitude: null, longitude: null };
+
+const onSuccess = ({ coords: { latitude, longitude } }: GeolocationPosition) => {
+  setCoords({ latitude, longitude });
+}; // 허락했을 때 실행 할 콜백 함수
+
+useEffect(() => {
+  navigator.geolocation.getCurrentPosition(onSuccess); // 현재 좌표를 알아냄
+}, []);
+```
