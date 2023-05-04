@@ -131,7 +131,7 @@ export default function useUser() {
 
 2개의 인자가 필요, 첫 번째는 요청을 보낼 URL(캐시를 저장할 때 사용할 Key이기도 함), 두 번째는 fetcher 함수
 
-#### Global Configuration
+### Global Configuration
 
 컨텍스트 SWRConfig는 모든 SWR 훅에 대한 Global Configuration(옵션)을 제공할 수 있습니다.
 
@@ -148,5 +148,41 @@ export default function App({ Component, pageProps }: AppProps) {
       </div>
     </SWRConfig>
   );
+}
+```
+
+### 미들웨어
+
+미들웨어(middleware)란, 처음 유저가 보낸 요청과 종착지 사이에 있는 소프트웨어이다.<br>
+유저의 정보를 DB에 보낼 때 중간에서 검증 함수를 거친다면, 그 함수가 미들웨어이다.
+
+Next.js는 간편한 미들웨어 구현을 제공한다. src 폴더 내부에 middleware 이름을 가진 파일을 생성하면 된다.
+
+미들웨어 예제
+
+```javascript
+import { NextRequest, NextFetchEvent, userAgent } from "next/server";
+import { NextResponse } from "next/server";
+export function middleware(req: NextRequest, ev: NextFetchEvent) {
+  //   console.log("it works! global middleware"); // global 적용
+
+  if (req.nextUrl.pathname.startsWith("/")) {
+    const ua = userAgent(req);
+    if (ua.isBot) {
+      // Bot일 때 접근 제한 (전역 미들웨어)
+      return new Response("봇은 이용할 수 없어요!", { status: 403 });
+    }
+  }
+  if (req.nextUrl.pathname.startsWith("/chats")) {
+    // chats 하위 폴더에서만 미들웨어 적용 (부분 미들웨어)
+    console.log("chats ONLY middleware");
+  }
+  if (!req.url.includes("/api")) {
+    if (!req.url.includes("/enter") && !req.cookies.get("carrotsession")) {
+      NextResponse.redirect(`${req.nextUrl.origin}/enter`); // cookie를 가지고 있지 않았을 때 페이지를 redirect 시킴
+    }
+  }
+
+  return NextResponse.next();
 }
 ```
