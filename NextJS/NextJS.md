@@ -131,7 +131,7 @@ export default function useUser() {
 
 2개의 인자가 필요, 첫 번째는 요청을 보낼 URL(캐시를 저장할 때 사용할 Key이기도 함), 두 번째는 fetcher 함수
 
-### Global Configuration
+#### Global Configuration
 
 컨텍스트 SWRConfig는 모든 SWR 훅에 대한 Global Configuration(옵션)을 제공할 수 있습니다.
 
@@ -185,4 +185,104 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   return NextResponse.next();
 }
+```
+
+### Dynamic Import
+
+모듈을 동적으로 import 하여 첫 렌더링의 성능을 개선할 수 있다.
+
+사용은 기존 컴포넌트와 똑같이 사용하면 된다. `<Bs/>`
+
+```javascript
+import dynamic from "next/dynamic";
+
+const Bs = dynamic(() => import("@/Components/bs"), {
+  ssr: false, // SSR 여부
+  suspense: true, // Suspense 여부
+  loading: () => <span>Loading...</span>, // Loading중일 때 화면 표시
+}); // Dynamic Imports: 유저가 컴포넌트를 보고 있을 때만 import 할 수 있음
+```
+
+### Custom App
+
+Next.js는 App 컴포넌트를 사용하여 page를 초기화한다. 이를 재정의하고 페이지 초기화를 제어할 수 있다. 이를 통해 다음과 같은 놀라운 일을 할 수 있다.
+
+1. 페이지 변경 간에 레이아웃 유지
+2. 페이지 탐색 시 state 유지
+3. componentDidCatch를 사용한 Custom 에러 처리
+4. 페이지에 추가 데이터 삽입
+5. Global CSS 추가
+
+기본 App을 재정의하려면 아래와 같이 ./pages/\_app.tsx 파일을 만든다.
+
+```javascript
+import type { AppProps } from "next/app";
+import "@/styles/globals.css";
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
+}
+```
+
+### Custom Document
+
+Custom Document는 페이지가 서버 렌더링 될 때 사용되는 HTML 문서의 뼈대를 정의하는데 사용된다.
+
+이 파일은 서버에서만 랜더링되므로 onClick과 같은 이벤트 핸들러는 \_document에서 사용할 수 없다.
+
+Html, Head, Main 및 NextScript는 페이지가 제대로 랜더링되는 데 필요하다.
+
+Custom Document를 활용한 폰트 최적화 예제
+
+```javascript
+import { Html, Head, Main, NextScript } from "next/document";
+
+export default function Document() {
+  return (
+    <Html lang="ko">
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
+```
+
+### Script 컴포넌트
+
+Script 컴포넌트를 사용하여 페이지 로드 시에 필요하지 않은 스크립트를 불러오지 않도록 할 수 있다.
+
+개발자 시간을 절약하면서 로드하는 성능을 향상시킬 수 있다.
+
+beforeInteractive: 페이지가 interactive 되기 전에 로드<br>
+afterInteractive: 페이지가 interactive 된 후에 로드 (기본값)<br>
+lazyOnload: 다른 모든 데이터나 소스를 불러온 후에 로드<br>
+
+```javascript
+// _app.tsx
+
+import Script from 'next/script'
+
+<Script src="https://developers.kakao.com/sdk/js/kakao.js" strategy="afterInteractive" />
+<Script
+  src="https://connect.facebook.net/en_US/sdk.js"
+  onLoad={() => { // 앞에 스크립트를 다 불러오고 난 후에  함수를 실행
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: "your-app-id",
+        autoLogAppEvents: true,
+        xfbml: true,
+        version: "v16.0",
+      });
+    };
+  }}
+  strategy="lazyOnload"
+/>
 ```
