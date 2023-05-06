@@ -286,3 +286,82 @@ import Script from 'next/script'
   strategy="lazyOnload"
 />
 ```
+
+### getServerSideProps
+
+getServerSideProps가 반환하는 데이터를 사용하여 페이지를 pre-render한다.
+
+이때 함수는 페이지 요청이 발생할 때마다 실행된다.
+
+서버 측에서만 실행되며 브라우저에서는 실행되지 않는다.
+
+데이터의 업데이트가 자주 발생하는 페이지에서 사용하는 것이 효율적이다.
+
+```javascript
+export async function getServerSideProps() {
+  const products = await client.product.findMany({});
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
+
+export default Page;
+```
+
+### getStaticProps
+
+렌더링 되기 전에 API 요청으로 원하는 데이터를 불러와야 하는 경우에 사용한다.
+
+페이지가 빌드 되고, nextjs가 해당 페이지를 export 한 후 일반 html로 변환될 때, 딱 한 번만 실행된다.
+
+문서, 블로그, 상품 페이지와 같이 데이터의 변경이 잦지 않은 페이지에서 사용하는 것이 효율적이다.
+
+마크다운 파일을 읽어서 데이터를 가져오는 예제
+
+```javascript
+import Layout from "@/Components/layout";
+import { readFileSync, readdirSync } from "fs";
+import matter from "gray-matter";
+import { NextPage } from "next";
+
+interface Post {
+  title: string;
+  date: string;
+  category: string;
+}
+
+const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
+  return (
+    <Layout title="Blog" seoTitle="Blog">
+      <h1 className="font-semibold text-center text-xl mt-5 mb-10">Latest Posts</h1>
+      <ul>
+        {posts.map((post, index) => (
+          <div key={index} className="mb-10 ">
+            <span className="text-lg text-red-500">{post.title}</span>
+            <div>
+              <span>
+                {post.date} / {post.category}
+              </span>
+            </div>
+          </div>
+        ))}
+      </ul>
+    </Layout>
+  );
+};
+
+export async function getStaticProps() {
+  const blogPosts = readdirSync("./src/posts").map((file) => {
+    const content = readFileSync(`./src/posts/${file}`, "utf-8");
+    return matter(content).data;
+  }); // next.js가 페이지를 호출할 때 pages 폴더와 같은 위치에 있음
+  console.log(blogPosts);
+  return {
+    props: {
+      posts: blogPosts,
+    },
+  };
+}
+```
