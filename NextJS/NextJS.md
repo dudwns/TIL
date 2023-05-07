@@ -312,24 +312,30 @@ export default Page;
 
 ### getStaticProps
 
-렌더링 되기 전에 API 요청으로 원하는 데이터를 불러와야 하는 경우에 사용한다.
+사용자가 페이지에 접근하기 전에 html로 빌드 함 (미리 생성)
 
-페이지가 빌드 되고, nextjs가 해당 페이지를 export 한 후 일반 html로 변환될 때, 딱 한 번만 실행된다.
+페이지가 빌드 되기 전에 데이터를 추가한다. 딱 한 번만 실행
+
+렌더링 되기 전에 API 요청으로 원하는 데이터를 불러와야 하는 경우에 사용한다.
 
 문서, 블로그, 상품 페이지와 같이 데이터의 변경이 잦지 않은 페이지에서 사용하는 것이 효율적이다.
 
 마크다운 파일을 읽어서 데이터를 가져오는 예제
 
 ```javascript
+// index.tsx
+
 import Layout from "@/Components/layout";
 import { readFileSync, readdirSync } from "fs";
 import matter from "gray-matter";
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
+import Link from "next/link";
 
 interface Post {
   title: string;
   date: string;
   category: string;
+  slug: string;
 }
 
 const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
@@ -338,13 +344,15 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
       <h1 className="font-semibold text-center text-xl mt-5 mb-10">Latest Posts</h1>
       <ul>
         {posts.map((post, index) => (
-          <div key={index} className="mb-10 ">
-            <span className="text-lg text-red-500">{post.title}</span>
-            <div>
-              <span>
-                {post.date} / {post.category}
-              </span>
-            </div>
+          <div key={index} className="mb-5 ">
+            <Link href={`/blog/${post.slug}`}>
+              <span className="text-lg text-red-500">{post.title}</span>
+              <div>
+                <span>
+                  {post.date} / {post.category}
+                </span>
+              </div>
+            </Link>
           </div>
         ))}
       </ul>
@@ -352,16 +360,72 @@ const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
   );
 };
 
-export async function getStaticProps() {
+export const getStaticProps: GetStaticProps = async () => {
   const blogPosts = readdirSync("./src/posts").map((file) => {
-    const content = readFileSync(`./src/posts/${file}`, "utf-8");
-    return matter(content).data;
+    // NodeJS API를 이용해서 디렉터리를 읽음
+    const content = readFileSync(`./src/posts/${file}`, "utf-8"); //NodeJS API를 이용해서 파일을 읽음
+    const [slug, _] = file.split("."); // 뒤에 확장자를 분리해서 가져옴
+    return { ...matter(content).data, slug }; // matter: parser 같은 역할, front matter을 읽어옴
   }); // next.js가 페이지를 호출할 때 pages 폴더와 같은 위치에 있음
-  console.log(blogPosts);
+
   return {
     props: {
       posts: blogPosts,
     },
   };
-}
+};
+
+export default Blog;
+```
+
+### getStaticPaths
+
+nextjs는 getStaticProps로 html 파일을 미리 생성하려고 할 때 페이지가 동적인 URL을 갖고 있으면 몇 개의 페이지를 미리 생성할 것인지 알아야 함
+
+또한 그 페이지의 URL을 매칭해주어야 한다.
+
+```javascript
+// [slug].tsx
+
+import Layout from "@/Components/layout";
+import { readdirSync } from "fs";
+import matter from "gray-matter";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import remarkHtml from "remark-html";
+import remarkParse from "remark-parse";
+import { unified } from "unified";
+
+const Post: NextPage<{ post: string, data: any }> = ({ post, data }) => {
+  return (
+    <Layout title={data.title} seoTitle={data.title}>
+      <div className="blog-post-content" dangerouslySetInnerHTML={{ __html: post }}></div>
+    </Layout>
+  );
+};
+
+export const getStaticPaths: GetStaticPaths = () => {
+  const files = readdirSync("./src/posts").map((file) => {
+    const [name, extension] = file.split(".");
+    return { params: { slug: name } }; // URL을 매칭해 줘야 됨
+  });
+
+  return {
+    paths: files,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  const { data, content } = matter.read(`./src/posts/${ctx.params?.slug}.md`);
+  const { value } = await unified().use(remarkParse).use(remarkHtml).process(content); // HTML 태그로 바꿔줌
+
+  return {
+    props: {
+      data,
+      post: value,
+    },
+  };
+};
+
+export default Post;
 ```
