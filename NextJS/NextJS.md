@@ -287,6 +287,13 @@ import Script from 'next/script'
 />
 ```
 
+### Next.js의 기본적인 렌더링
+
+컴포넌트가 가진 초기 state를 가지고 HTML로 export 한 다음에 데이터가 필요할 때, 리액트가 프로트엔드에서 데이터를 불러옴
+
+장점: 사용자는 데이터가 fetch 될 때 까지 대략적인 HTML을 보고있을 수 있다.
+단점: 로딩 화면을 띄운다.
+
 ### getServerSideProps
 
 getServerSideProps가 반환하는 데이터를 사용하여 페이지를 pre-render한다.
@@ -296,6 +303,10 @@ getServerSideProps가 반환하는 데이터를 사용하여 페이지를 pre-re
 서버 측에서만 실행되며 브라우저에서는 실행되지 않는다.
 
 데이터의 업데이트가 자주 발생하는 페이지에서 사용하는 것이 효율적이다.
+
+장점: 로딩 화면을 안 봐도 된다.
+
+단점: 네트워크가 느린 환경이나 호출한 데이터가 많을 시에 사용자는 오랫동안 빈 화면을 마주한다.
 
 ```javascript
 export async function getServerSideProps() {
@@ -312,9 +323,11 @@ export default Page;
 
 ### getStaticProps
 
+정적(Static) 페이지를 생성할 때 가장 좋은 방법이다.
+
 사용자가 페이지에 접근하기 전에 html로 빌드 함 (미리 생성)
 
-페이지가 빌드 되기 전에 데이터를 추가한다. 딱 한 번만 실행
+빌드 타임 때 딱 한 번만 실행한다.
 
 렌더링 되기 전에 API 요청으로 원하는 데이터를 불러와야 하는 경우에 사용한다.
 
