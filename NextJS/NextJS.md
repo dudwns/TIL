@@ -27,6 +27,8 @@ ex)
 렌더링이 클라이언트 쪽에서 일어난다.<br>
 즉, 서버는 요청을 받으면 클라이언트에 HTML과 JS를 보내준다.<br>
 클라이언트는 그것을 받아 렌더링을 시작한다.
+페이지를 pre-rendering 할 필요가 없거나, 데이터의 업데이트가 자주 일어난다면 CSR 사용을 권장한다.
+ex) 유저 대시보드 페이지는 해당 유저만을 위한 비밀 페이지이기 때문에 SEO가 필요하지 않으며, 따라서 pre-rendering할 필요도 없다. 또한 데이터가 자주 변경되기 때문에 CSR이 적합하다.
 
 ### SSR(Server Side Rendering)
 
@@ -102,7 +104,7 @@ router.replace("URL"); // push와 다른 점은 뒤로가기 히스토리에 기
 
 pages폴더 안에 404.js를 생성하면 된다.
 
-### SWR (Stale While Revalidate)
+### SWR (Stale While Revalidate, HTTP 캐시 무효화 전략에서 유래)
 
 SWR은 먼저 캐시로부터 데이터를 반환한 후, fetch 요청(재검증)을 하고, 최종적으로 최신화된 데이터를 가져오는 전략입니다.
 
@@ -294,7 +296,7 @@ import Script from 'next/script'
 장점: 사용자는 데이터가 fetch 될 때 까지 대략적인 HTML을 보고있을 수 있다.
 단점: 로딩 화면을 띄운다.
 
-### getServerSideProps
+### getServerSideProps (SSR: Server Side Rendering)
 
 getServerSideProps가 반환하는 데이터를 사용하여 페이지를 pre-render한다.
 
@@ -302,9 +304,9 @@ getServerSideProps가 반환하는 데이터를 사용하여 페이지를 pre-re
 
 서버 측에서만 실행되며 브라우저에서는 실행되지 않는다.
 
-데이터의 업데이트가 자주 발생하는 페이지에서 사용하는 것이 효율적이다.
+항상 최신 상태를 유지해야 하는 경우, 데이터의 업데이트가 자주 발생하는 페이지에서 사용하는 것이 효율적이다.
 
-장점: 로딩 화면을 안 봐도 된다.
+장점: 페이지와 데이터를 한번에 볼 수 있음, 로딩 화면을 안 봐도 된다.
 
 단점: 네트워크가 느린 환경이나 호출한 데이터가 많을 시에 사용자는 오랫동안 빈 화면을 마주한다.
 
@@ -321,9 +323,7 @@ export async function getServerSideProps() {
 export default Page;
 ```
 
-### getStaticProps
-
-정적(Static) 페이지를 생성할 때 가장 좋은 방법이다.
+### getStaticProps (SSG: Static Side Generator)
 
 사용자가 페이지에 접근하기 전에 html로 빌드 함 (미리 생성)
 
@@ -332,6 +332,9 @@ export default Page;
 렌더링 되기 전에 API 요청으로 원하는 데이터를 불러와야 하는 경우에 사용한다.
 
 문서, 블로그, 상품 페이지와 같이 데이터의 변경이 잦지 않은 페이지에서 사용하는 것이 효율적이다.
+
+장점: 정적(Static) 페이지를 생성할 때 가장 좋은 방법이다.
+단점: 페이지 안의 데이터를 변경하려면 페이지 전체를 다시 빌드해야 한다.
 
 마크다운 파일을 읽어서 데이터를 가져오는 예제
 
@@ -441,4 +444,40 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 };
 
 export default Post;
+```
+
+### ISR(Incremental Static Regeneration, 단계적 정정 재생성)
+
+NextJS가 백그라운드에서 최신 데이터로 HTML을 재생성 시켜준다.
+ISR을 사용하려면 getStaticProps에 revalidate prop을 추가한다.
+
+장점
+
+1. 로딩 상태를 안 봐도 된다.
+2. getServerSideProps를 사용하지 않고도 페이지를 즉시 불러올 수 있다.
+3. 표시되는 데이터는 최신 데이터이다.
+
+```javascript
+export async function getStaticProps() {
+  const posts = await client.post.findMany({
+    include: {
+      user: true,
+    },
+  });
+  return {
+    props: {
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
+    revalidate: 20, // 20초가 지난 후 누군가가 해당 페이지를 방문하면 재생성 -> 그 다음 렌더링부터 최신 데이터를 받아볼 수 있음
+  };
+}
+```
+
+### ODR (On-Demand Revalidation)
+
+수동으로 HTML을 재생성 할 수 있다.
+ODR을 사용하면 getStaticProps의 revalidate를 안 써도 된다.
+
+```javascript
+await res.revalidate("/community"); // post 요청이 있을 때 community 페이지를 재생성
 ```
