@@ -341,12 +341,6 @@ export default Page;
 ```javascript
 // index.tsx
 
-import Layout from "@/Components/layout";
-import { readFileSync, readdirSync } from "fs";
-import matter from "gray-matter";
-import { GetStaticProps, NextPage } from "next";
-import Link from "next/link";
-
 interface Post {
   title: string;
   date: string;
@@ -403,14 +397,6 @@ nextjs는 getStaticProps로 html 파일을 미리 생성하려고 할 때 페이
 ```javascript
 // [slug].tsx
 
-import Layout from "@/Components/layout";
-import { readdirSync } from "fs";
-import matter from "gray-matter";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import remarkHtml from "remark-html";
-import remarkParse from "remark-parse";
-import { unified } from "unified";
-
 const Post: NextPage<{ post: string, data: any }> = ({ post, data }) => {
   return (
     <Layout title={data.title} seoTitle={data.title}>
@@ -446,7 +432,68 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 export default Post;
 ```
 
-### ISR(Incremental Static Regeneration, 단계적 정정 재생성)
+### fallback
+
+미리 만들어 둘 페이지를 지정하지 못하는 경우
+옵션에는 false, true, blocking이 있다.
+
+1. false는 생성된 HTML 파일이 없으면 유저가 404 응답을 받게 된다. (추가로 페이지를 생성하지 않음)
+
+생성할 경로가 적거나 새 페이지 데이터가 자주 추가되지 않는 경우에 유용하다.
+
+```javascript
+export const getStaticPaths: GetStaticPaths = () => {
+  const files = readdirSync("./src/posts").map((file) => {
+    const [name, extension] = file.split(".");
+    return { params: { slug: name } }; // URL을 매칭해 줘야 됨
+  });
+
+  return {
+    paths: files,
+    fallback: false,
+  };
+};
+```
+
+2. blcking은 해당 페이지에 첫번째로 방문한 사람은 NextJS가 파일 시스템을 확인하고 아직 HTML 페이지가 없다는 것을 확인할 때 까지 기다린다. (빈 화면)
+
+그 후 서버사이드 렌더링을 진행하고 정적 HTML 파일을 생성해서 보여준다.
+
+최초에 한번만 실행되고 그 다음부터는 이미 만들어져있기 때문에 기다리지 않아도 됨
+
+```javascript
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [], // 빌드할 때 페이지를 생성하지 않음
+    fallback: "blocking",
+  };
+};
+```
+
+3. true는 blocking 옵션과 같지만 페이지를 생성하는 동안 유저가 뭔가를 보여줄 수 있도록 한다.
+
+데이터에 의존하는 static 페이지가 많은 경우에 유용하다.
+
+모든 제품 페이지를 미리 렌더링하려면 빌드 시간이 매우 오래 걸리기 때문이다.
+
+router를 통해서 Fallback 여부를 알 수 있다.
+
+```javascript
+if (router.isFallback) {
+  return <span>Loading...</span>;
+} // HTML 페이지를 생성하고 있을 때 사용자에게 보여줄 화면
+
+...
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [], // 빌드할 때 페이지를 생성하지 않음
+    fallback: "true",
+  };
+};
+```
+
+### ISR(Incremental Static Regeneration, 증분 정적 재생성)
 
 NextJS가 백그라운드에서 최신 데이터로 HTML을 재생성 시켜준다.
 ISR을 사용하려면 getStaticProps에 revalidate prop을 추가한다.
