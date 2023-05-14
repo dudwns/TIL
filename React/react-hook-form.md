@@ -278,3 +278,27 @@ export default function Forms() {
   );
 }
 ```
+
+## setValue
+
+form의 value를 변경할 수 있는 훅
+
+```javascript
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<EditProfileForm>();
+
+  seEffect(() => {
+    if (user?.email) setValue("email", user.email); // form의 값을 바꿈
+    if (user?.phone) setValue("phone", user.phone);
+  }, [user, setValue]);
+
+  const onValid = ({ email, phone }: EditProfileForm) => {
+    if (email == "" && phone == "") {
+      setError("formErrors", { message: "이메일, 전화번호 중 하나가 필요합니다." }); // 에러 설정
+    }
+```
