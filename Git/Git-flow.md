@@ -35,7 +35,7 @@ QA를 무사히 통과했다면 release 브랜치를 master와 develop 브랜치
 
 `git flow init`
 
-위 명령어를 입력하면 develop 브랜치를 생성하고 이동한다.
+위 명령어를 입력하면 master를 기반으로 develop 브랜치를 생성하고 이동한다.
 
 #### 기능을 개발하려고 할 때는?
 
