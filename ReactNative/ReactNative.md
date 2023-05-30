@@ -296,3 +296,14 @@ if (Platform.OS === "web") {
   ]);
 }
 ```
+
+<hr>
+## Create React Native App
+Expo는 안드로이드와 ios 파일에 접근하지 못한다. 그래서 안드로이드와 ios 접근이 필요한 사람들은 Expo를 이용하지 않는다.
+
+하지만 Create React Native App은 Native 접근 권한을 얻으면서 Expo의 SDK도 접근 가능하고 QR코드를 통한 프리뷰도 이용할 수 있다.
+
+세팅들을 사전 생성해주는 ignite도 있다.
+
+시작
+`npx create-react-native-app`
