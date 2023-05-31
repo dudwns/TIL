@@ -305,5 +305,27 @@ Expo는 안드로이드와 ios 파일에 접근하지 못한다. 그래서 안�
 
 세팅들을 사전 생성해주는 ignite도 있다.
 
-시작
+Create React Native App 시작하기
 `npx create-react-native-app`
+
+## AppLoading
+
+preLoading 할 때 사용하는 컴포넌트
+데이터 Loading 중에는 splash screen을 보여주고, loading이 끝나면 화면을 보여준다.
+
+```javascript
+export default function App() {
+  const [ready, setReady] = useState(false);
+
+  const onFinish = () => {
+    setReady(true);
+  };
+  const startLoading = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+  }; //splash screen을 비추고 있을 때 실행되는 함수, 끝나면 onFinish를 실행
+  if (!ready) {
+    return <AppLoading startAsync={startLoading} onFinish={onFinish} onError={console.error} />;
+  }
+  return <Text>로딩 끝</Text>;
+}
+```
