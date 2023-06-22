@@ -1065,3 +1065,73 @@ useEffect(() => {
   navigator.geolocation.getCurrentPosition(onSuccess); // 현재 좌표를 알아냄
 }, []);
 ```
+
+## fetch api
+
+- 비동기 http 요청을 좀 더 쓰기 편하게 해주는 API
+- XMLHTTPRequest를 대체한다.
+- Promise 기반으로 동작한다.
+
+## fetch api 사용법
+
+- fetch의 기본 응답 결과는 Response 객체이다.
+- 따라서 json으로 바꾸거나 text로 바꾸는 등의 처리를 해줘야 한다.
+
+```javascript
+fetch("https://kdt.roto.codes/todos")
+  .then((res) => {
+    return res.json();
+  })
+  .then((todos) => {
+    console.log(todos);
+  });
+```
+
+<br>
+
+fetch는 HTTP error가 발생하더라도 reject 되지 않는다.
+네트워크 에러나 요청이 완료되지 못한 경우에만 reject 된다.
+그러므소 서버 요청 중 에러가 생겼을 경우에도 then으로 떨어지므로, response의 status code나 ok를 체크해주는 것이 좋다.
+
+#### res.status 반환 값
+
+- 200대: 성공
+- 대부분 400대: 실패
+
+#### res.ok 반환 값
+
+- true: 성공
+- false: 실패
+  <br>
+
+```javascript
+fetch("https://kdt.roto.codes/todos")
+  .then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    throw new Error(`Status: ${res.status}! 요청을 처리하지 못했어요.`);
+  })
+  .then((todos) => {
+    console.log(todos);
+  })
+  .catch((e) => {
+    console.log(e.message);
+  });
+```
+
+<br>
+
+fetch의 두 번째 인자로 옵션을 줄 수 있다.
+
+```javascript
+const headers = new Headers();
+
+headers.append("x-auth-token", "TOKEN");
+
+fetch("https://kdt.roto.codes/product", {
+  method: "POST", // 기본은 get
+  headers, // 헤더 정보를 전달
+  body: JSON.stringify(product), // 데이터 전달
+});
+```
