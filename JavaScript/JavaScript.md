@@ -1135,3 +1135,99 @@ fetch("https://kdt.roto.codes/product", {
   body: JSON.stringify(product), // 데이터 전달
 });
 ```
+
+<br>
+
+## history api
+
+브라우저에서 페이지 로딩을 하면, 세션 히스토리를 갖는다.
+
+세션 히스토리는 페이지를 이동할 때마다 쌓이게 되며, 이를 통해 뒤로 가기나 앞으로 가기 등의 이동이 가능하다.
+
+pushState, replaceState 두 개의 함수로 화면 이동 없이 현재 url을 업데이트할 수 있다.
+
+### pushState
+
+세션 히스토리에 새 url 상태를 쌓는다.
+url을 변경하지만 페이지를 새로고침 하지 않는다.
+
+사용법
+
+```javascript
+history.pushState(state, title, url);
+```
+
+- state: history.state에서 꺼내 쓸 수 있는 값이다.
+- title: 변경될 페이지의 title을 가리키는 값인 것 같지만 거의 대부분의 브라우저에서 지원하지 않는다. 빈 String을 넣으면 된다.
+- url: 세션 히스토리에 새로 넣을 url이다. a 태그를 클릭하거나 location.href로 url을 변경하는 것과는 다르게 이 url이 변경된다고 해서 화면이 리로드 되지 않는다.
+  <br>
+
+### replaceState
+
+뒤로 가기 동작을 막을 때 사용한다.
+세션 히스토리에 새 url 상태를 쌓지 않고, 현재 url을 대체한다.
+
+사용법
+
+```javascript
+history.replaceState(state, title, url);
+```
+
+- state: history.state에서 꺼내 쓸 수 있는 값이다.
+- title: 변경될 페이지의 title을 가리키는 값인 것 같지만 거의 대부분의 브라우저에서 지원하지 않는다. 빈 String을 넣으면 된다.
+- url: 세션 히스토리에서 현재 url과 대체할 url이다. a 태그를 클릭하거나 location.href로 url을 변경하는 것과는 다르게 이 url이 변경된다고 해서 화면이 리로드 되지 않는다.
+
+사용 예시
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <a class="LinkItem" href="/product-list">product list</a>
+    <a class="LinkItem" href="/article-list">article list</a>
+
+    <script>
+      function route() {
+        const { pathname } = location;
+        const $container = document.querySelector("#container");
+
+        if (pathname === "/") {
+          $container.innerHTML = "<h1>Home</h1>";
+        } else if (pathname === "/product-list") {
+          $container.innerHTML = "<h1>상품 목록</h1>";
+        } else if (pathname === "/article-list") {
+          $container.innerHTML = "<h1>게시글 목록</h1>";
+        }
+      } // 현재 location의 pathname으로 어떤걸 그릴지 결정하는 route 로직
+
+      route();
+      window.addEventListener("click", (e) => {
+        if (e.target.className === "LinkItem") {
+          e.preventDefault();
+
+          const { href } = e.target;
+          const path = href.replace(window.location.origin, "");
+
+          history.pushState(null, null, path); // 실제로 화면 이동을 하지 않지만 URL을 변경시킴
+          route();
+        }
+      });
+      window.addEventListener("popstate", () => route()); // 페이지를 뒤로 가기 또는 앞으로 가기 했을때 동작하는 이벤트
+    </script>
+  </body>
+</html>
+```
+
+### 정리
+
+history api를 이용하면 화면 이동을 일으키지 않고도 브라우저의 url을 바꿀 수 있다.
+
+history api로 url을 변경한 후 새로고침하면, 변경된 url의 실제 파일을 찾으려고 하기 때문에 404 에러가 난다.
+
+그러므로 404 에러가 났을 경우 root의 index.html로 요청을 돌려주는 처리가 필요하다.
