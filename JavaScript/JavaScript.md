@@ -1231,3 +1231,50 @@ history api를 이용하면 화면 이동을 일으키지 않고도 브라우저
 history api로 url을 변경한 후 새로고침하면, 변경된 url의 실제 파일을 찾으려고 하기 때문에 404 에러가 난다.
 
 그러므로 404 에러가 났을 경우 root의 index.html로 요청을 돌려주는 처리가 필요하다.
+<br>
+
+## closest
+
+Element의 closest() 메서드는 주어진 CSS 선택자와 일치하는 요소를 찾을 때까지, 자기 자신을 포함해 위쪽(부모 방향, 문서 루트까지)으로 문서 트리를 순회합니다.
+
+### 사용법
+
+```javascript
+closest(selectors);
+```
+
+### 반환 값
+
+selectors에 일치하는 가장 가까운 조상 Element 또는 자기 자신, 일치하는 요소가 없으면 null.
+
+예제
+
+```javascript
+// HTML
+
+<article>
+  <div id="div-01">
+    Here is div-01
+    <div id="div-02">
+      Here is div-02
+      <div id="div-03">Here is div-03</div>
+    </div>
+  </div>
+</article>
+```
+
+```javascript
+const el = document.getElementById("div-03");
+
+// ID가 "div-02"인 가장 가까운 조상
+console.log(el.closest("#div-02")); // <div id="div-02">
+
+// div 안에 놓인 div인 가장 가까운 조상
+console.log(el.closest("div div")); // <div id="div-03">
+
+// div면서 article을 부모로 둔 가장 가까운 조상
+console.log(el.closest("article > div")); // <div id="div-01">
+
+// div가 아닌 가장 가까운 조상
+console.log(el.closest(":not(div)")); // <article>
+```
