@@ -1278,3 +1278,9 @@ console.log(el.closest("article > div")); // <div id="div-01">
 // div가 아닌 가장 가까운 조상
 console.log(el.closest(":not(div)")); // <article>
 ```
+
+```javascript
+onClick(e.target.parentNode.previousElementSibling.id);
+```
+
+이런 식으로 접근하는 것보다 closest로 한 번에 접근하는 것이 간결하고 가독성도 좋다.
