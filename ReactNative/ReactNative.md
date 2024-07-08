@@ -1725,7 +1725,7 @@ const panResponder = useRef(
 Card 애니메이션
 
 ```jsx
-import { Animated, PanResponder, View } from "react-native";
+import { Animated, Dimensions, PanResponder, View } from "react-native";
 import styled from "styled-components/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRef, useState } from "react";
@@ -1763,6 +1763,7 @@ const BtnContainer = styled.View`
 `;
 
 const Btn = styled.TouchableOpacity``;
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 export default function App() {
   const [index, setIndex] = useState(0); // Card Index
@@ -1782,13 +1783,19 @@ export default function App() {
   const onPressOut = Animated.spring(scale, { toValue: 1, useNativeDriver: true }); // 손가락을 떼었을 때
   const goCenter = Animated.spring(position, { toValue: 0, useNativeDriver: true }); // 카드가 날라가지 않았을 때 다시 중앙으로 돌아옴
   const goLeft = Animated.spring(position, {
-    toValue: -500,
+    toValue: -SCREEN_WIDTH - 100,
     tension: 5,
     useNativeDriver: true,
     restDisplacementThreshold: 100, // 거리 임계치에 다다르면 애니메이션을 끝냄
     restSpeedThreshold: 100, // 속도 임계치에 다다르면 애니메이션을 끝냄
   }); // 왼쪽으로 날리기
-  const goRight = Animated.spring(position, { toValue: 500, tension: 5, useNativeDriver: true }); // 오른쪽으로 날리기
+  const goRight = Animated.spring(position, {
+    toValue: SCREEN_WIDTH + 100,
+    tension: 5,
+    useNativeDriver: true,
+    restDisplacementThreshold: 100, // 거리 임계치에 다다르면 애니메이션을 끝냄
+    restSpeedThreshold: 100, // 속도 임계치에 다다르면 애니메이션을 끝냄
+  }); // 오른쪽으로 날리기
   const onDismiss = () => {
     scale.setValue(1); // 카드가 사라지고난 후 원래 크기인 1로 지정
     position.setValue(0); // 카드가 사라지고난 후 다시 제자리로 복귀
