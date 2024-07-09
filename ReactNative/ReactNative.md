@@ -362,8 +362,10 @@ export default function App() {
 ### crna
 
 기본 뼈대 프로젝트를 만들어주지만 Expo의 기능들을 사용할 수 있다.
-
 `npx create-react-native-app`
+
+typescript로 프로젝트 생성
+`npx create-react-native-app -t with-typescript`
 
 장점
 
@@ -430,15 +432,9 @@ expo를 같이 사용하고 있을 때 아래 명령어로 같이 실행
 
 `npx expo install react-native-screens react-native-safe-area-context`
 
-맥OS를 사용하고 ios 앱을 제작하고 있다면 아래 명령어도 실행
+맥OS, ios 앱을 제작하고 있다면 아래 명령어도 실행
 
-```jsx
-cd ios
-
-pod install
-
-cd ..
-```
+`npx pod-install ios`
 
 <br>
 
@@ -1351,6 +1347,7 @@ const {
 2. Animated.Value 값은 절대 직접 수정하지 않는다.
 3. 아무 컴포넌트나 Animate 할 수 없음. 컴포넌트를 Animated Component로 바꿔야한다.
 
+만약 일반적인 styled-components를 사용하지 않으면 <Animated.View>형식으로 작성
 아래 이외에 컴포넌트는 Animated.createAnimatedComponent()로 만들어야한다.
 
 - `Animated.Image`
@@ -1543,8 +1540,8 @@ export default function App() {
     outputRange: ["rgb(255,99,71)", "rgb(71,166,255)"],
   });
   const moveUp = () => {
-    //Animated.sequence([topLeft, bottomLeft, bottomRight, topRight]).start(); // animation의 배열. 한 번만 작동
-    Animated.loop(Animated.sequence([bottomLeft, bottomRight, topRight, topLeft])).start(); // 지속적으로 반복
+    //Animated.sequence([topLeft, bottomLeft, bottomRight, topRight]).start(); // animation의 배열. 순차적으로 한 번만 작동
+    Animated.loop(Animated.sequence([bottomLeft, bottomRight, topRight, topLeft])).start(); // 순차적으로 무한 반복
   };
   return (
     <Container>
@@ -1848,6 +1845,176 @@ export default function App() {
           <Ionicons name="checkmark-circle" color="white" size={58} />
         </Btn>
       </BtnContainer>
+    </Container>
+  );
+}
+```
+
+<br>
+
+드래그 앤 드롭 애니메이션
+
+```jsx
+import { Animated, Dimensions, Easing, PanResponder, View } from "react-native";
+import styled from "styled-components/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useRef, useState } from "react";
+import icons from "./icons";
+
+const BLACK_COLOR = "#1e272e";
+const GREY = "#485460";
+const GREEN = "#2ecc71";
+const RED = "#e74c3c";
+
+const Container = styled.View`
+  flex: 1;
+  background-color: ${BLACK_COLOR};
+`;
+
+const Edge = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const WordContainer = styled(Animated.createAnimatedComponent(View))`
+  width: 100px;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  background-color: ${GREY};
+  border-radius: 50px;
+`;
+
+const Word = styled.Text`
+  font-size: 38px;
+  font-weight: 500;
+  color: ${(props) => props.color};
+`;
+
+const Center = styled.View`
+  flex: 3;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+`;
+
+const IconCard = styled(Animated.createAnimatedComponent(View))`
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+`;
+
+export default function App() {
+  // Values
+  const opacity = useRef(new Animated.Value(1)).current;
+  const scale = useRef(new Animated.Value(1)).current;
+  const position = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+  const scaleOne = position.y.interpolate({
+    inputRange: [-230, -80],
+    outputRange: [1.5, 1],
+    extrapolate: "clamp",
+  });
+  const scaleTwo = position.y.interpolate({
+    inputRange: [80, 230], // 작은 값부터 작성
+    outputRange: [1, 1.5],
+    extrapolate: "clamp",
+  });
+
+  // Animations
+  const onPressIn = Animated.spring(scale, {
+    toValue: 0.9,
+    useNativeDriver: true,
+  });
+
+  const onPressOut = Animated.spring(scale, {
+    toValue: 1,
+    useNativeDriver: true,
+  });
+
+  const goCenter = Animated.spring(position, {
+    toValue: 0, // 굳이 { x:0, y:0 } 라고 안해도 됨
+    useNativeDriver: true,
+  });
+
+  const onDropScale = Animated.timing(scale, {
+    toValue: 0,
+    duration: 50,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+  const onDropOpacity = Animated.timing(opacity, {
+    toValue: 0,
+    duration: 50,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+  const goFastcenter = Animated.timing(position, {
+    toValue: 0,
+    duration: 50,
+    easing: Easing.linear,
+    useNativeDriver: true,
+  });
+
+  // Pan Responders
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        onPressIn.start();
+      },
+      onPanResponderMove: (_, { dx, dy }) => {
+        position.setValue({
+          x: dx,
+          y: dy,
+        });
+      },
+      onPanResponderRelease: (_, { dy }) => {
+        if (dy < -180 || dy > 180) {
+          Animated.sequence([Animated.parallel([onDropScale, onDropOpacity]), goFastcenter]).start(
+            nextIcon
+          );
+        } else Animated.parallel([onPressOut, goCenter]).start();
+      },
+    })
+  ).current;
+
+  // State
+  const [index, setIndex] = useState(0);
+
+  const nextIcon = () => {
+    setIndex((prev) => prev + 1);
+    Animated.parallel([
+      Animated.spring(scale, { toValue: 1, useNativeDriver: true }),
+      Animated.spring(opacity, { toValue: 1, useNativeDriver: true }),
+    ]).start();
+  }; // Icon Index를 1 증가시키고 scale, opacity를 원래대로 변경
+
+  return (
+    <Container>
+      <Edge>
+        <WordContainer style={{ transform: [{ scale: scaleOne }] }}>
+          <Word color={GREEN}>Yes</Word>
+        </WordContainer>
+      </Edge>
+      <Center>
+        <IconCard
+          {...panResponder.panHandlers}
+          style={{
+            opacity,
+            transform: [...position.getTranslateTransform(), { scale }],
+          }}
+        >
+          <Ionicons name={icons[index]} color={GREY} size={76} />
+        </IconCard>
+      </Center>
+      <Edge>
+        <WordContainer style={{ transform: [{ scale: scaleTwo }] }}>
+          <Word color={RED}>No</Word>
+        </WordContainer>
+      </Edge>
     </Container>
   );
 }
