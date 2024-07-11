@@ -2019,3 +2019,9 @@ export default function App() {
   );
 }
 ```
+
+앱에서 몽고DB 사용하기
+
+`npm install realm`
+
+`npx pod-install ios`
