@@ -407,7 +407,7 @@ export default function App() {
   const [assets] = useAssets([require("./algorithm.png")]);
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded && assets) await SplashScreen.hideAsync();
+    if (fontsLoaded && assets) await SplashScreen.hideAsync(); // 스플래시 스크린을 숨김
   }, [fontsLoaded, assets]);
 
   if (!fontsLoaded || !assets) {
@@ -2020,8 +2020,134 @@ export default function App() {
 }
 ```
 
+<br>
+
+## Realm
+
 앱에서 몽고DB 사용하기
 
 `npm install realm`
 
 `npx pod-install ios`
+
+```jsx
+// App.tsx
+
+import { NavigationContainer } from "@react-navigation/native";
+import Navigator from "./navigator";
+import Realm from "realm";
+import * as SplashScreen from "expo-splash-screen";
+import { useCallback, useEffect, useState } from "react";
+import { View } from "react-native";
+import { DBContext } from "./context";
+
+const FeelingSchema = {
+  name: "Feeling",
+  properties: {
+    _id: "int",
+    emotion: "string",
+    message: "string",
+  },
+  primaryKey: "_id",
+};
+
+export default function App() {
+  const [ready, setReady] = useState(false);
+  const [realm, setRealm] = useState();
+
+  const startLoading = async () => {
+    try {
+      const connection = await Realm.open({
+        path: "diaryDB",
+        schema: [FeelingSchema],
+      });
+      setRealm(connection);
+    } finally {
+      setReady(true);
+    }
+  }; // 스키마 정의
+
+  useEffect(() => {
+    startLoading();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (ready) {
+      await SplashScreen.hideAsync();
+    }
+  }, [ready]);
+
+  if (!ready) return null;
+
+  return (
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <DBContext.Provider value={realm}>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </DBContext.Provider>
+    </View>
+  );
+}
+```
+
+```jsx
+// context.ts
+import React, { useContext } from "react";
+
+export const DBContext = React.createContext(null);
+
+export const useDB = () => {
+  return useContext(DBContext);
+};
+```
+
+```jsx
+const realm = useDB();
+const [feelings, setFeelings] = useState();
+useEffect(() => {
+  const feelings = realm.objects("Feeling"); // DB에서 데이터를 가져옴
+  setFeelings(feelings);
+  feelings.addListener((feelings, changes) => {
+    setFeelings(feelings.sorted("_id", true)); // "_id"를 기준으로 데이터를 정렬. true는 내림차순
+  }); // realm에 이벤트가 호출될 때마다 데이터를 새로 갱신
+  return () => {
+    feelings.removeAllListeners(); // useEffect에서는 현재 컴포넌트가 unmount되었을 때 실행되는 함수를 return해야 함
+  };
+}, []);
+
+const onPress = (id) => {
+  // 데이터 삭제
+  realm.write(() => {
+    const feeling = realm.objectForPrimaryKey("Feeling", id); // primary key를 기준으로 데이터를 찾음
+    realm.delete(feeling);
+  });
+};
+```
+
+```jsx
+// 데이터 삽입
+realm.write(() => {
+  realm.create("Feeling", {
+    _id: Date.now(),
+    emotion: selectedEmotion,
+    message: feelings,
+  });
+```
+
+<br>
+
+## LayoutAnimation
+
+- Animation을 만들 필요 없이 자동으로 레이아웃 변화에 애니메이션을 적용한다.
+- setState가 발생할 때 작동
+
+```jsx
+import { FlatList, LayoutAnimation, TouchableOpacity } from "react-native";
+
+return (
+	const [state, setState] = useState();
+	LayoutAnimation.linear(); // state에 어떤 변화가 생길 때 animate 하겠다.
+	setState(state, newState);
+)
+```
