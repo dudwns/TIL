@@ -2329,3 +2329,87 @@ const logOut = async () => {
   await auth().signOut(); // 로그아웃
 };
 ```
+
+<br>
+
+## Victory Charts
+
+시각화 차트 라이브러리
+
+`npm install --save victory-native`
+
+`npm install react-native-svg`
+
+`npx pod-install`
+
+```jsx
+import { useEffect, useState } from "react";
+import styled from "styled-components/native";
+import { Icon } from "../components/Coin";
+import { useQuery } from "react-query";
+import { history, info } from "../api";
+import { BLACK_COLOR } from "../colors";
+import { VictoryLine, VictoryChart, VictoryScatter } from "victory-native";
+
+const Container = styled.ScrollView`
+  flex: 1;
+  background-color: ${BLACK_COLOR};
+`;
+
+const Detail = ({
+  navigation,
+  route: {
+    params: { symbol, id },
+  },
+}) => {
+  const { isLoading: infoLoading, data: infoData } = useQuery({
+    queryKey: ["coinInfo", id], // 이렇게 파라미터를 보내는게 캐시의 장점을 가질 수 있다.
+    queryFn: info,
+  });
+
+  const { isLoading: historyLoading, data: historyData } = useQuery({
+    queryKey: ["coinHistory", id],
+    queryFn: history,
+  });
+
+  const [victoryData, setVictoryData] = useState(null);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => (
+        <Icon
+          source={{
+            uri: `https://coplore-icon-api.vercel.app/api/icons/${symbol.toLowerCase()}`,
+          }}
+        />
+      ),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (historyData) {
+      setVictoryData(
+        historyData.map((price) => ({ x: new Date(price.timestamp).getTime(), y: price.price })) // {x: 시간 y: 가격} 형태로 만듦
+      );
+    }
+  }, [historyData]);
+
+  return (
+    <Container>
+      {victoryData ? (
+        <VictoryChart height={360}>
+          <VictoryLine
+            animate
+            interforlation="monotoneX"
+            data={victoryData}
+            style={{ data: { stroke: "#1abc9c" } }}
+          />
+          <VictoryScatter data={victoryData} style={{ data: { fill: "#1abc9c" } }} />
+        </VictoryChart>
+      ) : null}
+    </Container>
+  );
+};
+
+export default Detail;
+```
