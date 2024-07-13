@@ -2151,3 +2151,181 @@ return (
 	setState(state, newState);
 )
 ```
+
+<br>
+
+## ReactNative에서 Firebase 사용하기
+
+`npm install --save @react-native-firebase/app`
+
+Firebase에서 프로젝트 생성 후 플랫폼 추가
+
+### 안드로이드 플랫폼
+
+- 패키지 이름 경로: android/app/build.gradle 파일에 defaultConfig 내부에 applicationId 존재
+- SHA-1: 터미널에 cd android && ./gradlew signingReport 입력 후 Task :app:signingReport 찾은 후 SHA1 부분 복붙
+- 앱 등록 후 google-services.json 다운 후 프로젝트 내 android/app에 드래그
+- build.gradle에 각각 코드 삽입
+
+## ios 플랫폼
+
+- 번들 ID: vscode에서 ios 폴더 우클릭 후 Reveal in Finder 클릭 후 ios/플젝이름/xcworkspace 클릭 후 Bundle Identifire 입력
+- 앲스토어에 등록된 앱이면 App Store ID 등록
+- 파일 다운로드 후 xcode에서 우클릭, Add Files to ~ 클릭
+- 파일 선택 후 Copy items if needed, Create groups 선택 후 Add 클릭
+  - vscode에서 ios/프로젝트name/Appdelegate.mm 파일에 `#import <Firebase.h>` 추가
+  - didFinishLaunchingWithOptions 함수 내에 `[FIRApp configure];` 추가
+  - ios/Podfile 에 `use_frameworks! :linkage => :static` 추가
+- `npx pod-install ios` 실행
+
+## Authentication
+
+`@react-native-firebase/auth`
+
+`npx-pod install`
+
+## Firebase Authentication
+
+`npm i @react-native-firebase/auth`
+
+`npx pod-install`
+
+참고: ios앱에서는 소셜 로그인을 넣으려면 Apple ID 로그인도 필수로 있어야 함
+
+### email/password 로그인
+
+홈 화면
+
+```jsx
+import React, { useEffect, useState } from "react";
+import auth from "@react-native-firebase/auth";
+import { NavigationContainer } from "@react-navigation/native";
+import InNav from "./navigator/InNav";
+import OutNav from "./navigator/OutNav";
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    auth().onAuthStateChanged((user) => {
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+    }); // 사용자 인증 상태의 변경 사항을 수신 (로그인 유무)
+  }, []);
+  return <NavigationContainer>{isLoggedIn ? <InNav /> : <OutNav />}</NavigationContainer>;
+}
+```
+
+회원가입
+
+```jsx
+// join.js
+
+import { useRef, useState } from "react";
+import auth from "@react-native-firebase/auth";
+import styled from "styled-components/native";
+import { BLACK_COLOR } from "../colors";
+import { ActivityIndicator, Alert } from "react-native";
+
+const Container = styled.View`
+  background-color: ${BLACK_COLOR};
+  flex: 1;
+  align-items: center;
+  color: white;
+  padding: 60px 20px;
+`;
+const TextInput = styled.TextInput`
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.5);
+`;
+const Btn = styled.TouchableOpacity`
+  width: 100%;
+  padding: 10px 20px;
+  border-width: 1px;
+  border-radius: 20px;
+  border-color: rgba(255, 255, 255, 0.5);
+  justify-content: center;
+  align-items: center;
+`;
+const BtnText = styled.Text`
+  color: white;
+  font-size: 16px;
+`;
+
+const Join = ({ navigation: { navigate } }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const passwordInput = useRef();
+  const onSubmitEmailEditing = () => {
+    passwordInput.current.focus(); // 이메일 입력 후 패스워드 인풋으로 포커스 이동
+  };
+  const onSubmitPasswordEditing = async () => {
+    if (loading) return;
+    if (email === "" || password === "") Alert.alert("이메일 혹은 패스워드를 입력해 주세요.");
+    setLoading(true);
+    try {
+      await auth().createUserWithEmailAndPassword(email, password); // 이메일과 패스워드를 넘김
+    } catch (e) {
+      switch (e.code) {
+        case "auth/weak-password": {
+          Alert.alert("비밀번호를 더 길게 작성하세요!"); // 이런 식으로 에러에 따라 예외 처리
+        }
+      }
+    }
+  };
+  return (
+    <Container>
+      <TextInput
+        placeholder="Email"
+        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+        autoCapitalize="none" // 첫글자일 때 키보드를 대문자로 시작하는 걸 취소
+        autoCorrect={false} // 자동완성 제거
+        keyboardType="email-address" // 키보드에 @이 생김
+        value={email}
+        returnKeyType="next"
+        onChangeText={(text) => setEmail(text)}
+        onSubmitEditing={onSubmitEmailEditing}
+      />
+      <TextInput
+        ref={passwordInput}
+        placeholder="Password"
+        placeholderTextColor={"rgba(255, 255, 255, 0.7)"}
+        secureTextEntry // 글자를 숨김
+        value={password}
+        returnKeyType="done"
+        onChangeText={(text) => setPassword(text)}
+        onSubmitEditing={onSubmitPasswordEditing}
+      />
+      <Btn onPress={onSubmitPasswordEditing}>
+        {loading ? <ActivityIndicator color="white" /> : <BtnText>계정 생성 완료</BtnText>}
+      </Btn>
+    </Container>
+  );
+};
+
+export default Join;
+```
+
+로그인 함수
+
+```jsx
+const login = async () => {
+  await auth().signInWithEmailAndPassword(email, password); // email과 password로 로그인
+};
+```
+
+로그아웃 함수
+
+```jsx
+const logOut = async () => {
+  await auth().signOut(); // 로그아웃
+};
+```
